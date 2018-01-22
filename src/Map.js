@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import NumericInput from 'react-numeric-input';
+
 import Cursor from './Cursor.js';
 import Grid from './Grid.js';
 import './Map.css';
@@ -9,24 +11,24 @@ import './Map.css';
 //   UP: 38,
 // };
 
+const MIN_X = -1;
+const MIN_Y = -1;
+
+let animate = true;
+
 class Map extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       tileSize: 50,
-      width: 12,
-      height: 12,
       cursor: {
         x: 0,
         y: 0,
-        animate: true,
       },
       bounds: {
-        minX: 0,
-        minY: 0,
-        maxX: 15,
-        maxY: 15,
+        maxX: 5,
+        maxY: 5,
       }
     };
   }
@@ -35,66 +37,100 @@ class Map extends Component {
     window.addEventListener('keydown', this.handleKeys);
 
     // eslint-disable-next-line
-    const { cursor, width, height, tileSize } = this.state;
-    const absWidth = width * tileSize + 1;
-    const absHeight = height * tileSize + 1;
+    const { bounds, tileSize, grid, cursor } = this.state;
+
+    const width = bounds.maxX - MIN_X;
+    const height = bounds.maxY - MIN_Y;
 
     const mapStyle = {
-      width: absWidth + 'px',
-      height: absHeight + 'px',
+      width: width * tileSize + 1,
+      height: height * tileSize + 1,
+      transition: animate ? 'all .15s' : 'none',
     };
 
     return (
-      <div className="Map" style={mapStyle}>
+      <div id="Map" style={mapStyle}>
         <Grid tileSize={tileSize} />
-        <Cursor x={this.state.cursor.x} y={this.state.cursor.y} tileSize={tileSize} />
+        <Cursor x={cursor.x} y={cursor.y} tileSize={tileSize} animate={animate} />
 
-        <input type="number" step="1" value={width} onChange={(e) => this.setState({
-          width: Number.parseInt(e.target.value, 10),
-        })} />
+        <NumericInput
+          min={-1}
+          max={50}
+          value={width}
+          onChange={numericVal => {
+            this.setState({
+              bounds: Object.assign(bounds, { maxX: numericVal - 1 })
+            })
+          }}
+        />
 
-        <input type="number" step="1" value={height} onChange={(e) => this.setState({
-          height: Number.parseInt(e.target.value, 10),
-        })} />
+        <NumericInput
+          min={-1}
+          max={50}
+          value={height}
+          onChange={numericVal => {
+            this.setState({
+              bounds: Object.assign(bounds, { maxY: numericVal - 1 })
+            })
+          }}
+        />
 
-        <input type="number" step="10" onChange={(e) => this.setState({
-          tileSize: Number.parseInt(e.target.value, 10),
-        })} value={tileSize} />
+        <NumericInput
+          min={20}
+          max={150}
+          value={tileSize}
+          parse={Number.parseInt}
+          step={10}
+          format={num => num + '%'}
+          onChange={this.scaleMap}
+        />
       </div>
     );
   }
 
-  handleKeys = (event) => {
+  handleKeys = (ev) => {
     if (document.activeElement instanceof HTMLInputElement) {
       return;
     }
 
-    switch (event.key) {
+    switch (ev.key) {
       case 'ArrowUp':
-        this.moveCursor(0, 1);
-        break;
+        return this.moveCursor(0, 1);
       case 'ArrowDown':
-        this.moveCursor(0, -1);
-        break;
+        return this.moveCursor(0, -1);
       case 'ArrowLeft':
-        this.moveCursor(-1, 0);
-        break;
+        return this.moveCursor(-1, 0);
       case 'ArrowRight':
-        this.moveCursor(1, 0);
-        break;
+        return this.moveCursor(1, 0);
       default:
         return;
     }
   }
 
+  scaleMap = (tileSize) => {
+    animate = false;
+    this.setState({ tileSize }, () => {
+      animate = true;
+    });
+  }
+
   moveCursor = (xOffset = 0, yOffset = 0) => {
     const { bounds, cursor } = this.state;
+
     const x = cursor.x + xOffset;
     const y = cursor.y + yOffset;
 
-    if (x < bounds.minX || y < bounds.minY) {
+    if (x < MIN_X || y < MIN_Y) {
       return;
     }
+
+    // enlarge map if necessary
+    this.setState({
+      bounds: Object.assign(bounds, {
+        maxX: x === bounds.maxX ? x + 1 : bounds.maxX,
+        maxY: y === bounds.maxY ? y + 1 : bounds.maxY,
+      })
+    });
 
     this.setCursor(x, y);
   }
@@ -103,10 +139,6 @@ class Map extends Component {
     this.setState({
       cursor: Object.assign(this.state.cursor, { x, y })
     });
-  }
-
-  handleTileSize = (event) => {
-    this.setState({ tileSize: event.target.value });
   }
 
   componentDidMount() {

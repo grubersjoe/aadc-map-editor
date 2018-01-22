@@ -5,8 +5,8 @@ const Cursor = ({x, y, tileSize, animate = true}) => {
   const style = {
     width: tileSize,
     height: tileSize,
-    left: x * tileSize,
-    bottom: y * tileSize,
+    left: x * tileSize + tileSize,
+    bottom: y * tileSize + tileSize,
     transition: animate ? 'all .15s' : 'none',
   };
 

@@ -3,7 +3,7 @@ import React from 'react';
 const Grid = ({ 
   tileSize = 50, 
   strokeColor = '#ddd', 
-  strokeWidth = 2 
+  strokeWidth = 2,
 }) => {
   return (
     <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
