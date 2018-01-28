@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import NumericInput from 'react-numeric-input';
+import { Reboot, Button } from 'material-ui';
 
-import Cursor from './Cursor';
-import Grid from './Grid';
-import './Map.css';
-
-export const MIN_X = -1;
-export const MIN_Y = -1;
+import NumericInput from '../components/NumericInput';
+import Cursor from '../components/Cursor';
+import Grid from '../components/Grid';
 
 // const KEY = {
 //   LEFT:  37,
@@ -27,8 +24,10 @@ class Map extends Component {
         y: 0,
       },
       bounds: {
-        maxX: 5,
-        maxY: 5,
+        xMin: -1,
+        yMin: -1,
+        xMax: 5,
+        yMax: 5,
       },
     };
   }
@@ -41,7 +40,7 @@ class Map extends Component {
     this.setState({
       cursor: Object.assign(this.state.cursor, { x, y }),
     });
-  }
+  };
 
   moveCursor = (xOffset = 0, yOffset = 0) => {
     const { bounds, cursor } = this.state;
@@ -49,26 +48,26 @@ class Map extends Component {
     const x = cursor.x + xOffset;
     const y = cursor.y + yOffset;
 
-    if (x < MIN_X || y < MIN_Y) {
+    if (x < bounds.xMin || y < bounds.yMin) {
       return;
     }
 
     this.setState({
       bounds: Object.assign(bounds, {
-        maxX: x === bounds.maxX ? x + 1 : bounds.maxX,
-        maxY: y === bounds.maxY ? y + 1 : bounds.maxY,
+        xMax: x === bounds.xMax ? x + 1 : bounds.xMax,
+        yMax: y === bounds.yMax ? y + 1 : bounds.yMax,
       }),
     });
 
     this.setCursor(x, y);
-  }
+  };
 
   scaleMap = (tileSize) => {
     animate = false;
     this.setState({ tileSize }, () => {
       animate = true;
     });
-  }
+  };
 
   handleKeys = (ev) => {
     if (document.activeElement instanceof HTMLInputElement) {
@@ -90,18 +89,21 @@ class Map extends Component {
         break;
       default:
     }
-  }
+  };
 
   render = () => {
     window.addEventListener('keydown', this.handleKeys);
 
     // eslint-disable-next-line
-    const { bounds, tileSize, grid, cursor } = this.state;
+    const { bounds, tileSize, cursor } = this.state;
 
-    const width = bounds.maxX - MIN_X;
-    const height = bounds.maxY - MIN_Y;
+    const width = bounds.xMax - bounds.xMin;
+    const height = bounds.yMax - bounds.yMin;
 
     const mapStyle = {
+      position: 'absolute',
+      top: 0,
+      left: 0,
       width: (width * tileSize) + 1,
       height: (height * tileSize) + 1,
       transition: animate ? 'all .15s' : 'none',
@@ -109,32 +111,40 @@ class Map extends Component {
 
     return (
       <div id="Map" style={mapStyle}>
-        <Grid tileSize={tileSize} />
-        <Cursor x={cursor.x} y={cursor.y} tileSize={tileSize} animate={animate} />
+        <Reboot/>
+        <Grid tileSize={tileSize}/>
+        <Cursor x={cursor.x} y={cursor.y} bounds={bounds} tileSize={tileSize} animate={animate}/>
+
+        <Button raised color="primary">
+          Hello World
+        </Button>
 
         <NumericInput
+          size={2}
           min={2}
           max={50}
           value={width}
           onChange={(numericVal) => {
             this.setState({
-              bounds: Object.assign(bounds, { maxX: numericVal + MIN_X }),
+              bounds: Object.assign(bounds, { xMax: numericVal + bounds.xMin }),
             });
           }}
         />
 
         <NumericInput
+          size={2}
           min={2}
           max={50}
           value={height}
           onChange={(numericVal) => {
             this.setState({
-              bounds: Object.assign(bounds, { maxY: numericVal + MIN_Y }),
+              bounds: Object.assign(bounds, { yMax: numericVal + bounds.yMin }),
             });
           }}
         />
 
         <NumericInput
+          size={4}
           min={20}
           max={150}
           value={tileSize}
@@ -144,6 +154,8 @@ class Map extends Component {
           onChange={this.scaleMap}
         />
       </div>
+
+
     );
   }
 }

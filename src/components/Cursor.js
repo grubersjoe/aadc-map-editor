@@ -1,17 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './Cursor.css';
-import { MIN_X, MIN_Y } from './Map';
+import { withTheme } from 'material-ui/styles';
 
 const Cursor = ({
-  x, y, tileSize, animate,
+  x, y, bounds, tileSize, animate, theme
 }) => {
   const style = {
+    position: 'absolute',
     width: tileSize,
     height: tileSize,
-    left: (x * tileSize) - (MIN_X * tileSize),
-    bottom: (y * tileSize) - (MIN_Y * tileSize),
+    left: (x * tileSize) - (bounds.xMin * tileSize),
+    bottom: (y * tileSize) - (bounds.yMin * tileSize),
     transition: animate ? 'all .15s' : 'none',
+    backgroundColor: theme.palette.primary.light,
+    color: theme.palette.primary.contrastText,
+    zIndex: 100,
   };
 
   return (
@@ -22,6 +25,7 @@ const Cursor = ({
 Cursor.propTypes = {
   x: PropTypes.number,
   y: PropTypes.number,
+  bounds: PropTypes.objectOf(PropTypes.number).isRequired,
   tileSize: PropTypes.number,
   animate: PropTypes.bool,
 };
@@ -33,4 +37,4 @@ Cursor.defaultProps = {
   animate: true,
 };
 
-export default Cursor;
+export default withTheme()(Cursor);

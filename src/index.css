@@ -1,5 +1,15 @@
+/* .react-numeric-input input {
+  border: 1px solid #22242626 !important;
+  line-height: 180% !important;
+  border-radius: .28571429rem !important;
+  padding-left: .75rem !important;
+  outline: none !important;
+}
+
+.react-numeric-input input:focus {
+  border-color: #85b7d9 !important;
+} */
+
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
