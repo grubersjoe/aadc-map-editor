@@ -93,12 +93,6 @@ class NumericInput extends Component {
     defaultValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     strict: PropTypes.bool,
     componentClass: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-    mobile(props, propName) {
-      const prop = props[propName];
-      if (prop !== true && prop !== false && prop !== 'auto' && typeof prop !== 'function') {
-        return new Error('The "mobile" prop must be true, false, "auto" or a function');
-      }
-    },
   };
 
   /**
@@ -112,7 +106,6 @@ class NumericInput extends Component {
     precision: null,
     parse: null,
     format: null,
-    mobile: 'auto',
     strict: false,
     componentClass: 'input',
     style: {},
@@ -131,10 +124,6 @@ class NumericInput extends Component {
       display: 'inline-block',
     },
 
-    'wrap.hasFormControl': {
-      display: 'block',
-    },
-
     // The increase button arrow (i)
     arrowUp: {
       position: 'absolute',
@@ -142,10 +131,10 @@ class NumericInput extends Component {
       left: '50%',
       width: 0,
       height: 0,
-      borderWidth: '0 0.6ex 0.6ex 0.6ex',
-      borderColor: 'transparent transparent rgba(0, 0, 0, 0.7)',
+      borderWidth: '0 0.4em 0.4em 0.4em',
+      borderColor: 'transparent transparent rgba(0, 0, 0, 0.8)',
       borderStyle: 'solid',
-      margin: '-0.3ex 0 0 -0.56ex',
+      margin: '-.05em 0 0 -0.4em',
     },
 
     // The decrease button arrow (i)
@@ -155,85 +144,37 @@ class NumericInput extends Component {
       left: '50%',
       width: 0,
       height: 0,
-      borderWidth: '0.6ex 0.6ex 0 0.6ex',
-      borderColor: 'rgba(0, 0, 0, 0.7) transparent transparent',
+      borderWidth: '0.4em 0.4em 0 0.4em',
+      borderColor: 'rgba(0, 0, 0, 0.8) transparent transparent',
       borderStyle: 'solid',
-      margin: '-0.3ex 0 0 -0.56ex',
-    },
-
-    // The vertical segment of the plus sign (for mobile only)
-    plus: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      width: 2,
-      height: 10,
-      background: 'rgba(0,0,0,.7)',
-      margin: '-5px 0 0 -1px',
-    },
-
-    // The horizontal segment of the plus/minus signs (for mobile only)
-    minus: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      width: 10,
-      height: 2,
-      background: 'rgba(0,0,0,.7)',
-      margin: '-1px 0 0 -5px',
+      margin: '-0.4em 0 0 -0.4em',
     },
 
     // Common styles for the up/down buttons (b)
     btn: {
       position: 'absolute',
-      right: 2,
-      width: '2.26ex',
-      borderColor: 'rgba(0,0,0,.1)',
-      borderStyle: 'solid',
-      textAlign: 'center',
-      cursor: 'default',
+      right: 0,
+      width: '1em',
       transition: 'all 0.1s',
-      background: 'rgba(0,0,0,.1)',
     },
 
     btnUp: {
-      top: 2,
+      top: 0,
       bottom: '50%',
-      borderRadius: '2px 2px 0 0',
-      borderWidth: '1px 1px 0 1px',
-    },
-
-    'btnUp.mobile': {
-      width: '3.3ex',
-      bottom: 2,
-      borderRadius: 2,
-      borderWidth: 1,
     },
 
     btnDown: {
       top: '50%',
-      bottom: 2,
-      borderRadius: '0 0 2px 2px',
-      borderWidth: '0 1px 1px 1px',
+      bottom: 0,
     },
 
-    'btnDown.mobile': {
-      width: '3.3ex',
-      bottom: 2,
-      left: 2,
-      top: 2,
-      right: 'auto',
-      borderRadius: 2,
-      borderWidth: 1,
-    },
-
-    'btn:hover': {
-      background: 'rgba(0,0,0,.2)',
-    },
-
-    'btn:active': {
-      background: 'rgba(0,0,0,.3)',
-    },
+    // 'btn:hover': {
+    //   background: 'rgba(0,0,0,.2)',
+    // },
+    //
+    // 'btn:active': {
+    //   background: 'rgba(0,0,0,.3)',
+    // },
 
     'btn:disabled': {
       opacity: 0.5,
@@ -242,32 +183,25 @@ class NumericInput extends Component {
 
     // The input (input[type="text"])
     input: {
-      fontFamily: 'Roboto, sans-serif',
-      paddingRight: '3ex',
-      boxSizing: 'border-box',
-      fontSize: 'inherit',
-    },
-
-    // The input with bootstrap class
-    'input:not(.form-control)': {
-      border: '1px solid #ccc',
-      borderRadius: 2,
-      paddingLeft: 4,
       display: 'block',
+      boxSizing: 'content-box',
+      padding: '7px 1em 7px 0',
+      border: 'none',
+      borderBottom: 'solid 1px rgba(0, 0, 0, 0.42)',
+      background: 'transparent',
+      verticalAlign: 'middle',
+      fontFamily: 'Roboto, sans-serif',
+      fontSize: 'inherit',
       WebkitAppearance: 'none',
-      lineHeight: 'normal',
     },
 
-    'input.mobile': {
-      paddingLeft: ' 3.4ex',
-      paddingRight: '3.4ex',
-      textAlign: 'center',
+    'input:focus': {
+      borderBottom: 'solid 1px rgba(0, 0, 0, 0.8)',
     },
-
-    'input:focus': {},
 
     'input:disabled': {
       color: 'rgba(0, 0, 0, 0.3)',
+      cursor: 'not-allowed',
     },
   };
 
@@ -308,7 +242,6 @@ class NumericInput extends Component {
   _ignoreValueChange;
   _isMounted;
   _inputFocus;
-  onTouchEnd;
   refsWrapper;
   refsInput;
 
@@ -328,7 +261,7 @@ class NumericInput extends Component {
   constructor(...args) {
     super(...args);
 
-    this._isStrict = !!this.props.strict;
+    this._isStrict = this.props.strict;
 
     this.state = {
       btnDownHover: false,
@@ -365,8 +298,8 @@ class NumericInput extends Component {
   }
 
   /**
-  * Adds getValueAsNumber and setValue methods to the input DOM element.
-  */
+   * Adds getValueAsNumber and setValue methods to the input DOM element.
+   */
   componentDidMount() {
     this._isMounted = true;
     this.refsInput.getValueAsNumber = () => this.state.value || 0;
@@ -483,7 +416,7 @@ class NumericInput extends Component {
     const supportsValidation = !!this.refsInput.checkValidity;
 
     // noValidate
-    const noValidate = !!(
+    const noValidate = (
       this.props.noValidate && this.props.noValidate !== 'false'
     );
 
@@ -699,6 +632,7 @@ class NumericInput extends Component {
    * and will be stopped on mouseout/mouseup.
    * @param {Boolean} _recursive The method is passing this to itself while
    *  it is in recursive mode.
+   * @param callback
    * @return void
    */
   increase(_recursive = false, callback) {
@@ -718,6 +652,7 @@ class NumericInput extends Component {
    * and will be stopped on mouseout/mouseup.
    * @param {Boolean} _recursive The method is passing this to itself while
    *  it is in recursive mode.
+   * @param callback
    * @return void
    */
   decrease(_recursive = false, callback) {
@@ -805,36 +740,28 @@ class NumericInput extends Component {
       );
     }
 
-    const hasFormControl = props.className && (/\bform-control\b/).test(props.className);
-
-    let { mobile } = this.props;
-
-    if (mobile === 'auto') {
-      mobile = IS_BROWSER && 'ontouchstart' in document;
-    }
-
-    if (typeof mobile === 'function') {
-      mobile = mobile.call(this);
-    }
-    mobile = !!mobile;
-
     const attrs = {
       wrap: {
         style: noStyle ? null : css.wrap,
         className: 'react-numeric-input',
-        ref: (e) => { if (e != null && e !== undefined) { this.refsWrapper = e; } },
+        ref: (e) => {
+          if (e != null && e !== undefined) {
+            this.refsWrapper = e;
+          }
+        },
         onMouseUp: undefined,
         onMouseLeave: undefined,
       },
       input: {
-        ref: (e) => { if (e != null && e !== undefined) { this.refsInput = e; } },
+        ref: (e) => {
+          if (e != null && e !== undefined) {
+            this.refsInput = e;
+          }
+        },
         type: 'text',
         style: noStyle ? null : Object.assign(
           {},
           css.input,
-          !hasFormControl ?
-            css['input:not(.form-control)'] :
-            {},
           this._inputFocus ? css['input:focus'] : {},
         ),
         ...rest,
@@ -906,17 +833,6 @@ class NumericInput extends Component {
     } else {
       // empty
       attrs.input.value = '';
-    }
-
-    if (hasFormControl && !noStyle) {
-      Object.assign(attrs.wrap.style, css['wrap.hasFormControl']);
-    }
-
-    // mobile
-    if (mobile && !noStyle) {
-      Object.assign(attrs.input.style, css['input.mobile']);
-      Object.assign(attrs.btnUp.style, css['btnUp.mobile']);
-      Object.assign(attrs.btnDown.style, css['btnDown.mobile']);
     }
 
     // Attach event listeners if the widget is not disabled
@@ -1047,21 +963,6 @@ class NumericInput extends Component {
     }
 
     const InputTag = componentClass || 'input';
-
-    if (mobile) {
-      return (
-        <span {...attrs.wrap}>
-          <InputTag {...attrs.input} />
-          <b {...attrs.btnUp}>
-            <i style={noStyle ? null : css.minus} />
-            <i style={noStyle ? null : css.plus} />
-          </b>
-          <b {...attrs.btnDown}>
-            <i style={noStyle ? null : css.minus} />
-          </b>
-        </span>
-      );
-    }
 
     return (
       <span {...attrs.wrap}>

@@ -78,7 +78,6 @@ class Map extends Component {
       width: (width * tileSize) + 1,
       height: (height * tileSize) + 1,
       transition: animate ? 'all .15s' : 'none',
-      zIndex: 500,
     };
 
     return (
@@ -94,7 +93,7 @@ class Map extends Component {
 
         <NumericInput
           size={4}
-          min={20}
+          min={30}
           max={150}
           value={tileSize}
           parse={Number.parseInt}

@@ -4,12 +4,9 @@ import { withStyles } from 'material-ui/styles';
 import { AppBar, Toolbar, Typography, IconButton, FormGroup, FormControlLabel, Switch } from 'material-ui';
 import MenuIcon from 'material-ui-icons/Menu';
 
-
 const styles = {
   root: {
     width: '100%',
-    position: 'relative',
-    zIndex: 1000,
   },
   flex: {
     flex: 1,
@@ -30,7 +27,7 @@ class ButtonAppBar extends Component {
     const { classes } = this.props;
     return (
       <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position="fixed">
           <Toolbar>
             <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
               <MenuIcon />
@@ -38,7 +35,7 @@ class ButtonAppBar extends Component {
             <Typography type="title" color="inherit" className={classes.flex}>
               AADC Map Editor
             </Typography>
-            <FormGroup row={true}>
+            <FormGroup row>
               <FormControlLabel
                 control={
                   <Switch

@@ -50,7 +50,6 @@ class App extends Component {
   };
 
   render = () => {
-    console.log('render!');
     const { x, y } = this.state.cursor;
     const { bounds } = this.state;
 
@@ -70,7 +69,7 @@ class App extends Component {
         <div style={{ position: 'fixed', bottom: '0' }}>
           <span>{x} / {y}</span>
           <NumericInput
-            size={2}
+            size={3}
             min={2}
             max={50}
             value={width}
@@ -82,7 +81,7 @@ class App extends Component {
           />
 
           <NumericInput
-            size={2}
+            size={3}
             min={2}
             max={50}
             value={height}
