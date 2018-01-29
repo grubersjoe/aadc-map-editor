@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { TextField } from 'material-ui';
 
 const KEYCODE_UP = 38;
 const KEYCODE_DOWN = 40;
@@ -92,7 +93,7 @@ class NumericInput extends Component {
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     defaultValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     strict: PropTypes.bool,
-    componentClass: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+    noinput: PropTypes.number,
   };
 
   /**
@@ -107,7 +108,7 @@ class NumericInput extends Component {
     parse: null,
     format: null,
     strict: false,
-    componentClass: 'input',
+    noinput: 0,
     style: {},
   };
 
@@ -124,48 +125,47 @@ class NumericInput extends Component {
       display: 'inline-block',
     },
 
-    // The increase button arrow (i)
-    arrowUp: {
+    // The button arrows (i)
+    arrow: {
       position: 'absolute',
-      top: '50%',
-      left: '50%',
+      left: 10,
       width: 0,
       height: 0,
-      borderWidth: '0 0.4em 0.4em 0.4em',
-      borderColor: 'transparent transparent rgba(0, 0, 0, 0.8)',
       borderStyle: 'solid',
-      margin: '-.05em 0 0 -0.4em',
+    },
+
+    // The increase button arrow (i)
+    arrowUp: {
+      top: 7,
+      borderWidth: '0 0.3em 0.4em',
+      borderColor: 'transparent transparent rgba(0, 0, 0, 0.8)',
+      margin: '1px 0 0 -0.4em',
     },
 
     // The decrease button arrow (i)
     arrowDown: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      width: 0,
-      height: 0,
-      borderWidth: '0.4em 0.4em 0 0.4em',
+      top: 2,
+      borderWidth: '0.4em 0.3em 0',
       borderColor: 'rgba(0, 0, 0, 0.8) transparent transparent',
-      borderStyle: 'solid',
-      margin: '-0.4em 0 0 -0.4em',
+      margin: '0 0 0 -0.4em',
     },
 
     // Common styles for the up/down buttons (b)
     btn: {
       position: 'absolute',
       right: 0,
-      width: '1em',
+      width: 16,
+      height: 16,
       transition: 'all 0.1s',
+      // background: 'rgba(0,0,0,.3)',
     },
 
     btnUp: {
-      top: 0,
-      bottom: '50%',
+      top: 16,
     },
 
     btnDown: {
-      top: '50%',
-      bottom: 0,
+      bottom: 9,
     },
 
     // 'btn:hover': {
@@ -176,40 +176,17 @@ class NumericInput extends Component {
     //   background: 'rgba(0,0,0,.3)',
     // },
 
-    'btn:disabled': {
-      opacity: 0.5,
-      cursor: 'not-allowed',
-    },
-
-    // The input (input[type="text"])
-    input: {
-      display: 'block',
-      boxSizing: 'content-box',
-      padding: '7px 1em 7px 0',
-      border: 'none',
-      borderBottom: 'solid 1px rgba(0, 0, 0, 0.42)',
-      background: 'transparent',
-      verticalAlign: 'middle',
-      fontFamily: 'Roboto, sans-serif',
-      fontSize: 'inherit',
-      WebkitAppearance: 'none',
-    },
-
-    'input:focus': {
-      borderBottom: 'solid 1px rgba(0, 0, 0, 0.8)',
-    },
-
-    'input:disabled': {
-      color: 'rgba(0, 0, 0, 0.3)',
-      cursor: 'not-allowed',
-    },
+    // 'btn:disabled': {
+    //   opacity: 0.5,
+    //   cursor: 'not-allowed',
+    // },
   };
 
   /**
    * When click and hold on a button - the speed of auto changing the value.
    * This is a static property and can be modified if needed.
    */
-  static SPEED = 50;
+  static SPEED = 100;
 
   /**
    * When click and hold on a button - the delay before auto changing the value.
@@ -249,11 +226,6 @@ class NumericInput extends Component {
    * The state of the component
    */
   state;
-
-  /**
-   * The stop method (need to declare it here to use it in the constructor)
-   */
-  stop;
 
   /**
    * Set the initial state and bind this.stop to the instance.
@@ -302,6 +274,11 @@ class NumericInput extends Component {
    */
   componentDidMount() {
     this._isMounted = true;
+
+    if (!!this.props.noinput) {
+      this.refsInput.readOnly = true;
+    }
+
     this.refsInput.getValueAsNumber = () => this.state.value || 0;
 
     this.refsInput.setValue = (value) => {
@@ -722,8 +699,8 @@ class NumericInput extends Component {
 
     const {
       // These are ignored in rendering
-      step, min, max, precision, parse, format, snap, componentClass,
-      value, type, style, defaultValue, onInvalid, onValid, strict,
+      step, min, max, precision, parse, format, snap, value, type, style,
+      defaultValue, onInvalid, onValid, strict, size,
 
       // The rest are passed to the input
       ...rest
@@ -753,17 +730,17 @@ class NumericInput extends Component {
         onMouseLeave: undefined,
       },
       input: {
-        ref: (e) => {
-          if (e != null && e !== undefined) {
-            this.refsInput = e;
+        inputRef: (el) => {
+          if (el != null && el !== undefined) {
+            this.refsInput = el;
           }
         },
         type: 'text',
-        style: noStyle ? null : Object.assign(
-          {},
-          css.input,
-          this._inputFocus ? css['input:focus'] : {},
-        ),
+        margin: 'normal',
+        placeholder: '20%',
+        style: noStyle ? null : Object.assign({}, {
+          width: `${size}rem`,
+        }),
         ...rest,
       },
       btnUp: {
@@ -962,16 +939,16 @@ class NumericInput extends Component {
       Object.assign(attrs.input.style, css['input:disabled']);
     }
 
-    const InputTag = componentClass || 'input';
-
     return (
       <span {...attrs.wrap}>
-        <InputTag {...attrs.input} />
+        <TextField
+          {...attrs.input}
+        />
         <b {...attrs.btnUp}>
-          <i style={noStyle ? null : css.arrowUp} />
+          <i style={noStyle ? null : Object.assign(css.arrowUp, css.arrow)} />
         </b>
         <b {...attrs.btnDown}>
-          <i style={noStyle ? null : css.arrowDown} />
+          <i style={noStyle ? null : Object.assign(css.arrowDown, css.arrow)} />
         </b>
       </span>
     );

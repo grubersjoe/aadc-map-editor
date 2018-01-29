@@ -68,8 +68,9 @@ class App extends Component {
         />
         <div style={{ position: 'fixed', bottom: '0' }}>
           <span>{x} / {y}</span>
+          <br />
           <NumericInput
-            size={3}
+            size={2.5}
             min={2}
             max={50}
             value={width}
@@ -79,9 +80,9 @@ class App extends Component {
               });
             }}
           />
-
+          <span style={{ margin: '0 .5rem' }} />
           <NumericInput
-            size={3}
+            size={2.5}
             min={2}
             max={50}
             value={height}
@@ -91,6 +92,8 @@ class App extends Component {
               });
             }}
           />
+          <br/>
+          <br/>
         </div>
       </MuiThemeProvider>
     );

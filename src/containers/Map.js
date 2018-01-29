@@ -92,7 +92,8 @@ class Map extends Component {
         />
 
         <NumericInput
-          size={4}
+          noinput={1}
+          size={3}
           min={30}
           max={150}
           value={tileSize}
