@@ -1,75 +1,22 @@
 import React, { Component } from 'react';
-import { Reboot, Button } from 'material-ui';
+import PropTypes from 'prop-types';
 
 import NumericInput from '../components/NumericInput';
 import Cursor from '../components/Cursor';
 import Grid from '../components/Grid';
 
-// const KEY = {
-//   LEFT:  37,
-//   RIGHT: 39,
-//   UP: 38,
-// };
-
 let animate = true;
 
 class Map extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      tileSize: 50,
-      cursor: {
-        x: 0,
-        y: 0,
-      },
-      bounds: {
-        xMin: -1,
-        yMin: -1,
-        xMax: 5,
-        yMax: 5,
-      },
-    };
-  }
-
-  componentDidMount() {
-    this.setCursor(0, 0);
-  }
-
-  setCursor = (x, y) => {
-    this.setState({
-      cursor: Object.assign(this.state.cursor, { x, y }),
-    });
+  state = {
+    tileSize: 50,
   };
 
-  moveCursor = (xOffset = 0, yOffset = 0) => {
-    const { bounds, cursor } = this.state;
-
-    const x = cursor.x + xOffset;
-    const y = cursor.y + yOffset;
-
-    if (x < bounds.xMin || y < bounds.yMin) {
-      return;
-    }
-
-    this.setState({
-      bounds: Object.assign(bounds, {
-        xMax: x === bounds.xMax ? x + 1 : bounds.xMax,
-        yMax: y === bounds.yMax ? y + 1 : bounds.yMax,
-      }),
-    });
-
-    this.setCursor(x, y);
+  componentDidMount = () => {
+    window.addEventListener('keydown', this.onKeydown);
   };
 
-  scaleMap = (tileSize) => {
-    animate = false;
-    this.setState({ tileSize }, () => {
-      animate = true;
-    });
-  };
-
-  handleKeys = (ev) => {
+  onKeydown = (ev) => {
     if (document.activeElement instanceof HTMLInputElement) {
       return;
     }
@@ -91,56 +38,58 @@ class Map extends Component {
     }
   };
 
-  render = () => {
-    window.addEventListener('keydown', this.handleKeys);
+  moveCursor = (xOffset = 0, yOffset = 0) => {
+    const { bounds } = this.props;
 
-    // eslint-disable-next-line
-    const { bounds, tileSize, cursor } = this.state;
+    const x = this.props.cursorX + xOffset;
+    const y = this.props.cursorY + yOffset;
+
+    if (x < bounds.xMin || y < bounds.yMin) {
+      return;
+    }
+
+    const xMax = x === bounds.xMax ? x + 1 : bounds.xMax;
+    const yMax = y === bounds.yMax ? y + 1 : bounds.yMax;
+
+    this.props.setAppState({
+      cursor: { x, y },
+      bounds: { xMax, yMax },
+    });
+  };
+
+  scaleMap = (tileSize) => {
+    animate = false;
+    this.setState({ tileSize }, () => {
+      animate = true;
+    });
+  };
+
+  render = () => {
+    const { tileSize } = this.state;
+    const { bounds } = this.props;
 
     const width = bounds.xMax - bounds.xMin;
     const height = bounds.yMax - bounds.yMin;
 
     const mapStyle = {
       position: 'absolute',
-      top: 0,
+      top: 64,
       left: 0,
       width: (width * tileSize) + 1,
       height: (height * tileSize) + 1,
       transition: animate ? 'all .15s' : 'none',
+      zIndex: 500,
     };
 
     return (
       <div id="Map" style={mapStyle}>
-        <Reboot/>
-        <Grid tileSize={tileSize}/>
-        <Cursor x={cursor.x} y={cursor.y} bounds={bounds} tileSize={tileSize} animate={animate}/>
-
-        <Button raised color="primary">
-          Hello World
-        </Button>
-
-        <NumericInput
-          size={2}
-          min={2}
-          max={50}
-          value={width}
-          onChange={(numericVal) => {
-            this.setState({
-              bounds: Object.assign(bounds, { xMax: numericVal + bounds.xMin }),
-            });
-          }}
-        />
-
-        <NumericInput
-          size={2}
-          min={2}
-          max={50}
-          value={height}
-          onChange={(numericVal) => {
-            this.setState({
-              bounds: Object.assign(bounds, { yMax: numericVal + bounds.yMin }),
-            });
-          }}
+        <Grid tileSize={tileSize} />
+        <Cursor
+          x={this.props.cursorX}
+          y={this.props.cursorY}
+          bounds={bounds}
+          tileSize={tileSize}
+          animate={animate}
         />
 
         <NumericInput
@@ -157,7 +106,19 @@ class Map extends Component {
 
 
     );
-  }
+  };
 }
+
+Map.defaultProps = {
+  cursorX: 0,
+  cursorY: 0,
+};
+
+Map.propTypes = {
+  cursorX: PropTypes.number,
+  cursorY: PropTypes.number,
+  bounds: PropTypes.object.isRequired,
+  setAppState: PropTypes.func.isRequired,
+};
 
 export default Map;
