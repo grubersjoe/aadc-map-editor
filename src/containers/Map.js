@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import NumericInput from '../components/NumericInput';
+import NumericInput from '../components/NumberInput';
 import Cursor from '../components/Cursor';
 import Grid from '../components/Grid';
 
@@ -66,7 +66,7 @@ class Map extends Component {
 
   render = () => {
     const { tileSize } = this.state;
-    const { bounds } = this.props;
+    const { bounds, cursorX, cursorY } = this.props;
 
     const width = bounds.xMax - bounds.xMin;
     const height = bounds.yMax - bounds.yMin;
@@ -79,20 +79,18 @@ class Map extends Component {
       height: (height * tileSize) + 1,
       transition: animate ? 'all .15s' : 'none',
     };
-
     return (
       <div id="Map" style={mapStyle}>
         <Grid tileSize={tileSize} />
         <Cursor
-          x={this.props.cursorX}
-          y={this.props.cursorY}
+          x={cursorX}
+          y={cursorY}
           bounds={bounds}
           tileSize={tileSize}
           animate={animate}
         />
 
         <NumericInput
-          noinput={1}
           size={3}
           min={30}
           max={150}
@@ -103,8 +101,6 @@ class Map extends Component {
           onChange={this.scaleMap}
         />
       </div>
-
-
     );
   };
 }

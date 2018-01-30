@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextField } from 'material-ui';
+import Input from 'material-ui/Input';
 
 const KEYCODE_UP = 38;
 const KEYCODE_DOWN = 40;
@@ -93,7 +93,9 @@ class NumericInput extends Component {
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     defaultValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     strict: PropTypes.bool,
-    noinput: PropTypes.number,
+
+    readOnly: PropTypes.bool,
+    color: PropTypes.string,
   };
 
   /**
@@ -108,7 +110,7 @@ class NumericInput extends Component {
     parse: null,
     format: null,
     strict: false,
-    noinput: 0,
+    readOnly: false,
     style: {},
   };
 
@@ -123,6 +125,9 @@ class NumericInput extends Component {
     wrap: {
       position: 'relative',
       display: 'inline-block',
+      // Shame CSS:
+      height: 43,
+      top: 8,
     },
 
     // The button arrows (i)
@@ -136,17 +141,17 @@ class NumericInput extends Component {
 
     // The increase button arrow (i)
     arrowUp: {
-      top: 7,
+      bottom: 3,
       borderWidth: '0 0.3em 0.4em',
-      borderColor: 'transparent transparent rgba(0, 0, 0, 0.8)',
+      borderColor: 'transparent transparent currentColor',
       margin: '1px 0 0 -0.4em',
     },
 
     // The decrease button arrow (i)
     arrowDown: {
-      top: 2,
+      top: 3,
       borderWidth: '0.4em 0.3em 0',
-      borderColor: 'rgba(0, 0, 0, 0.8) transparent transparent',
+      borderColor: 'currentColor transparent transparent',
       margin: '0 0 0 -0.4em',
     },
 
@@ -155,17 +160,17 @@ class NumericInput extends Component {
       position: 'absolute',
       right: 0,
       width: 16,
-      height: 16,
+      height: '50%',
       transition: 'all 0.1s',
       // background: 'rgba(0,0,0,.3)',
     },
 
     btnUp: {
-      top: 16,
+      top: 0,
     },
 
     btnDown: {
-      bottom: 9,
+      bottom: 0,
     },
 
     // 'btn:hover': {
@@ -275,7 +280,7 @@ class NumericInput extends Component {
   componentDidMount() {
     this._isMounted = true;
 
-    if (!!this.props.noinput) {
+    if (this.props.readOnly) {
       this.refsInput.readOnly = true;
     }
 
@@ -700,7 +705,7 @@ class NumericInput extends Component {
     const {
       // These are ignored in rendering
       step, min, max, precision, parse, format, snap, value, type, style,
-      defaultValue, onInvalid, onValid, strict, size,
+      defaultValue, onInvalid, onValid, strict, size, color,
 
       // The rest are passed to the input
       ...rest
@@ -736,10 +741,9 @@ class NumericInput extends Component {
           }
         },
         type: 'text',
-        margin: 'normal',
-        placeholder: '20%',
-        style: noStyle ? null : Object.assign({}, {
+        style: noStyle ? null : Object.assign({}, style, {
           width: `${size}rem`,
+          color,
         }),
         ...rest,
       },
@@ -941,9 +945,7 @@ class NumericInput extends Component {
 
     return (
       <span {...attrs.wrap}>
-        <TextField
-          {...attrs.input}
-        />
+        <Input {...attrs.input} />
         <b {...attrs.btnUp}>
           <i style={noStyle ? null : Object.assign(css.arrowUp, css.arrow)} />
         </b>

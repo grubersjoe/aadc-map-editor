@@ -1,27 +1,9 @@
 import React, { Component } from 'react';
-import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles';
-import { Reboot } from 'material-ui';
+import { Reboot, MuiThemeProvider } from 'material-ui';
 
+import { theme } from '../constants';
 import Map from './Map';
 import MenuBar from './MenuBar';
-import NumericInput from '../components/NumericInput';
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: '#48a999',
-      main: '#00796b',
-      dark: '#004c40',
-      contrastText: '#fff',
-    },
-    secondary: {
-      light: '#5df2d6',
-      main: '#00bfa5',
-      dark: '#008e76',
-      contrastText: '#000',
-    },
-  },
-});
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends Component {
@@ -33,8 +15,8 @@ class App extends Component {
     bounds: {
       xMin: -1,
       yMin: -1,
-      xMax: 11,
-      yMax: 7,
+      xMax: 15,
+      yMax: 9,
     },
   };
 
@@ -53,48 +35,19 @@ class App extends Component {
     const { x, y } = this.state.cursor;
     const { bounds } = this.state;
 
-    const width = bounds.xMax - bounds.xMin;
-    const height = bounds.yMax - bounds.yMin;
-
     return (
       <MuiThemeProvider theme={theme}>
         <Reboot />
-        <MenuBar />
+        <MenuBar
+          bounds={bounds}
+          setAppState={this.setAppState}
+        />
         <Map
           cursorX={x}
           cursorY={y}
           bounds={bounds}
           setAppState={this.setAppState}
         />
-        <div style={{ position: 'fixed', bottom: '0' }}>
-          <span>{x} / {y}</span>
-          <br />
-          <NumericInput
-            size={2.5}
-            min={2}
-            max={50}
-            value={width}
-            onChange={(numericVal) => {
-              this.setAppState({
-                bounds: { xMax: numericVal + bounds.xMin },
-              });
-            }}
-          />
-          <span style={{ margin: '0 .5rem' }} />
-          <NumericInput
-            size={2.5}
-            min={2}
-            max={50}
-            value={height}
-            onChange={(numericVal) => {
-              this.setAppState({
-                bounds: { yMax: numericVal + bounds.yMin },
-              });
-            }}
-          />
-          <br/>
-          <br/>
-        </div>
       </MuiThemeProvider>
     );
   };
