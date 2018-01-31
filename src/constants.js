@@ -5,10 +5,12 @@ export const theme = createMuiTheme({
   palette: {
     type: 'dark',
     primary: {
-      main: blueGrey[700],
+      main: blueGrey[800],
+      contrastText: '#fff',
     },
     secondary: {
-      main: cyan[400],
+      main: cyan.A700,
+      contrastText: '#fff',
     },
   },
 });
