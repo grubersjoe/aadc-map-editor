@@ -1,19 +1,6 @@
-/* .react-numeric-input input {
-  border: 1px solid #22242626 !important;
-  line-height: 180% !important;
-  border-radius: .28571429rem !important;
-  padding-left: .75rem !important;
-  outline: none !important;
-}
-
-.react-numeric-input input:focus {
-  border-color: #85b7d9 !important;
-} */
-
 body {
     background-color: #fafafa !important;
     font-family: 'Roboto', sans-serif;
-    font-size: 90%;
 }
 
 input:focus {
