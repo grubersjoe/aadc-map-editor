@@ -123,9 +123,7 @@ class NumericInput extends Component {
     wrap: {
       position: 'relative',
       display: 'inline-block',
-      // Shame CSS:
-      height: 43,
-      top: 8,
+      top: -2,
     },
 
     // The button arrows (i)
@@ -722,7 +720,7 @@ class NumericInput extends Component {
 
     const attrs = {
       wrap: {
-        style: noStyle ? null : css.wrap,
+        style: noStyle ? null : Object.assign(css.wrap, style),
         className: 'react-numeric-input',
         ref: (e) => {
           if (e != null && e !== undefined) {
@@ -739,7 +737,7 @@ class NumericInput extends Component {
           }
         },
         type: 'text',
-        style: noStyle ? null : Object.assign({}, style, {
+        style: noStyle ? null : Object.assign({}, {
           width: `${size}rem`,
         }),
         ...rest,

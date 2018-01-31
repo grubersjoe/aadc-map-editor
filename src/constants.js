@@ -9,7 +9,7 @@ export const theme = createMuiTheme({
     },
     secondary: {
       main: cyan[400],
-    }
+    },
   },
 });
 

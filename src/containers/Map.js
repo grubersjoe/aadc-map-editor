@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import NumericInput from '../components/NumberInput';
 import Cursor from '../components/Cursor';
 import Grid from '../components/Grid';
 
-let animate = true;
-
 class Map extends Component {
-  state = {
-    tileSize: 50,
-  };
-
   componentDidMount = () => {
     window.addEventListener('keydown', this.onKeydown);
   };
@@ -57,16 +50,17 @@ class Map extends Component {
     });
   };
 
-  scaleMap = (tileSize) => {
-    animate = false;
-    this.setState({ tileSize }, () => {
-      animate = true;
-    });
-  };
+  // scaleMap = (tileSize) => {
+  //   animate = false;
+  //   this.setState({ tileSize }, () => {
+  //     animate = true;
+  //   });
+  // };
 
   render = () => {
-    const { tileSize } = this.state;
-    const { ui, bounds, cursorX, cursorY } = this.props;
+    const {
+      tileSize, bounds, cursorX, cursorY, ui,
+    } = this.props;
 
     const width = bounds.xMax - bounds.xMin;
     const height = bounds.yMax - bounds.yMin;
@@ -77,28 +71,17 @@ class Map extends Component {
       left: 0,
       width: (width * tileSize) + 1,
       height: (height * tileSize) + 1,
-      transition: animate ? 'all .15s' : 'none',
+      transition: ui.animate ? 'all .15s' : 'none',
     };
     return (
       <div id="Map" style={mapStyle}>
-        { ui.grid && <Grid tileSize={tileSize} />}
+        {ui.grid && <Grid tileSize={tileSize} />}
         <Cursor
           x={cursorX}
           y={cursorY}
           bounds={bounds}
           tileSize={tileSize}
-          animate={animate}
-        />
-
-        <NumericInput
-          size={3}
-          min={30}
-          max={150}
-          value={tileSize}
-          parse={Number.parseInt}
-          step={10}
-          format={num => `${num}%`}
-          onChange={this.scaleMap}
+          animate={ui.animate}
         />
       </div>
     );
@@ -108,13 +91,18 @@ class Map extends Component {
 Map.defaultProps = {
   cursorX: 0,
   cursorY: 0,
+  ui: {
+    grid: true,
+  },
 };
 
 Map.propTypes = {
   cursorX: PropTypes.number,
   cursorY: PropTypes.number,
   bounds: PropTypes.object.isRequired,
+  tileSize: PropTypes.number.isRequired,
   setAppState: PropTypes.func.isRequired,
+  ui: PropTypes.object,
 };
 
 export default Map;

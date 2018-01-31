@@ -18,31 +18,40 @@ class App extends Component {
       xMax: 15,
       yMax: 9,
     },
+    tileSize: 50,
     ui: {
+      animate: true,
       grid: true,
     },
   };
 
-  setAppState = (data) => {
-    let state = {};
+  setAppState = (data, callback) => {
+    const changes = {};
     Object.keys(data).forEach((key) => {
-      Object.assign(state, {
-        [key]: Object.assign(this.state[key], data[key]),
-      });
+      if (typeof data[key] === 'object') {
+        Object.assign(changes, {
+          [key]: Object.assign(this.state[key], data[key]),
+        });
+      } else {
+        Object.assign(changes, {
+          [key]: data[key],
+        });
+      }
     });
 
-    this.setState(state);
+    this.setState(changes, callback);
   };
 
   render = () => {
     const { x, y } = this.state.cursor;
-    const { bounds, ui } = this.state;
+    const { bounds, ui, tileSize } = this.state;
 
     return (
       <MuiThemeProvider theme={theme}>
         <Reboot />
         <MenuBar
           bounds={bounds}
+          tileSize={tileSize}
           ui={ui}
           setAppState={this.setAppState}
         />
@@ -50,6 +59,7 @@ class App extends Component {
           cursorX={x}
           cursorY={y}
           bounds={bounds}
+          tileSize={tileSize}
           setAppState={this.setAppState}
           ui={ui}
         />
