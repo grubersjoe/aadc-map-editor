@@ -14,17 +14,25 @@ class Map extends Component {
       return;
     }
 
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(ev.key)) {
+      ev.preventDefault();
+    }
+
     switch (ev.key) {
       case 'ArrowUp':
+        ev.preventDefault();
         this.moveCursor(0, 1);
         break;
       case 'ArrowDown':
+        ev.preventDefault();
         this.moveCursor(0, -1);
         break;
       case 'ArrowLeft':
+        ev.preventDefault();
         this.moveCursor(-1, 0);
         break;
       case 'ArrowRight':
+        ev.preventDefault();
         this.moveCursor(1, 0);
         break;
       default:
