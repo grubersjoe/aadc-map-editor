@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import { AppBar, Toolbar, Typography, FormGroup } from 'material-ui';
+import { AppBar, Toolbar, Typography, FormGroup, FormControlLabel } from 'material-ui';
 import ClearIcon from 'material-ui-icons/Clear';
 
 import NumberInput from '../components/NumberInput';
+import Switch from '../components/Switch';
 
 const styles = {
   root: {
@@ -13,12 +14,7 @@ const styles = {
   flex: {
     flex: 1,
   },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
   input: {
-    color: '#fff',
     fontSize: 26,
     '&:hover:before': {
       backgroundColor: 'rgba(255, 255, 255, 0.9) !important',
@@ -30,10 +26,13 @@ const styles = {
       backgroundColor: '#ddd',
     },
   },
+  formControl: {
+    marginRight: '1.5rem',
+  }
 };
 
 const MenuBar = (props) => {
-  const { classes, bounds, setAppState } = props;
+  const { classes, bounds, ui, setAppState } = props;
   const width = bounds.xMax - bounds.xMin;
   const height = bounds.yMax - bounds.yMin;
 
@@ -44,6 +43,45 @@ const MenuBar = (props) => {
           <Typography type="title" color="inherit" className={classes.flex}>
             AADC Map Editor
           </Typography>
+
+          <FormControlLabel
+            control={
+              <Switch
+                checked={ui.grid}
+                onChange={(event, checked) => {
+                  setAppState({ ui: { grid: checked } });
+                }}
+              />
+            }
+            label="Grid"
+            style={styles.formControl}
+          />
+
+          <FormControlLabel
+            control={
+              <Switch
+                checked={ui.grid}
+                onChange={(event, checked) => {
+                  setAppState({ ui: { grid: checked } });
+                }}
+              />
+            }
+            label="Coordinates"
+            style={styles.formControl}
+          />
+
+          <FormControlLabel
+            control={
+              <Switch
+                checked={ui.grid}
+                onChange={(event, checked) => {
+                  setAppState({ ui: { grid: checked } });
+                }}
+              />
+            }
+            label="Road signs"
+            style={styles.formControl}
+          />
 
           <FormGroup row>
             <NumberInput
@@ -63,7 +101,7 @@ const MenuBar = (props) => {
               style={{
                 margin: '0 .5rem',
                 fontSize: 30,
-                color: 'rgba(255, 255, 255, 0.5)',
+                color: 'rgba(255, 255, 255, 0.7)',
                 lineHeight: '64px',
               }}
             >
@@ -82,25 +120,6 @@ const MenuBar = (props) => {
                 });
               }}
             />
-
-            {/*<FormControlLabel*/}
-            {/*control={*/}
-            {/*<Switch*/}
-            {/*checked={this.state.checkedA}*/}
-            {/*onChange={(event, checked) => this.setState({ checkedA: checked })}*/}
-            {/*/>*/}
-            {/*}*/}
-            {/*label="A"*/}
-            {/*/>*/}
-            {/*<FormControlLabel*/}
-            {/*control={*/}
-            {/*<Switch*/}
-            {/*checked={this.state.checkedB}*/}
-            {/*onChange={(event, checked) => this.setState({ checkedB: checked })}*/}
-            {/*/>*/}
-            {/*}*/}
-            {/*label="B"*/}
-            {/*/>*/}
           </FormGroup>
         </Toolbar>
       </AppBar>
@@ -111,6 +130,7 @@ const MenuBar = (props) => {
 MenuBar.propTypes = {
   classes: PropTypes.object.isRequired,
   bounds: PropTypes.object.isRequired,
+  ui: PropTypes.object.isRequired,
   setAppState: PropTypes.func.isRequired,
 };
 

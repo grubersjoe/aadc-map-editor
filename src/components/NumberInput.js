@@ -93,9 +93,7 @@ class NumericInput extends Component {
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     defaultValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     strict: PropTypes.bool,
-
     readOnly: PropTypes.bool,
-    color: PropTypes.string,
   };
 
   /**
@@ -705,7 +703,7 @@ class NumericInput extends Component {
     const {
       // These are ignored in rendering
       step, min, max, precision, parse, format, snap, value, type, style,
-      defaultValue, onInvalid, onValid, strict, size, color,
+      defaultValue, onInvalid, onValid, strict, size,
 
       // The rest are passed to the input
       ...rest
@@ -743,7 +741,6 @@ class NumericInput extends Component {
         type: 'text',
         style: noStyle ? null : Object.assign({}, style, {
           width: `${size}rem`,
-          color,
         }),
         ...rest,
       },

@@ -11,6 +11,7 @@
 } */
 
 body {
+    background-color: #fafafa !important;
     font-family: 'Roboto', sans-serif;
     font-size: 90%;
 }

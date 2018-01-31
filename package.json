@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://grubersjoe.de/playground/audi-react",
   "dependencies": {
+    "glamor": "^2.20.40",
     "material-ui": "^1.0.0-beta.30",
     "material-ui-icons": "^1.0.0-beta.17",
     "prop-types": "^15.6.0",

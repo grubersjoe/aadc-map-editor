@@ -1,18 +1,16 @@
 import { createMuiTheme } from 'material-ui/styles/index';
+import { blueGrey, cyan } from 'material-ui/colors';
 
 export const theme = createMuiTheme({
   palette: {
+    type: 'dark',
     primary: {
-      light: '#48a999',
-      main: '#00796b',
-      dark: '#004c40',
-      contrastText: '#fff',
+      main: blueGrey[700],
     },
     secondary: {
-      light: '#5df2d6',
-      main: '#00bfa5',
-      dark: '#008e76',
-      contrastText: '#000',
-    },
+      main: cyan[400],
+    }
   },
 });
+
+export const foo = 'bar';

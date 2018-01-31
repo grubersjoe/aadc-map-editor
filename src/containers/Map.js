@@ -66,7 +66,7 @@ class Map extends Component {
 
   render = () => {
     const { tileSize } = this.state;
-    const { bounds, cursorX, cursorY } = this.props;
+    const { ui, bounds, cursorX, cursorY } = this.props;
 
     const width = bounds.xMax - bounds.xMin;
     const height = bounds.yMax - bounds.yMin;
@@ -81,7 +81,7 @@ class Map extends Component {
     };
     return (
       <div id="Map" style={mapStyle}>
-        <Grid tileSize={tileSize} />
+        { ui.grid && <Grid tileSize={tileSize} />}
         <Cursor
           x={cursorX}
           y={cursorY}

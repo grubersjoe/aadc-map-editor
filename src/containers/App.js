@@ -18,6 +18,9 @@ class App extends Component {
       xMax: 15,
       yMax: 9,
     },
+    ui: {
+      grid: true,
+    },
   };
 
   setAppState = (data) => {
@@ -33,13 +36,14 @@ class App extends Component {
 
   render = () => {
     const { x, y } = this.state.cursor;
-    const { bounds } = this.state;
+    const { bounds, ui } = this.state;
 
     return (
       <MuiThemeProvider theme={theme}>
         <Reboot />
         <MenuBar
           bounds={bounds}
+          ui={ui}
           setAppState={this.setAppState}
         />
         <Map
@@ -47,6 +51,7 @@ class App extends Component {
           cursorY={y}
           bounds={bounds}
           setAppState={this.setAppState}
+          ui={ui}
         />
       </MuiThemeProvider>
     );
