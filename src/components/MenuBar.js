@@ -4,8 +4,8 @@ import { withStyles } from 'material-ui/styles';
 import { AppBar, Toolbar, Typography, FormControlLabel } from 'material-ui';
 import ClearIcon from 'material-ui-icons/Clear';
 
-import NumberInput from '../components/NumberInput';
-import Switch from '../components/Switch';
+import NumberInput from './NumberInput';
+import Switch from './Switch';
 
 const styles = {
   root: {

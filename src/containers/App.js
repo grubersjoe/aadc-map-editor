@@ -1,9 +1,20 @@
 import React, { Component } from 'react';
-import { Reboot, MuiThemeProvider } from 'material-ui';
+import PropTypes from 'prop-types';
+import { withStyles, MuiThemeProvider, Button } from 'material-ui';
+import FileDownloadIcon from 'material-ui-icons/FileDownload';
 
-import { theme } from '../constants';
-import Map from './Map';
-import MenuBar from './MenuBar';
+import appTheme from '../theme';
+import MenuBar from '../components/MenuBar';
+import Map from '../components/Map';
+import OpenFileModal from '../components/OpenFileModal';
+
+const styles = theme => ({
+  fabDownload: {
+    position: 'fixed',
+    bottom: theme.spacing.unit * 3,
+    right: theme.spacing.unit * 3,
+  },
+});
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends Component {
@@ -43,12 +54,12 @@ class App extends Component {
   };
 
   render = () => {
+    const { classes } = this.props;
     const { x, y } = this.state.cursor;
     const { bounds, ui, tileSize } = this.state;
 
     return (
-      <MuiThemeProvider theme={theme}>
-        <Reboot />
+      <MuiThemeProvider theme={appTheme}>
         <MenuBar
           bounds={bounds}
           tileSize={tileSize}
@@ -63,10 +74,20 @@ class App extends Component {
           setAppState={this.setAppState}
           ui={ui}
         />
+
+        <OpenFileModal />
+
+        <Button fab color="secondary" className={classes.fabDownload}>
+          <FileDownloadIcon />
+        </Button>
       </MuiThemeProvider>
     );
   };
 }
 
-export default App;
+App.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(App);
 

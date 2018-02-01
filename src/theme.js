@@ -1,7 +1,7 @@
 import { createMuiTheme } from 'material-ui/styles/index';
 import { blueGrey, cyan } from 'material-ui/colors';
 
-export const theme = createMuiTheme({
+export default createMuiTheme({
   palette: {
     type: 'dark',
     primary: {
@@ -14,5 +14,3 @@ export const theme = createMuiTheme({
     },
   },
 });
-
-export const foo = 'bar';

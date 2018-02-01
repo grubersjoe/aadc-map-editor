@@ -1,28 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withTheme } from 'material-ui/styles';
+import { withTheme } from 'material-ui';
 
-const Cursor = ({
-  x, y, bounds, tileSize, animate, theme
-}) => {
-  const style = {
+const Cursor = (props) => {
+  const { theme, x, y, bounds, tileSize, animate } = props;
+  const styles = {
     position: 'absolute',
     width: tileSize,
     height: tileSize,
     left: (x * tileSize) - (bounds.xMin * tileSize),
     bottom: (y * tileSize) - (bounds.yMin * tileSize),
+    backgroundColor: theme.palette.secondary.main,
     transition: animate ? 'all .15s' : 'none',
-    backgroundColor: theme.palette.primary.light,
-    color: theme.palette.primary.contrastText,
+    color: '#fff',
+    // opacity: 0.8,
     zIndex: 100,
   };
 
+
   return (
-    <div id="Cursor" style={style}>x: {x}<br />y: {y}</div>
+    <div id="Cursor" style={styles}>x: {x}<br />y: {y}</div>
   );
 };
 
 Cursor.propTypes = {
+  theme: PropTypes.object.isRequired,
   x: PropTypes.number,
   y: PropTypes.number,
   bounds: PropTypes.objectOf(PropTypes.number).isRequired,

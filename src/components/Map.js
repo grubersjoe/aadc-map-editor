@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Cursor from '../components/Cursor';
-import Grid from '../components/Grid';
+import Cursor from './Cursor';
+import Grid from './Grid';
 
 class Map extends Component {
   componentDidMount = () => {
@@ -57,13 +57,6 @@ class Map extends Component {
       bounds: { xMax, yMax },
     });
   };
-
-  // scaleMap = (tileSize) => {
-  //   animate = false;
-  //   this.setState({ tileSize }, () => {
-  //     animate = true;
-  //   });
-  // };
 
   render = () => {
     const {
