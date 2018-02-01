@@ -6,3 +6,8 @@ body {
 input:focus {
     outline: none !important;
 }
+
+code {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 90%;
+}
