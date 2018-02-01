@@ -1,7 +1,10 @@
 {
-  "name": "react-test",
+  "name": "adtf-map-editor",
   "version": "0.1.0",
   "private": true,
+  "author": "Jonathan Gruber",
+  "email": "gruberjonathan@gmail.com",
+  "url": "https://grubersjoe.de",
   "homepage": "https://grubersjoe.de/playground/audi-react",
   "dependencies": {
     "glamor": "^2.20.40",
