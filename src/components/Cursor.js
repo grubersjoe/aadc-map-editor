@@ -10,10 +10,10 @@ const Cursor = (props) => {
     height: tileSize,
     left: (x * tileSize) - (bounds.xMin * tileSize),
     bottom: (y * tileSize) - (bounds.yMin * tileSize),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.light,
     transition: animate ? 'all .15s' : 'none',
     color: '#fff',
-    // opacity: 0.8,
+    opacity: 0.8,
     zIndex: 100,
   };
 
