@@ -1,3 +1,8 @@
+export const XmlTags = Object.freeze({
+  TILE: 'tile',
+  ROAD_SIGN: 'roadSign',
+});
+
 export function formatXml(xml) {
   const PADDING = ' '.repeat(2);
   const reg = /(>)(<)(\/*)/g;
@@ -12,7 +17,7 @@ export function formatXml(xml) {
         indent = 0;
       } else if (node.match(/^<\/\w/) && pad > 0) {
         pad -= 1;
-      } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) { // TODO: check this error
+      } else if (node.match(/^<\w[^>]*[^]>.*$/)) { // TODO: check this error
         indent = 1;
       } else {
         indent = 0;

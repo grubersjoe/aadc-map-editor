@@ -2,6 +2,9 @@ import { createMuiTheme } from 'material-ui/styles/index';
 import { blueGrey, cyan } from 'material-ui/colors';
 
 export default createMuiTheme({
+  common: {
+    white: '#fff',
+  },
   palette: {
     type: 'dark',
     primary: {

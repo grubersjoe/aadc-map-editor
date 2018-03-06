@@ -6,7 +6,7 @@ import FileDownloadIcon from 'material-ui-icons/FileDownload';
 import appTheme from '../theme';
 import MenuBar from '../components/MenuBar';
 import Map from '../components/Map';
-import OpenFileModal from '../components/OpenFileModal';
+import FileModal from '../components/FileModal';
 
 const styles = theme => ({
   fabDownload: {
@@ -30,12 +30,15 @@ class App extends Component {
       yMax: 9,
     },
     tileSize: 50,
+    tiles: [],
+    roadSigns: [],
     ui: {
       animate: true,
       grid: true,
     },
   };
 
+  // FIXME: this is limited to two levels
   setAppState = (data, callback) => {
     const changes = {};
     Object.keys(data).forEach((key) => {
@@ -66,6 +69,7 @@ class App extends Component {
           ui={ui}
           setAppState={this.setAppState}
         />
+
         <Map
           cursorX={x}
           cursorY={y}
@@ -75,7 +79,9 @@ class App extends Component {
           ui={ui}
         />
 
-        <OpenFileModal />
+        <FileModal
+          setAppState={this.setAppState}
+        />
 
         <Button fab color="secondary" className={classes.fabDownload}>
           <FileDownloadIcon />
