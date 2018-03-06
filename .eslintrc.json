@@ -17,6 +17,12 @@
     "react/forbid-prop-types": [
       0
     ],
-    "no-console": "off"
+    "no-console": "off",
+    "no-mixed-operators": [
+      "error",
+      {
+        "allowSamePrecedence": true
+      }
+    ]
   }
 }
