@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Cursor from './Cursor';
 import Grid from './Grid';
+import MapElem from "./MapElem";
 
 class Map extends Component {
   componentDidMount = () => {
@@ -60,7 +61,7 @@ class Map extends Component {
 
   render = () => {
     const {
-      tileSize, bounds, cursorX, cursorY, ui,
+      mapElems, bounds, tileSize, cursorX, cursorY, ui,
     } = this.props;
 
     const width = bounds.xMax - bounds.xMin;
@@ -80,10 +81,27 @@ class Map extends Component {
         <Cursor
           x={cursorX}
           y={cursorY}
-          bounds={bounds}
+          xMin={bounds.xMin}
+          yMin={bounds.yMin}
           tileSize={tileSize}
           animate={ui.animate}
         />
+
+        {
+          mapElems.map((tile, idx) => (
+            <MapElem
+              tileSize={tileSize}
+              x={tile.x}
+              y={tile.y}
+              xMin={bounds.xMin}
+              yMin={bounds.yMin}
+              dir={tile.dir}
+              type={tile.type}
+              elemType={tile.elemType}
+              key={`map-elem-${idx}`}
+            />
+          ))
+        }
       </div>
     );
   };
@@ -98,6 +116,7 @@ Map.defaultProps = {
 };
 
 Map.propTypes = {
+  mapElems: PropTypes.arrayOf(PropTypes.object).isRequired,
   cursorX: PropTypes.number,
   cursorY: PropTypes.number,
   bounds: PropTypes.object.isRequired,

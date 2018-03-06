@@ -6,10 +6,10 @@ import FolderOpenIcon from 'material-ui-icons/FolderOpen';
 import CheckCircleIcon from 'material-ui-icons/CheckCircle';
 import NotInterestedIcon from 'material-ui-icons/NotInterested';
 import Dropzone from 'react-dropzone';
+import maxBy from 'lodash/maxBy';
 
 import { getModalStyle } from '../util/style';
-import { parseXmlTags } from '../services/XmlLoader';
-import { XmlTags } from '../util/xml';
+import { XmlTags, parseXmlTags } from '../services/XmlLoader';
 
 const styles = theme => ({
   button: {
@@ -46,7 +46,7 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    minHeight: 100,
+    minHeight: 88,
     marginBottom: '1.5rem',
     backgroundColor: blueGrey[100],
     transition: 'background-color .3s ease-in-out',
@@ -68,7 +68,7 @@ const styles = theme => ({
   },
 });
 
-class FileModal extends React.Component {
+class LoadFile extends React.Component {
   state = {
     open: false,
     accepted: null,
@@ -94,10 +94,16 @@ class FileModal extends React.Component {
 
     reader.onload = (ev) => {
       try {
-        const tags = parseXmlTags(ev.target.result, [tagType]);
-        const stateKey = `${tagType}s`; // pluralize
+        const mapElems = parseXmlTags(ev.target.result, [tagType]);
+        const xMax = (maxBy(mapElems, 'x').x - this.props.xMin) + 1;
+        const yMax = (maxBy(mapElems, 'y').y - this.props.yMin) + 1;
+
         this.props.setAppState({
-          [stateKey]: tags,
+          mapElems,
+          bounds: {
+            xMax,
+            yMax,
+          },
         });
         this.setState({ accepted: files, rejected: null });
       } catch (e) {
@@ -113,7 +119,11 @@ class FileModal extends React.Component {
   };
 
   openModal = () => {
-    this.setState({ open: true });
+    this.setState({
+      open: true,
+      accepted: null,
+      rejected: null,
+    });
   };
 
   closeModal = () => {
@@ -216,9 +226,11 @@ class FileModal extends React.Component {
   }
 }
 
-FileModal.propTypes = {
+LoadFile.propTypes = {
   classes: PropTypes.object.isRequired,
   setAppState: PropTypes.func.isRequired,
+  xMin: PropTypes.number.isRequired,
+  yMin: PropTypes.number.isRequired,
 };
 
-export default withStyles(styles)(FileModal);
+export default withStyles(styles)(LoadFile);

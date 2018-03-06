@@ -1,8 +1,3 @@
-export const XmlTags = Object.freeze({
-  TILE: 'tile',
-  ROAD_SIGN: 'roadSign',
-});
-
 export function formatXml(xml) {
   const PADDING = ' '.repeat(2);
   const reg = /(>)(<)(\/*)/g;

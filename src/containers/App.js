@@ -6,7 +6,7 @@ import FileDownloadIcon from 'material-ui-icons/FileDownload';
 import appTheme from '../theme';
 import MenuBar from '../components/MenuBar';
 import Map from '../components/Map';
-import FileModal from '../components/FileModal';
+import FileModal from '../components/LoadFile';
 
 const styles = theme => ({
   fabDownload: {
@@ -30,10 +30,9 @@ class App extends Component {
       yMax: 9,
     },
     tileSize: 50,
-    tiles: [],
-    roadSigns: [],
+    mapElems: [],
     ui: {
-      animate: true,
+      animate: false,
       grid: true,
     },
   };
@@ -59,7 +58,7 @@ class App extends Component {
   render = () => {
     const { classes } = this.props;
     const { x, y } = this.state.cursor;
-    const { bounds, ui, tileSize } = this.state;
+    const { mapElems, bounds, ui, tileSize } = this.state;
 
     return (
       <MuiThemeProvider theme={appTheme}>
@@ -71,6 +70,7 @@ class App extends Component {
         />
 
         <Map
+          mapElems={mapElems}
           cursorX={x}
           cursorY={y}
           bounds={bounds}
@@ -81,6 +81,8 @@ class App extends Component {
 
         <FileModal
           setAppState={this.setAppState}
+          xMin={bounds.xMin}
+          yMin={bounds.yMin}
         />
 
         <Button fab color="secondary" className={classes.fabDownload}>

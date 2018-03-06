@@ -1,3 +1,8 @@
+export const XmlTags = Object.freeze({
+  TILE: 'tile',
+  ROAD_SIGN: 'roadSign',
+});
+
 export function parseXml(xmlString) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(xmlString, 'text/xml');
@@ -18,11 +23,11 @@ export function parseXmlTags(xmlString, tagNames) {
   }
 
   return nodes.map(node => ({
-    type: node.tagName,
-    id: parseInt(node.getAttribute('id'), 10),
     x: parseFloat(node.getAttribute('x')),
     y: parseFloat(node.getAttribute('y')),
-    direction: parseInt(node.getAttribute('direction'), 10),
+    dir: parseInt(node.getAttribute('direction'), 10),
+    type: parseInt(node.getAttribute('id'), 10),
+    elemType: node.tagName,
   }));
 }
 

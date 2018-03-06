@@ -1,5 +1,3 @@
-
-
 export function rotTransformToDeg(obj) {
   const matrix = obj.style.transform;
 
@@ -24,4 +22,35 @@ export function getModalStyle() {
     left: `${left}%`,
     transform: `translate(-${top}%, -${left}%)`,
   };
+}
+
+export function degXmlToCss(type, deg) {
+  switch (type) {
+    case 'tile':
+      return Math.abs(deg) === 90 ? deg * -1 : deg;
+    case 'roadSign':
+      switch (deg) {
+        case 0:
+          return 90;
+        case 90:
+          return 0;
+        case -90:
+          return 180;
+        case 180:
+          return -90;
+        default:
+          return deg;
+      }
+    // case 'parkingSpace':
+    //   switch (deg) {
+    //     case 0:
+    //       return -90;
+    //     case 180:
+    //       return 90;
+    //     default:
+    //       return deg;
+    //   }
+    default:
+      return deg;
+  }
 }
