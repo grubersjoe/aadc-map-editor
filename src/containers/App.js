@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, MuiThemeProvider, Button } from 'material-ui';
 import FileDownloadIcon from 'material-ui-icons/FileDownload';
+import find from 'lodash/find';
 
 import appTheme from '../theme';
 import MenuBar from '../components/MenuBar';
@@ -55,6 +56,10 @@ class App extends Component {
     this.setState(changes, callback);
   };
 
+  getMapElem = (x, y) => {
+    return find(this.state.mapElems, { x, y });
+  };
+
   render = () => {
     const { classes } = this.props;
     const { x, y } = this.state.cursor;
@@ -98,4 +103,3 @@ App.propTypes = {
 };
 
 export default withStyles(styles)(App);
-
