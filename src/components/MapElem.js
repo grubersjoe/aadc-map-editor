@@ -19,7 +19,7 @@ const MapElem = (props) => {
   }
 
   try {
-    imgSrc = require(`../images/${type}.svg`);
+    imgSrc = require(`../images/${elemType}/${type}.svg`);
   } catch (e) {
     console.error(e.message);
     return '';
@@ -32,7 +32,7 @@ const MapElem = (props) => {
     left: (x * tileSize) - (xMin * tileSize),
     bottom: (y * tileSize) - (yMin * tileSize),
     transform: `rotate(${degXmlToCss(elemType, dir)}deg)`,
-    backgroundColor: elemType === XmlTags.TILE ? `hsla(${type * 360 / 8}, 70%, 50%, 0.7)` : 'none',
+    backgroundColor: elemType === XmlTags.TILE ? `hsla(${type * 360 / 8}, 70%, 50%, 0.8)` : 'none',
   };
 
   return (

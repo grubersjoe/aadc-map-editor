@@ -33,5 +33,30 @@ export const MapElemsMeta = {
       title: 'S-Turn left',
     },
   },
-  roadSign: {},
+  roadSign: {
+    1: {
+      size: 1,
+      title: 'Stop',
+    },
+    2: {
+      size: 1,
+      img: 'Parking place',
+    },
+    3: {
+      size: 1,
+      img: 'Have way',
+    },
+    5: {
+      size: 1,
+      img: 'Give way',
+    },
+    6: {
+      size: 1,
+      img: 'Zebra',
+    },
+    10: {
+      size: 1,
+      img: 'Proving ground',
+    },
+  },
 };
