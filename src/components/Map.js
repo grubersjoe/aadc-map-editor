@@ -6,9 +6,9 @@ import Grid from './Grid';
 import MapElem from './MapElem';
 
 class Map extends Component {
-  componentDidMount = () => {
+  componentDidMount() {
     window.addEventListener('keydown', this.onKeydown);
-  };
+  }
 
   onKeydown = (ev) => {
     if (document.activeElement instanceof HTMLInputElement) {
