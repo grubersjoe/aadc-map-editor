@@ -1,3 +1,5 @@
+import { MapElemOrigin } from "../components/MapElem";
+
 export const XmlTags = Object.freeze({
   TILE: 'tile',
   ROAD_SIGN: 'roadSign',
@@ -29,6 +31,7 @@ export function parseXmlTags(xmlString, tagNames) {
     type: parseInt(node.getAttribute('id'), 10),
     elemType: node.tagName,
     init: parseInt(node.getAttribute('init'), 10) || 0,
+    origin: MapElemOrigin.FILE,
   }));
 }
 

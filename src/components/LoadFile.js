@@ -47,7 +47,7 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    minHeight: 88,
+    minHeight: 80,
     marginBottom: '1.5rem',
     backgroundColor: blueGrey[100],
     transition: 'background-color .3s ease-in-out',
@@ -104,7 +104,7 @@ class LoadFile extends React.Component {
           yMax += 1;
         }
 
-        const mapElems = this.addHashes(tags);
+        const mapElems = this.addKeys(tags);
 
         this.props.setMapElems(mapElems);
         this.props.setBounds({ xMax, yMax });
@@ -121,14 +121,14 @@ class LoadFile extends React.Component {
     };
   };
 
-  addHashes = (elems) => {
+  addKeys = (elems) => {
     return elems.map((elem) => {
       const {
         elemType, type, x, y, dir, init,
       } = elem;
 
       // eslint-disable-next-line no-param-reassign
-      elem.hash = hash(elemType + type + x + y + dir + init);
+      elem.key = hash(elemType + type + x + y + dir + init);
 
       return elem;
     });

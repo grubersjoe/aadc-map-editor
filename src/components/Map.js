@@ -5,113 +5,59 @@ import Cursor from './Cursor';
 import Grid from './Grid';
 import MapElem from './MapElem';
 
-class Map extends Component {
-  componentDidMount() {
-    window.addEventListener('keydown', this.onKeydown);
-  }
+const Map = (props) => {
+  const {
+    mapElems, bounds, tileSize, cursorX, cursorY, ui,
+  } = props;
 
-  onKeydown = (ev) => {
-    if (document.activeElement instanceof HTMLInputElement) {
-      return;
-    }
+  const width = bounds.xMax - bounds.xMin;
+  const height = bounds.yMax - bounds.yMin;
 
-    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(ev.key)) {
-      ev.preventDefault();
-    }
-
-    switch (ev.key) {
-      case 'ArrowUp':
-        ev.preventDefault();
-        this.moveCursor(0, 1);
-        break;
-      case 'ArrowDown':
-        ev.preventDefault();
-        this.moveCursor(0, -1);
-        break;
-      case 'ArrowLeft':
-        ev.preventDefault();
-        this.moveCursor(-1, 0);
-        break;
-      case 'ArrowRight':
-        ev.preventDefault();
-        this.moveCursor(1, 0);
-        break;
-      default:
-    }
+  const styles = {
+    position: 'absolute',
+    top: 64,
+    left: 0,
+    width: (width * tileSize) + 1,
+    height: (height * tileSize) + 1,
+    transition: ui.animate ? 'all .15s' : 'none',
   };
 
-  moveCursor = (xOffset = 0, yOffset = 0) => {
-    const { bounds } = this.props;
+  return (
+    <div id="Map" style={styles}>
+      {ui.grid && <Grid tileSize={tileSize} />}
+      <Cursor
+        x={cursorX}
+        y={cursorY}
+        xMin={bounds.xMin}
+        yMin={bounds.yMin}
+        tileSize={tileSize}
+        animate={ui.animate}
+      />
 
-    const x = this.props.cursorX + xOffset;
-    const y = this.props.cursorY + yOffset;
+      {
+        mapElems.map((tile) => {
+          const {
+            x, y, dir, type, elemType, key,
+          } = tile;
 
-    if (x < bounds.xMin || y < bounds.yMin) {
-      return;
-    }
-
-    const xMax = x === bounds.xMax ? x + 1 : bounds.xMax;
-    const yMax = y === bounds.yMax ? y + 1 : bounds.yMax;
-
-    this.props.setAppState({
-      cursor: { x, y },
-      bounds: { xMax, yMax },
-    });
-  };
-
-  render = () => {
-    const {
-      mapElems, bounds, tileSize, cursorX, cursorY, ui,
-    } = this.props;
-
-    const width = bounds.xMax - bounds.xMin;
-    const height = bounds.yMax - bounds.yMin;
-
-    const mapStyle = {
-      position: 'absolute',
-      top: 64,
-      left: 0,
-      width: (width * tileSize) + 1,
-      height: (height * tileSize) + 1,
-      transition: ui.animate ? 'all .15s' : 'none',
-    };
-    return (
-      <div id="Map" style={mapStyle}>
-        {ui.grid && <Grid tileSize={tileSize} />}
-        <Cursor
-          x={cursorX}
-          y={cursorY}
-          xMin={bounds.xMin}
-          yMin={bounds.yMin}
-          tileSize={tileSize}
-          animate={ui.animate}
-        />
-
-        {
-          mapElems.map((tile) => {
-            const {
-              x, y, dir, type, elemType, hash,
-            } = tile;
-
-            return (
-              <MapElem
-                tileSize={tileSize}
-                x={x}
-                y={y}
-                xMin={bounds.xMin}
-                yMin={bounds.yMin}
-                dir={dir}
-                type={type}
-                elemType={elemType}
-                key={hash}
-              />
-            );
-          })
-        }
-      </div>
-    );
-  };
-}
+          return (
+            <MapElem
+              tileSize={tileSize}
+              x={x}
+              y={y}
+              xMin={bounds.xMin}
+              yMin={bounds.yMin}
+              dir={dir}
+              type={type}
+              elemType={elemType}
+              key={key}
+            />
+          );
+        })
+      }
+    </div>
+  );
+};
 
 Map.defaultProps = {
   cursorX: 0,
@@ -127,7 +73,6 @@ Map.propTypes = {
   cursorY: PropTypes.number,
   bounds: PropTypes.object.isRequired,
   tileSize: PropTypes.number.isRequired,
-  setAppState: PropTypes.func.isRequired,
   ui: PropTypes.object,
 };
 

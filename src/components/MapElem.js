@@ -5,6 +5,11 @@ import { MapElemsMeta } from '../images';
 import { degXmlToCss } from '../util/style';
 import { XmlTags } from '../services/XmlLoader';
 
+export const MapElemOrigin = {
+  FILE: 'file',
+  EDITOR: 'editor',
+};
+
 const MapElem = (props) => {
   const {
     tileSize, x, y, xMin, yMin, dir, type, elemType,
@@ -23,7 +28,7 @@ const MapElem = (props) => {
   } catch (e) {
     imgSrc = require('../images/fallback.svg');
     imgMeta.title = `Unknown sign with type id ${type}`;
-    console.warn(e.message + ' Using fallback.');
+    console.warn(`${e.message} Using fallback.`);
   }
 
   const elemSize = tileSize * imgMeta.size;

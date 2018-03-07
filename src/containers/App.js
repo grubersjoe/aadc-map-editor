@@ -9,6 +9,8 @@ import appTheme from '../theme';
 import MenuBar from '../components/MenuBar';
 import Map from '../components/Map';
 import FileModal from '../components/LoadFile';
+import { XmlTags } from '../services/XmlLoader';
+import { MapElemOrigin } from '../components/MapElem';
 
 const styles = theme => ({
   fabDownload: {
@@ -37,6 +39,50 @@ class App extends Component {
       animate: false,
       grid: true,
     },
+  };
+
+  componentDidMount() {
+    window.addEventListener('keydown', this.onKeydown);
+  }
+
+  onKeydown = (ev) => {
+    if (document.activeElement instanceof HTMLInputElement) {
+      return;
+    }
+
+    if ([
+      'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
+      '1', '2', '3', '4', '5', '6', '7', '8',
+    ].includes(ev.key)) {
+      ev.preventDefault();
+    }
+
+    switch (ev.key) {
+      case 'ArrowUp':
+        this.moveCursor(0, 1);
+        break;
+      case 'ArrowDown':
+        this.moveCursor(0, -1);
+        break;
+      case 'ArrowLeft':
+        this.moveCursor(-1, 0);
+        break;
+      case 'ArrowRight':
+        this.moveCursor(1, 0);
+        break;
+      case '1':
+      case '2':
+      case '3':
+      case '4':
+      case '5':
+      case '6':
+      case '7':
+      case '8':
+        this.addTile(parseInt(ev.key, 10));
+        break;
+      default:
+        // nop
+    }
   };
 
   // FIXME: this is limited to two levels
@@ -78,8 +124,10 @@ class App extends Component {
    * @param elems A list of map elements
    */
   setMapElems = (elems) => {
-    const hashes = elems.map(elem => elem.hash);
-    const rest = filter(this.state.mapElems, elem => !includes(hashes, elem.hash));
+    // Keep elements, which the user has added and non-duplicates (check hash)
+    const keys = elems.map(elem => elem.key);
+    const rest = filter(this.state.mapElems, elem =>
+      elem.origin === MapElemOrigin.EDITOR || !includes(keys, elem.key));
 
     this.setState({
       mapElems: [...rest, ...elems],
@@ -93,6 +141,47 @@ class App extends Component {
    * @returns {Array} List of map elem objects
    */
   getMapElem = (x, y) => filter(this.state.mapElems, { x, y });
+
+  /**
+   * Add a specific tile element with default attributes
+   * @param type The tile type (1 - 8)
+   */
+  addTile = (type) => {
+    const { x, y } = this.state.cursor;
+    const mapElem = {
+      x,
+      y,
+      dir: 0,
+      type,
+      elemType: XmlTags.TILE,
+      init: 0,
+      key: MapElemOrigin.EDITOR + Date.now(),
+      origin: MapElemOrigin.EDITOR,
+    };
+
+    this.setState({
+      mapElems: [...this.state.mapElems, mapElem],
+    });
+  };
+
+  moveCursor = (xOffset = 0, yOffset = 0) => {
+    const { bounds } = this.state;
+
+    const x = this.state.cursor.x + xOffset;
+    const y = this.state.cursor.y + yOffset;
+
+    if (x < bounds.xMin || y < bounds.yMin) {
+      return;
+    }
+
+    const xMax = x === bounds.xMax ? x + 1 : bounds.xMax;
+    const yMax = y === bounds.yMax ? y + 1 : bounds.yMax;
+
+    this.setState(prevState => ({
+      cursor: { ...prevState.cursor, x, y },
+      bounds: { ...prevState.bounds, xMax, yMax },
+    }));
+  };
 
   render = () => {
     const { classes } = this.props;
