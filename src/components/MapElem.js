@@ -11,33 +11,49 @@ const MapElem = (props) => {
   } = props;
 
   const imgMeta = MapElemsMeta[elemType][type];
-  let imgSrc;
 
   if (!imgMeta) {
     console.warn(`Unable to render <${elemType}> with type id ${type}`);
     return '';
   }
 
+  let imgSrc;
   try {
     imgSrc = require(`../images/${elemType}/${type}.svg`);
   } catch (e) {
-    console.error(e.message);
-    return '';
+    imgSrc = require('../images/fallback.svg');
+    imgMeta.title = `Unknown sign with type id ${type}`;
+    console.warn(e.message + ' Using fallback.');
+  }
+
+  const elemSize = tileSize * imgMeta.size;
+  let posX = (x * tileSize) - (xMin * tileSize);
+  let posY = (y * tileSize) - (yMin * tileSize);
+
+  if (elemType !== 'tile') {
+    posX -= elemSize / 2;
+    posY -= elemSize / 2;
   }
 
   const styles = {
-    position: 'absolute',
-    width: tileSize * imgMeta.size,
-    height: tileSize * imgMeta.size,
-    left: (x * tileSize) - (xMin * tileSize),
-    bottom: (y * tileSize) - (yMin * tileSize),
-    transform: `rotate(${degXmlToCss(elemType, dir)}deg)`,
-    backgroundColor: elemType === XmlTags.TILE ? `hsla(${type * 360 / 8}, 70%, 50%, 0.8)` : 'none',
+    root: {
+      position: 'absolute',
+      width: elemSize,
+      height: elemSize,
+      left: posX,
+      bottom: posY,
+      transform: `rotate(${degXmlToCss(elemType, dir)}deg)`,
+      backgroundColor: elemType === XmlTags.TILE ? `hsla(${type * 360 / 8}, 70%, 50%, 0.8)` : 'none',
+    },
+    img: {
+      width: '100%',
+      height: 'auto',
+    },
   };
 
   return (
-    <div style={styles}>
-      <img src={imgSrc} title={imgMeta.title} alt={`Map elem at ${x}/${y}`} />
+    <div style={styles.root}>
+      <img style={styles.img} src={imgSrc} title={imgMeta.title} alt={`Map elem at ${x}/${y}`} />
     </div>
   );
 };

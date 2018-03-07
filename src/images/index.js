@@ -35,27 +35,27 @@ export const MapElemsMeta = {
   },
   roadSign: {
     1: {
-      size: 1,
+      size: 0.26,
       title: 'Stop',
     },
     2: {
-      size: 1,
+      size: 0.26,
       img: 'Parking place',
     },
     3: {
-      size: 1,
+      size: 0.26,
       img: 'Have way',
     },
     5: {
-      size: 1,
+      size: 0.26,
       img: 'Give way',
     },
     6: {
-      size: 1,
+      size: 0.26,
       img: 'Zebra',
     },
     10: {
-      size: 1,
+      size: 0.26,
       img: 'Proving ground',
     },
   },

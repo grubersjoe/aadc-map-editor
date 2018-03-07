@@ -15,7 +15,7 @@ import { hash } from '../util/hash';
 const styles = theme => ({
   button: {
     position: 'fixed',
-    bottom: theme.spacing.unit * 11.5,
+    bottom: theme.spacing.unit * 13,
     right: theme.spacing.unit * 3,
   },
   modalButton: {
@@ -96,21 +96,15 @@ class LoadFile extends React.Component {
     reader.onload = (ev) => {
       try {
         const tags = parseXmlTags(ev.target.result, [tagType]);
-        const xMax = Math.ceil(maxBy(tags, 'x').x) - this.props.xMin + 1;
-        const yMax = Math.ceil(maxBy(tags, 'y').y) - this.props.yMin + 1;
+        let xMax = Math.ceil(maxBy(tags, 'x').x) - this.props.xMin;
+        let yMax = Math.ceil(maxBy(tags, 'y').y) - this.props.yMin;
 
-        // add a unique id
-        const mapElems = tags.map((elem) => {
-          const {
-            elemType, type, x, y, dir, init,
-          } = elem;
+        if (tagType === XmlTags.TILE) {
+          xMax += 1;
+          yMax += 1;
+        }
 
-          // eslint-disable-next-line no-param-reassign
-          elem.hash = hash(elemType + type + x + y + dir + init);
-
-          return elem;
-        });
-
+        const mapElems = this.addHashes(tags);
 
         this.props.setMapElems(mapElems);
         this.props.setBounds({ xMax, yMax });
@@ -125,6 +119,19 @@ class LoadFile extends React.Component {
       console.error(e.message);
       this.setState({ accepted: null, rejected: files });
     };
+  };
+
+  addHashes = (elems) => {
+    return elems.map((elem) => {
+      const {
+        elemType, type, x, y, dir, init,
+      } = elem;
+
+      // eslint-disable-next-line no-param-reassign
+      elem.hash = hash(elemType + type + x + y + dir + init);
+
+      return elem;
+    });
   };
 
   openModal = () => {
@@ -144,7 +151,13 @@ class LoadFile extends React.Component {
 
     return (
       <div>
-        <Button fab color="secondary" className={classes.button} onClick={this.openModal}>
+        <Button
+          fab
+          color="secondary"
+          className={classes.button}
+          onClick={this.openModal}
+          title="Load XML input file"
+        >
           <FolderOpenIcon />
         </Button>
 

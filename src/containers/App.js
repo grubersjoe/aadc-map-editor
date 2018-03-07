@@ -13,7 +13,7 @@ import FileModal from '../components/LoadFile';
 const styles = theme => ({
   fabDownload: {
     position: 'fixed',
-    bottom: theme.spacing.unit * 3,
+    bottom: theme.spacing.unit * 4,
     right: theme.spacing.unit * 3,
   },
 });
@@ -31,7 +31,7 @@ class App extends Component {
       xMax: 15,
       yMax: 9,
     },
-    tileSize: 50,
+    tileSize: 80,
     mapElems: [],
     ui: {
       animate: false,
@@ -127,7 +127,12 @@ class App extends Component {
           yMin={bounds.yMin}
         />
 
-        <Button fab color="secondary" className={classes.fabDownload}>
+        <Button
+          fab
+          color="secondary"
+          className={classes.fabDownload}
+          title="Export map to XML file"
+        >
           <FileDownloadIcon />
         </Button>
       </MuiThemeProvider>
