@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, MuiThemeProvider, Button } from 'material-ui';
 import FileDownloadIcon from 'material-ui-icons/FileDownload';
-import find from 'lodash/find';
+import includes from 'lodash/includes';
+import filter from 'lodash/filter';
 
 import appTheme from '../theme';
 import MenuBar from '../components/MenuBar';
@@ -33,7 +34,7 @@ class App extends Component {
     tileSize: 50,
     mapElems: [],
     ui: {
-      animate: true,
+      animate: false,
       grid: true,
     },
   };
@@ -56,14 +57,49 @@ class App extends Component {
     this.setState(changes, callback);
   };
 
-  getMapElem = (x, y) => {
-    return find(this.state.mapElems, { x, y });
+  /**
+   * Sets the map boundaries (only increases map boundaries per default)
+   * @param bounds A boundaries object (.xMax, .yMax, .xMin, .yMin)
+   * @param force Overwrite boundaries without any checks
+   */
+  setBounds = (bounds, force = false) => {
+    this.setState({
+      bounds: {
+        xMax: force ? bounds.xMax : Math.max(this.state.bounds.xMax, bounds.xMax || 0),
+        yMax: force ? bounds.yMax : Math.max(this.state.bounds.yMax, bounds.yMax || 0),
+        xMin: force ? bounds.xMin : Math.min(this.state.bounds.xMin, bounds.xMin || 0),
+        yMin: force ? bounds.yMin : Math.min(this.state.bounds.yMin, bounds.yMin || 0),
+      },
+    });
   };
+
+  /**
+   * Set map elements: adds only unique new elements
+   * @param elems A list of map elements
+   */
+  setMapElems = (elems) => {
+    const hashes = elems.map(elem => elem.hash);
+    const rest = filter(this.state.mapElems, elem => !includes(hashes, elem.hash));
+
+    this.setState({
+      mapElems: [...rest, ...elems],
+    });
+  };
+
+  /**
+   * Get all map elems at specific position
+   * @param x X coordinate
+   * @param y Y coordinate
+   * @returns {Array} List of map elem objects
+   */
+  getMapElem = (x, y) => filter(this.state.mapElems, { x, y });
 
   render = () => {
     const { classes } = this.props;
     const { x, y } = this.state.cursor;
-    const { mapElems, bounds, ui, tileSize } = this.state;
+    const {
+      mapElems, bounds, ui, tileSize,
+    } = this.state;
 
     return (
       <MuiThemeProvider theme={appTheme}>
@@ -85,7 +121,8 @@ class App extends Component {
         />
 
         <FileModal
-          setAppState={this.setAppState}
+          setBounds={this.setBounds}
+          setMapElems={this.setMapElems}
           xMin={bounds.xMin}
           yMin={bounds.yMin}
         />

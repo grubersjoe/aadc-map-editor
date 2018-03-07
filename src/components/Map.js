@@ -88,19 +88,25 @@ class Map extends Component {
         />
 
         {
-          mapElems.map(tile => (
-            <MapElem
-              tileSize={tileSize}
-              x={tile.x}
-              y={tile.y}
-              xMin={bounds.xMin}
-              yMin={bounds.yMin}
-              dir={tile.dir}
-              type={tile.type}
-              elemType={tile.elemType}
-              key={`${tile.x}${tile.y}`}
-            />
-          ))
+          mapElems.map((tile) => {
+            const {
+              x, y, dir, type, elemType, hash,
+            } = tile;
+
+            return (
+              <MapElem
+                tileSize={tileSize}
+                x={x}
+                y={y}
+                xMin={bounds.xMin}
+                yMin={bounds.yMin}
+                dir={dir}
+                type={type}
+                elemType={elemType}
+                key={hash}
+              />
+            );
+          })
         }
       </div>
     );

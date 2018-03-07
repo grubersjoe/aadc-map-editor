@@ -1,19 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Tiles } from '../images';
+import { MapElemsMeta } from '../images';
 import { degXmlToCss } from '../util/style';
-import { XmlTags } from "../services/XmlLoader";
+import { XmlTags } from '../services/XmlLoader';
 
 const MapElem = (props) => {
   const {
     tileSize, x, y, xMin, yMin, dir, type, elemType,
   } = props;
 
-  const imgMeta = Tiles[type];
+  const imgMeta = MapElemsMeta[elemType][type];
+  let imgSrc;
 
-  // eslint-disable-next-line import/no-dynamic-require,global-require
-  const imgSrc = require(`../images/${type}.svg`);
+  if (!imgMeta) {
+    console.warn(`Unable to render <${elemType}> with type id ${type}`);
+    return '';
+  }
+
+  try {
+    imgSrc = require(`../images/${type}.svg`);
+  } catch (e) {
+    console.error(e.message);
+    return '';
+  }
 
   const styles = {
     position: 'absolute',

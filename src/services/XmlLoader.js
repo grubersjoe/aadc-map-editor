@@ -28,6 +28,7 @@ export function parseXmlTags(xmlString, tagNames) {
     dir: parseInt(node.getAttribute('direction'), 10),
     type: parseInt(node.getAttribute('id'), 10),
     elemType: node.tagName,
+    init: parseInt(node.getAttribute('init'), 10) || 0,
   }));
 }
 

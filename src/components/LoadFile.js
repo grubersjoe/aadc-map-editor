@@ -10,6 +10,7 @@ import maxBy from 'lodash/maxBy';
 
 import { getModalStyle } from '../util/style';
 import { XmlTags, parseXmlTags } from '../services/XmlLoader';
+import { hash } from '../util/hash';
 
 const styles = theme => ({
   button: {
@@ -94,17 +95,25 @@ class LoadFile extends React.Component {
 
     reader.onload = (ev) => {
       try {
-        const mapElems = parseXmlTags(ev.target.result, [tagType]);
-        const xMax = maxBy(mapElems, 'x').x - this.props.xMin + 1;
-        const yMax = maxBy(mapElems, 'y').y - this.props.yMin + 1;
+        const tags = parseXmlTags(ev.target.result, [tagType]);
+        const xMax = Math.ceil(maxBy(tags, 'x').x) - this.props.xMin + 1;
+        const yMax = Math.ceil(maxBy(tags, 'y').y) - this.props.yMin + 1;
 
-        this.props.setAppState({
-          mapElems,
-          bounds: {
-            xMax,
-            yMax,
-          },
+        // add a unique id
+        const mapElems = tags.map((elem) => {
+          const {
+            elemType, type, x, y, dir, init,
+          } = elem;
+
+          // eslint-disable-next-line no-param-reassign
+          elem.hash = hash(elemType + type + x + y + dir + init);
+
+          return elem;
         });
+
+
+        this.props.setMapElems(mapElems);
+        this.props.setBounds({ xMax, yMax });
         this.setState({ accepted: files, rejected: null });
       } catch (e) {
         console.error(e.message);
@@ -228,7 +237,8 @@ class LoadFile extends React.Component {
 
 LoadFile.propTypes = {
   classes: PropTypes.object.isRequired,
-  setAppState: PropTypes.func.isRequired,
+  setBounds: PropTypes.func.isRequired,
+  setMapElems: PropTypes.func.isRequired,
   xMin: PropTypes.number.isRequired,
   yMin: PropTypes.number.isRequired,
 };
