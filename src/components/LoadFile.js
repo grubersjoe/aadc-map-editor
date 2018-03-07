@@ -95,8 +95,8 @@ class LoadFile extends React.Component {
     reader.onload = (ev) => {
       try {
         const mapElems = parseXmlTags(ev.target.result, [tagType]);
-        const xMax = (maxBy(mapElems, 'x').x - this.props.xMin) + 1;
-        const yMax = (maxBy(mapElems, 'y').y - this.props.yMin) + 1;
+        const xMax = maxBy(mapElems, 'x').x - this.props.xMin + 1;
+        const yMax = maxBy(mapElems, 'y').y - this.props.yMin + 1;
 
         this.props.setAppState({
           mapElems,

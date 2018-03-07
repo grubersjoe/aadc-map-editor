@@ -32,7 +32,7 @@ class App extends Component {
     tileSize: 50,
     mapElems: [],
     ui: {
-      animate: false,
+      animate: true,
       grid: true,
     },
   };

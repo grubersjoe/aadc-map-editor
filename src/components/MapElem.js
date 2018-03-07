@@ -1,10 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tiles } from "../images";
-import { degXmlToCss } from "../util/style";
+
+import { Tiles } from '../images';
+import { degXmlToCss } from '../util/style';
+import { XmlTags } from "../services/XmlLoader";
 
 const MapElem = (props) => {
-  const { tileSize, x, y, xMin, yMin, dir, type, elemType } = props;
+  const {
+    tileSize, x, y, xMin, yMin, dir, type, elemType,
+  } = props;
 
   const imgMeta = Tiles[type];
 
@@ -18,6 +22,7 @@ const MapElem = (props) => {
     left: (x * tileSize) - (xMin * tileSize),
     bottom: (y * tileSize) - (yMin * tileSize),
     transform: `rotate(${degXmlToCss(elemType, dir)}deg)`,
+    backgroundColor: elemType === XmlTags.TILE ? `hsla(${type * 360 / 8}, 70%, 50%, 0.7)` : 'none',
   };
 
   return (

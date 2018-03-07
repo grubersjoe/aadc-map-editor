@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Cursor from './Cursor';
 import Grid from './Grid';
-import MapElem from "./MapElem";
+import MapElem from './MapElem';
 
 class Map extends Component {
   componentDidMount = () => {
@@ -88,7 +88,7 @@ class Map extends Component {
         />
 
         {
-          mapElems.map((tile, idx) => (
+          mapElems.map(tile => (
             <MapElem
               tileSize={tileSize}
               x={tile.x}
@@ -98,7 +98,7 @@ class Map extends Component {
               dir={tile.dir}
               type={tile.type}
               elemType={tile.elemType}
-              key={`map-elem-${idx}`}
+              key={`${tile.x}${tile.y}`}
             />
           ))
         }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { withStyles } from 'material-ui';
 import MuiSwitch from 'material-ui/Switch';
+import PropTypes from 'prop-types';
 
 export const styles = theme => ({
   bar: {
@@ -23,6 +24,11 @@ const Switch = (props) => {
       {...rest}
     />
   );
+};
+
+
+Switch.propTypes = {
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Switch);
