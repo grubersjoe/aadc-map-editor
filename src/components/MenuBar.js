@@ -82,7 +82,7 @@ const MenuBar = (props) => {
             value={tileSize}
             size={4}
             min={20}
-            max={200}
+            max={500}
             step={10}
             format={num => `${num}%`}
             className={classes.input}
