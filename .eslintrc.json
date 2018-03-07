@@ -21,7 +21,12 @@
     "no-mixed-operators": [
       "error",
       {
-        "allowSamePrecedence": true
+        "groups": [
+          ["&", "|", "^", "~", "<<", ">>", ">>>"],
+          ["==", "!=", "===", "!==", ">", ">=", "<", "<="],
+          ["&&", "||"],
+          ["in", "instanceof"]
+        ]
       }
     ]
   }
