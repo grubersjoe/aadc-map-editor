@@ -34,11 +34,13 @@ const styles = {
   },
   marginRight: {
     marginRight: '1.5rem',
-  }
+  },
 };
 
 const MenuBar = (props) => {
-  const { classes, bounds, tileSize, ui, setAppState } = props;
+  const {
+    classes, bounds, tileSize, ui, setAppState,
+  } = props;
   const width = bounds.xMax - bounds.xMin;
   const height = bounds.yMax - bounds.yMin;
 
@@ -68,7 +70,11 @@ const MenuBar = (props) => {
               <Switch
                 checked={ui.animate}
                 onChange={(event, checked) => {
-                  setAppState({ ui: { animate: checked } });
+                  setAppState({
+                    ui: {
+                      animate: checked,
+                    },
+                  });
                 }}
               />
             }
@@ -93,7 +99,7 @@ const MenuBar = (props) => {
             onChange={(val) => {
               setAppState({
                 tileSize: val,
-              })
+              });
             }}
           />
 
@@ -104,7 +110,9 @@ const MenuBar = (props) => {
             max={50}
             className={classes.input}
             onChange={val => setAppState({
-              bounds: { xMax: val + bounds.xMin },
+              bounds: {
+                xMax: val + bounds.xMin,
+              },
             })}
           />
 
@@ -119,7 +127,9 @@ const MenuBar = (props) => {
             max={50}
             className={classes.input}
             onChange={val => setAppState({
-              bounds: { yMax: val + bounds.yMin },
+              bounds: {
+                yMax: val + bounds.yMin,
+              },
             })}
           />
         </Toolbar>
