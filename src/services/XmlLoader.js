@@ -1,8 +1,10 @@
-import { MapElemOrigin } from "../components/MapElem";
+import { MapElemOrigin, MapElemType } from '../components/MapElem';
 
 export const XmlTags = Object.freeze({
   TILE: 'tile',
   ROAD_SIGN: 'roadSign',
+  PEDESTRIAN_CROSSING: 'pedestrianCrossing',
+  PARKING_SPACE: 'parkingSpace',
 });
 
 export function parseXml(xmlString) {
@@ -27,8 +29,8 @@ export function parseXmlTags(xmlString, tagNames) {
   return nodes.map(node => ({
     x: parseFloat(node.getAttribute('x')),
     y: parseFloat(node.getAttribute('y')),
-    dir: parseInt(node.getAttribute('direction'), 10),
-    type: parseInt(node.getAttribute('id'), 10),
+    dir: parseInt(node.getAttribute('direction'), 10) || 0,
+    type: parseInt(node.getAttribute('id'), 10) || MapElemType.UNKNOWN,
     elemType: node.tagName,
     init: parseInt(node.getAttribute('init'), 10) || 0,
     origin: MapElemOrigin.FILE,

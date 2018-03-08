@@ -40,23 +40,31 @@ export const MapElemsMeta = {
     },
     2: {
       size: 0.26,
-      img: 'Parking place',
+      title: 'Parking place',
     },
     3: {
       size: 0.26,
-      img: 'Have way',
+      title: 'Have way',
     },
     5: {
       size: 0.26,
-      img: 'Give way',
+      title: 'Give way',
     },
     6: {
       size: 0.26,
-      img: 'Zebra',
+      title: 'Zebra',
     },
     10: {
       size: 0.26,
-      img: 'Proving ground',
+      title: 'Proving ground',
     },
+  },
+  pedestrianCrossing: {
+    size: 1,
+    title: 'Pedestrian crossing',
+  },
+  parkingSpace: {
+    size: 1,
+    title: 'Pedestrian crossing',
   },
 };

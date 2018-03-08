@@ -52,7 +52,7 @@ class App extends Component {
 
     if ([
       'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
-      '1', '2', '3', '4', '5', '6', '7', '8',
+      '1', '2', '3', '4', '5', '7', '8',
     ].includes(ev.key)) {
       ev.preventDefault();
     }
@@ -75,13 +75,12 @@ class App extends Component {
       case '3':
       case '4':
       case '5':
-      case '6':
       case '7':
       case '8':
         this.addTile(parseInt(ev.key, 10));
         break;
       default:
-        // nop
+      // nop
     }
   };
 
@@ -221,6 +220,7 @@ class App extends Component {
           color="secondary"
           className={classes.fabDownload}
           title="Export map to XML file"
+          style={{ zIndex: 1000 }}
         >
           <FileDownloadIcon />
         </Button>

@@ -5,6 +5,17 @@ import { MapElemsMeta } from '../images';
 import { degXmlToCss } from '../util/style';
 import { XmlTags } from '../services/XmlLoader';
 
+export const MapElemType = {
+  UNKNOWN: -1,
+  STRAIGHT: 1,
+  T_CROSSING: 2,
+  PLUS_CROSSING: 3,
+  LARGE_TURN: 4,
+  SMALL_TURN: 5,
+  S_TURN_RIGHT: 7,
+  S_TURN_LEFT: 8,
+};
+
 export const MapElemOrigin = {
   FILE: 'file',
   EDITOR: 'editor',
@@ -15,7 +26,9 @@ const MapElem = (props) => {
     tileSize, x, y, xMin, yMin, dir, type, elemType,
   } = props;
 
-  const imgMeta = MapElemsMeta[elemType][type];
+  const imgMeta = type === MapElemType.UNKNOWN ?
+    MapElemsMeta[elemType] :
+    MapElemsMeta[elemType][type];
 
   if (!imgMeta) {
     console.warn(`Unable to render <${elemType}> with type id ${type}`);
@@ -24,9 +37,13 @@ const MapElem = (props) => {
 
   let imgSrc;
   try {
-    imgSrc = require(`../images/${elemType}/${type}.svg`);
+    if (elemType === XmlTags.TILE || elemType === XmlTags.ROAD_SIGN) {
+      imgSrc = require(`../images/${elemType}/${type}.svg`);
+    } else {
+      imgSrc = require(`../images/other/${elemType}.svg`);
+    }
   } catch (e) {
-    imgSrc = require('../images/fallback.svg');
+    imgSrc = require('../images/other/fallback.svg');
     imgMeta.title = `Unknown sign with type id ${type}`;
     console.warn(`${e.message} Using fallback.`);
   }
@@ -34,8 +51,10 @@ const MapElem = (props) => {
   const elemSize = tileSize * imgMeta.size;
   let posX = (x * tileSize) - (xMin * tileSize);
   let posY = (y * tileSize) - (yMin * tileSize);
+  const zIndex = elemType === XmlTags.TILE ? 100 : 200;
 
-  if (elemType !== 'tile') {
+  // Center the object around set position (base position is bottom left)
+  if (elemType !== XmlTags.TILE) {
     posX -= elemSize / 2;
     posY -= elemSize / 2;
   }
@@ -49,6 +68,7 @@ const MapElem = (props) => {
       bottom: posY,
       transform: `rotate(${degXmlToCss(elemType, dir)}deg)`,
       backgroundColor: elemType === XmlTags.TILE ? `hsla(${type * 360 / 8}, 70%, 50%, 0.8)` : 'none',
+      zIndex,
     },
     img: {
       width: '100%',
@@ -64,7 +84,6 @@ const MapElem = (props) => {
 };
 
 MapElem.propTypes = {
-  // theme: PropTypes.object.isRequired,
   tileSize: PropTypes.number.isRequired,
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,

@@ -90,39 +90,53 @@ class LoadFile extends React.Component {
 
     reader.onload = (ev) => {
       try {
-        const tags = parseXmlTags(ev.target.result, [XmlTags.TILE, XmlTags.ROAD_SIGN]);
-        let xMax = Math.ceil(maxBy(tags, 'x').x) - this.props.xMin + 1;
-        let yMax = Math.ceil(maxBy(tags, 'y').y) - this.props.yMin + 1;
-
+        const elemTypes = [
+          XmlTags.TILE,
+          XmlTags.ROAD_SIGN,
+          XmlTags.PEDESTRIAN_CROSSING,
+          // XmlTags.PARKING_SPACE,
+        ];
+        const tags = parseXmlTags(ev.target.result, elemTypes);
         const mapElems = this.addKeys(tags);
+
+        const xMax = Math.ceil(maxBy(tags, 'x').x) - this.props.xMin + 1;
+        const yMax = Math.ceil(maxBy(tags, 'y').y) - this.props.yMin + 1;
 
         this.props.setMapElems(mapElems);
         this.props.setBounds({ xMax, yMax });
-        this.setState({ accepted: files, rejected: null });
+
+        this.setState({
+          accepted: files,
+          rejected: null,
+        });
       } catch (e) {
         console.error(e.message);
-        this.setState({ accepted: null, rejected: files });
+        this.setState({
+          accepted: null,
+          rejected: files,
+        });
       }
     };
 
     reader.onerror = (e) => {
       console.error(e.message);
-      this.setState({ accepted: null, rejected: files });
+      this.setState({
+        accepted: null,
+        rejected: files,
+      });
     };
   };
 
-  addKeys = (elems) => {
-    return elems.map((elem) => {
-      const {
-        elemType, type, x, y, dir, init,
-      } = elem;
+  addKeys = elems => elems.map((elem) => {
+    const {
+      elemType, type, x, y, dir, init,
+    } = elem;
 
-      // eslint-disable-next-line no-param-reassign
-      elem.key = hash(elemType + type + x + y + dir + init);
+    // eslint-disable-next-line no-param-reassign
+    elem.key = hash(elemType + type + x + y + dir + init);
 
-      return elem;
-    });
-  };
+    return elem;
+  });
 
   openModal = () => {
     this.setState({
@@ -147,6 +161,7 @@ class LoadFile extends React.Component {
           className={classes.button}
           onClick={this.openModal}
           title="Load XML input file"
+          style={{ zIndex: 1000 }}
         >
           <FolderOpenIcon />
         </Button>
