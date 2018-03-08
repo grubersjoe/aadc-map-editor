@@ -47,7 +47,7 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    minHeight: 80,
+    minHeight: 120,
     marginBottom: '1.5rem',
     backgroundColor: blueGrey[100],
     transition: 'background-color .3s ease-in-out',
@@ -76,33 +76,23 @@ class LoadFile extends React.Component {
     rejected: null,
   };
 
-  onTilesFileAccepted = (files) => {
-    this.loadFile(files, XmlTags.TILE);
-  };
-
-
-  onRoadSignsFileAccepted = (files) => {
-    this.loadFile(files, XmlTags.ROAD_SIGN);
+  onFileAccepted = (files) => {
+    this.loadXmlFile(files);
   };
 
   onFileRejected = (files) => {
     this.setState({ accepted: null, rejected: files });
   };
 
-  loadFile = (files, tagType) => {
+  loadXmlFile = (files) => {
     const reader = new FileReader();
     reader.readAsText(files[0]);
 
     reader.onload = (ev) => {
       try {
-        const tags = parseXmlTags(ev.target.result, [tagType]);
-        let xMax = Math.ceil(maxBy(tags, 'x').x) - this.props.xMin;
-        let yMax = Math.ceil(maxBy(tags, 'y').y) - this.props.yMin;
-
-        if (tagType === XmlTags.TILE) {
-          xMax += 1;
-          yMax += 1;
-        }
+        const tags = parseXmlTags(ev.target.result, [XmlTags.TILE, XmlTags.ROAD_SIGN]);
+        let xMax = Math.ceil(maxBy(tags, 'x').x) - this.props.xMin + 1;
+        let yMax = Math.ceil(maxBy(tags, 'y').y) - this.props.yMin + 1;
 
         const mapElems = this.addKeys(tags);
 
@@ -174,7 +164,7 @@ class LoadFile extends React.Component {
             </Typography>
 
             <Dropzone
-              onDropAccepted={this.onTilesFileAccepted}
+              onDropAccepted={this.onFileAccepted}
               onDropRejected={this.onFileRejected}
               accept="text/xml"
               preventDropOnDocument
@@ -184,24 +174,9 @@ class LoadFile extends React.Component {
               acceptClassName={classes.dropAccept}
               rejectClassName={classes.dropReject}
             >
-              <Typography type="subheading" style={{ color: 'inherit' }}>
-                Drop a <strong>tiles</strong> XML file here
-              </Typography>
-            </Dropzone>
-
-            <Dropzone
-              onDropAccepted={this.onRoadSignsFileAccepted}
-              onDropRejected={this.onFileRejected}
-              accept="text/xml"
-              preventDropOnDocument
-              disablePreview
-              className={classes.drop}
-              activeClassName={classes.dropActive}
-              acceptClassName={classes.dropAccept}
-              rejectClassName={classes.dropReject}
-            >
-              <Typography type="subheading" style={{ color: 'inherit' }}>
-                Drop a <strong>road signs</strong> XML file here
+              <Typography color="inherit" align="center" type="subheading">
+                Drop a <strong>tiles</strong> or <strong>road signs</strong> XML file here<br />
+                or click for a file dialogue
               </Typography>
             </Dropzone>
 
