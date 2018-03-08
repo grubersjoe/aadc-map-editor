@@ -26,11 +26,11 @@ const MapElem = (props) => {
     tileSize, x, y, xMin, yMin, dir, type, elemType,
   } = props;
 
-  const imgMeta = type === MapElemType.UNKNOWN ?
-    MapElemsMeta[elemType] :
-    MapElemsMeta[elemType][type];
+  const elemMeta = (elemType === XmlTags.TILE || elemType === XmlTags.ROAD_SIGN) ?
+    MapElemsMeta[elemType][type] :
+    MapElemsMeta[elemType];
 
-  if (!imgMeta) {
+  if (!elemMeta) {
     console.warn(`Unable to render <${elemType}> with type id ${type}`);
     return '';
   }
@@ -44,17 +44,18 @@ const MapElem = (props) => {
     }
   } catch (e) {
     imgSrc = require('../images/other/fallback.svg');
-    imgMeta.title = `Unknown sign with type id ${type}`;
+    elemMeta.title = `Unknown sign with type id ${type}`;
     console.warn(`${e.message} Using fallback.`);
   }
 
-  const elemSize = tileSize * imgMeta.size;
+  const elemSize = tileSize * elemMeta.size;
   let posX = (x * tileSize) - (xMin * tileSize);
   let posY = (y * tileSize) - (yMin * tileSize);
+  const cssDeg = degXmlToCss(elemType, dir);
   const zIndex = elemType === XmlTags.TILE ? 100 : 200;
 
   // Center the object around set position (base position is bottom left)
-  if (elemType !== XmlTags.TILE) {
+  if (elemType === XmlTags.ROAD_SIGN || elemType === XmlTags.PEDESTRIAN_CROSSING) {
     posX -= elemSize / 2;
     posY -= elemSize / 2;
   }
@@ -66,7 +67,7 @@ const MapElem = (props) => {
       height: elemSize,
       left: posX,
       bottom: posY,
-      transform: `rotate(${degXmlToCss(elemType, dir)}deg)`,
+      transform: `rotate(${cssDeg}deg)`,
       backgroundColor: elemType === XmlTags.TILE ? `hsla(${type * 360 / 8}, 70%, 50%, 0.8)` : 'none',
       zIndex,
     },
@@ -78,7 +79,7 @@ const MapElem = (props) => {
 
   return (
     <div style={styles.root}>
-      <img style={styles.img} src={imgSrc} title={imgMeta.title} alt={`Map elem at ${x}/${y}`} />
+      <img style={styles.img} src={imgSrc} title={elemMeta.title} alt={`Map elem at ${x}/${y}`} />
     </div>
   );
 };

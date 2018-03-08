@@ -16,8 +16,8 @@ const Cursor = (props) => {
     transition: animate ? 'left .1s, bottom .1s' : 'none',
     willChange: 'left, bottom',
     color: '#fff',
-    opacity: .8,
-    zIndex: 100,
+    opacity: 0.8,
+    zIndex: 1000,
   };
 
 

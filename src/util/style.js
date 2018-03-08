@@ -41,15 +41,36 @@ export function degXmlToCss(type, deg) {
         default:
           return deg;
       }
-    // case 'parkingSpace':
-    //   switch (deg) {
-    //     case 0:
-    //       return -90;
-    //     case 180:
-    //       return 90;
-    //     default:
-    //       return deg;
-    //   }
+    case 'parkingSpace':
+      switch (deg) {
+        case 0:
+          return -90;
+        case 90:
+          return 180;
+        case 180:
+          return 90;
+        default:
+          return deg;
+      }
+    default:
+      return deg;
+  }
+}
+
+export function correctDegWebToXml(deg, key) {
+  switch (key) {
+    case 'tile':
+      switch (deg) {
+        case 90:
+        case -90:
+          return deg * -1;
+        case 270:
+          return 90;
+        case 360:
+          return 0;
+        default:
+          return deg;
+      }
     default:
       return deg;
   }
