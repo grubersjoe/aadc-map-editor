@@ -1,8 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Grid = ({ tileSize, strokeColor, strokeWidth }) => (
-  <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+const Grid = ({
+  tileSize, visible, strokeColor, strokeWidth,
+}) => (
+  <svg
+    width="100%"
+    height="100%"
+    xmlns="http://www.w3.org/2000/svg"
+    style={{
+      visibility: visible ? 'visible' : 'hidden',
+    }}
+  >
     <defs>
       <pattern id="grid-pattern" width={tileSize} height={tileSize} patternUnits="userSpaceOnUse" fill="transparent">
         <rect width={tileSize} height={tileSize} fill="url(#smallGrid)" />
@@ -15,6 +24,7 @@ const Grid = ({ tileSize, strokeColor, strokeWidth }) => (
 
 Grid.propTypes = {
   tileSize: PropTypes.number.isRequired,
+  visible: PropTypes.bool.isRequired,
   strokeColor: PropTypes.string,
   strokeWidth: PropTypes.number,
 };

@@ -24,7 +24,7 @@ const Map = (props) => {
 
   return (
     <div id="Map" style={styles}>
-      {ui.grid && <Grid tileSize={tileSize} />}
+      <Grid tileSize={tileSize} visible={ui.grid} />
       <Cursor
         x={cursorX}
         y={cursorY}
