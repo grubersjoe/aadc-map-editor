@@ -45,7 +45,7 @@ const MenuBar = (props) => {
   const height = bounds.yMax - bounds.yMin;
 
   return (
-    <div className={classes.root}>
+    <div id="app-bar" className={classes.root}>
       <AppBar position="fixed">
         <Toolbar>
           <Typography type="title" color="inherit" className={classes.flex}>

@@ -11,3 +11,12 @@ code {
     font-family: 'Roboto Mono', monospace;
     font-size: 90%;
 }
+
+/* FIXME: find better solution... */
+#app-bar input {
+    color: #fff;
+}
+
+#app-bar label > span:last-of-type {
+    color: #fff !important;;
+}
