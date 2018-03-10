@@ -92,7 +92,7 @@ class LoadFile extends React.Component {
           XmlTags.TILE,
           XmlTags.ROAD_SIGN,
           XmlTags.PEDESTRIAN_CROSSING,
-          XmlTags.PARKING_SPACE,
+          // XmlTags.PARKING_SPACE,
         ];
         const tags = parseXmlTags(ev.target.result, elemTypes);
         const mapElems = this.addKeys(tags);
