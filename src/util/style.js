@@ -27,20 +27,8 @@ export function getModalStyle() {
 export function degXmlToCss(type, deg) {
   switch (type) {
     case 'tile':
-      return Math.abs(deg) === 90 ? deg * -1 : deg;
     case 'roadSign':
-      switch (deg) {
-        case 0:
-          return 90;
-        case 90:
-          return 0;
-        case -90:
-          return 180;
-        case 180:
-          return -90;
-        default:
-          return deg;
-      }
+      return Math.abs(deg) === 90 ? deg * -1 : deg;
     case 'parkingSpace':
       switch (deg) {
         case 0:
@@ -57,7 +45,7 @@ export function degXmlToCss(type, deg) {
   }
 }
 
-export function correctDegWebToXml(deg, key) {
+export function degCssToXml(deg, key) {
   switch (key) {
     case 'tile':
       switch (deg) {
