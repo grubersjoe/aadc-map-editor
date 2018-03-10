@@ -9,20 +9,23 @@ import appTheme from '../theme';
 import MenuBar from '../components/MenuBar';
 import Map from '../components/Map';
 import FileModal from '../components/LoadFile';
+import ResetMapDialog from '../components/ResetMapDialog';
 import { XmlTags } from '../services/XmlLoader';
 import { MapElemOrigin } from '../components/MapElem';
+import { loadSavedState, saveState } from '../services/LocalStorage';
 
 const styles = theme => ({
   fabDownload: {
     position: 'fixed',
-    bottom: theme.spacing.unit * 4,
+    bottom: theme.spacing.unit * 4 + theme.spacing.unit * 8.5,
     right: theme.spacing.unit * 3,
+    zIndex: 1000,
   },
 });
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends Component {
-  state = {
+  state = loadSavedState() || {
     cursor: {
       x: 0,
       y: 0,
@@ -43,6 +46,9 @@ class App extends Component {
 
   componentDidMount() {
     window.addEventListener('keydown', this.onKeydown);
+    window.addEventListener('unload', () => {
+      saveState(this.state);
+    });
   }
 
   onKeydown = (ev) => {
@@ -51,9 +57,9 @@ class App extends Component {
     }
 
     if ([
-      'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
-      '1', '2', '3', '4', '5', '7', '8',
-    ].includes(ev.key)) {
+        'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
+        '1', '2', '3', '4', '5', '7', '8',
+      ].includes(ev.key)) {
       ev.preventDefault();
     }
 
@@ -121,16 +127,21 @@ class App extends Component {
   /**
    * Set map elements: adds only unique new elements
    * @param elems A list of map elements
+   * @param force Overwrites current map element list
    */
-  setMapElems = (elems) => {
-    // Keep elements, which the user has added and non-duplicates (check hash)
-    const keys = elems.map(elem => elem.key);
-    const rest = filter(this.state.mapElems, elem =>
-      elem.origin === MapElemOrigin.EDITOR || !includes(keys, elem.key));
+  setMapElems = (elems, force = false) => {
+    if (force) {
+      this.setState({ mapElems: elems });
+    } else {
+      // Keep elements, which the user has added and non-duplicates (check hash)
+      const keys = elems.map(elem => elem.key);
+      const rest = filter(this.state.mapElems, elem =>
+        elem.origin === MapElemOrigin.EDITOR || !includes(keys, elem.key));
 
-    this.setState({
-      mapElems: [...rest, ...elems],
-    });
+      this.setState({
+        mapElems: [...rest, ...elems],
+      });
+    }
   };
 
   /**
@@ -217,13 +228,17 @@ class App extends Component {
 
         <Button
           fab
-          color="secondary"
+          color="primary"
           className={classes.fabDownload}
           title="Export map to XML file"
           style={{ zIndex: 1000 }}
         >
           <FileDownloadIcon />
         </Button>
+
+        <ResetMapDialog
+          setMapElems={this.setMapElems}
+        />
       </MuiThemeProvider>
     );
   };

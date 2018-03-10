@@ -13,9 +13,9 @@ import { XmlTags, parseXmlTags } from '../services/XmlLoader';
 import { hash } from '../util/hash';
 
 const styles = theme => ({
-  button: {
+  fabLoad: {
     position: 'fixed',
-    bottom: theme.spacing.unit * 13,
+    bottom: theme.spacing.unit * 4 + theme.spacing.unit * 8.5 * 2,
     right: theme.spacing.unit * 3,
   },
   modalButton: {
@@ -25,13 +25,10 @@ const styles = theme => ({
       backgroundColor: theme.palette.secondary.dark,
     },
   },
-  backdrop: {
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-  },
   paper: {
     position: 'fixed',
     width: theme.spacing.unit * 54,
-    padding: '1.5rem',
+    padding: '1.25rem',
     backgroundColor: blueGrey[50],
     boxShadow: theme.shadows[6],
     color: blueGrey[900],
@@ -39,8 +36,9 @@ const styles = theme => ({
   },
   headline: {
     backgroundColor: theme.palette.secondary.dark,
-    margin: '-1.5rem -1.5rem 1.5rem -1.5rem',
-    padding: `${theme.spacing.unit * 1.5}px ${theme.spacing.unit * 3}px`,
+    margin: '-1.25rem -1.25rem 1.25rem -1.25rem',
+    padding: `${theme.spacing.unit * 1.75}px ${theme.spacing.unit * 3}px`,
+    color: theme.palette.common.white,
   },
   drop: {
     display: 'flex',
@@ -48,7 +46,7 @@ const styles = theme => ({
     justifyContent: 'center',
     flexDirection: 'column',
     minHeight: 120,
-    marginBottom: '1.5rem',
+    marginBottom: '.75rem',
     backgroundColor: blueGrey[100],
     transition: 'background-color .3s ease-in-out',
     '&:hover': {
@@ -65,7 +63,7 @@ const styles = theme => ({
     background: red[300],
   },
   messages: {
-    marginBottom: '1.5rem',
+    marginBottom: '1.25rem',
   },
 });
 
@@ -157,8 +155,8 @@ class LoadFile extends React.Component {
       <div>
         <Button
           fab
-          color="secondary"
-          className={classes.button}
+          color="primary"
+          className={classes.fabLoad}
           onClick={this.openModal}
           title="Load XML input file"
           style={{ zIndex: 1000 }}
@@ -174,7 +172,7 @@ class LoadFile extends React.Component {
           }}
         >
           <div style={getModalStyle()} className={classes.paper}>
-            <Typography type="headline" className={classes.headline}>
+            <Typography type="title" className={classes.headline}>
               Load input XML files
             </Typography>
 
@@ -228,7 +226,7 @@ class LoadFile extends React.Component {
               </Typography>
             }
 
-            <Button size="large" fullWidth className={classes.modalButton} onClick={this.closeModal}>
+            <Button color="primary" size="large" fullWidth className={classes.modalButton} onClick={this.closeModal}>
               Done
             </Button>
           </div>
