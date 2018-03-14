@@ -5,8 +5,9 @@
   "author": "Jonathan Gruber",
   "email": "gruberjonathan@gmail.com",
   "url": "https://grubersjoe.de",
-  "homepage": "https://grubersjoe.de/playground/audi-react",
+  "homepage": "https://grubersjoe.github.io/aadc-map-editor",
   "dependencies": {
+    "gh-pages": "^1.1.0",
     "glamor": "^2.20.40",
     "lodash": "^4.17.5",
     "material-ui": "^1.0.0-beta.30",
@@ -19,6 +20,8 @@
     "typeface-roboto": "^0.0.54"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
