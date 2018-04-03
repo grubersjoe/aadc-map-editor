@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, Typography, Modal, Button } from 'material-ui';
-import { blueGrey, red, green } from 'material-ui/colors';
+import { Button, Modal, Typography, withStyles } from 'material-ui';
+import { blueGrey, green, red } from 'material-ui/colors';
 import FolderOpenIcon from 'material-ui-icons/FolderOpen';
 import CheckCircleIcon from 'material-ui-icons/CheckCircle';
 import NotInterestedIcon from 'material-ui-icons/NotInterested';
@@ -9,7 +9,7 @@ import Dropzone from 'react-dropzone';
 import maxBy from 'lodash/maxBy';
 
 import { getModalStyle } from '../util/style';
-import { XmlTags, parseXmlTags } from '../services/XmlLoader';
+import { parseXmlTags, XmlTags } from '../services/XmlLoader';
 import { hash } from '../util/hash';
 
 const styles = theme => ({
