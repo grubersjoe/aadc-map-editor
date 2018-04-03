@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, MuiThemeProvider, Button } from 'material-ui';
+import { Button, MuiThemeProvider, withStyles } from 'material-ui';
 import FileDownloadIcon from 'material-ui-icons/FileDownload';
 import includes from 'lodash/includes';
 import filter from 'lodash/filter';
@@ -57,9 +57,9 @@ class App extends Component {
     }
 
     if ([
-        'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
-        '1', '2', '3', '4', '5', '7', '8',
-      ].includes(ev.key)) {
+      'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Delete',
+      '1', '2', '3', '4', '5', '7', '8',
+    ].includes(ev.key)) {
       ev.preventDefault();
     }
 
@@ -75,6 +75,9 @@ class App extends Component {
         break;
       case 'ArrowRight':
         this.moveCursor(1, 0);
+        break;
+      case 'Delete':
+        this.deleteTile();
         break;
       case '1':
       case '2':
@@ -174,6 +177,20 @@ class App extends Component {
     });
   };
 
+  /**
+   * Delete the tile at current cursor position
+   */
+  deleteTile = () => {
+    const { x, y } = this.state.cursor;
+    const mapElems = filter(this.state.mapElems, elem => !(elem.x === x && elem.y === y));
+    this.setState({ mapElems });
+  };
+
+  /**
+   * Move the cursor by a specific offset in x and y direction
+   * @param xOffset X offset
+   * @param yOffset Y offset
+   */
   moveCursor = (xOffset = 0, yOffset = 0) => {
     const { bounds } = this.state;
 
