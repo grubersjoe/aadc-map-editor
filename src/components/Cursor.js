@@ -18,7 +18,7 @@ const Cursor = (props) => {
     backgroundColor: theme.palette.primary.main,
     color: '#fff',
     fontSize: tileSize / 5,
-    fontWeight: 700,
+    fontWeight: 500,
     transition: animate ? 'left .1s, bottom .1s' : 'none',
     willChange: 'left, bottom',
     opacity: 0.85,
