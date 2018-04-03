@@ -25,7 +25,7 @@ const styles = theme => ({
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends Component {
-  state = loadSavedState() || {
+  state = Object.assign({
     cursor: {
       x: 0,
       y: 0,
@@ -41,8 +41,10 @@ class App extends Component {
     ui: {
       animate: false,
       grid: true,
+      tiles: true,
+      signs: true,
     },
-  };
+  }, loadSavedState());
 
   componentDidMount() {
     window.addEventListener('keydown', this.onKeydown);
@@ -115,6 +117,12 @@ class App extends Component {
     });
 
     this.setState(changes, callback);
+  };
+
+  toggleUiElems = (elems) => {
+    this.setState({
+      ui: Object.assign({}, this.state.ui, elems),
+    });
   };
 
   /**
@@ -247,6 +255,7 @@ class App extends Component {
           bounds={bounds}
           tileSize={tileSize}
           ui={ui}
+          toggleUiElems={this.toggleUiElems}
           setAppState={this.setAppState}
         />
 

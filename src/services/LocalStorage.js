@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'mapElems';
+const STORAGE_KEY = 'aadc-map-editor';
 
 export function saveState(elems) {
   const serializedElems = JSON.stringify(elems);
@@ -15,7 +15,7 @@ export function loadSavedState() {
     return JSON.parse(serializedElems);
   } catch (err) {
     console.warn(`Unable to load save state from local storage: ${err.message}`);
-    return [];
+    return {};
   }
 }
 
