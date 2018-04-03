@@ -25,6 +25,10 @@ export function getModalStyle() {
 }
 
 export function degXmlToCss(type, deg) {
+  if (typeof type !== 'string') {
+    throw new Error('Invalid `type` parameter');
+  }
+
   switch (type) {
     case 'tile':
     case 'roadSign':
@@ -45,8 +49,12 @@ export function degXmlToCss(type, deg) {
   }
 }
 
-export function degCssToXml(deg, key) {
-  switch (key) {
+export function degCssToXml(type, deg) {
+  if (typeof type !== 'string') {
+    throw new Error('Invalid `type` parameter');
+  }
+
+  switch (type) {
     case 'tile':
       switch (deg) {
         case 90:
