@@ -248,7 +248,6 @@ class App extends Component {
     return (
       <MuiThemeProvider theme={THEME}>
         <MenuBar
-          cursor={cursor}
           bounds={bounds}
           tileSize={tileSize}
           ui={ui}

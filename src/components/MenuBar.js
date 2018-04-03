@@ -43,7 +43,7 @@ const styles = theme => ({
 
 const MenuBar = (props) => {
   const {
-    classes, cursor, bounds, tileSize, ui, toggleUiElems, setTileSize, setBounds,
+    classes, bounds, tileSize, ui, toggleUiElems, setTileSize, setBounds,
   } = props;
   const width = bounds.xMax - bounds.xMin;
   const height = bounds.yMax - bounds.yMin;
@@ -157,7 +157,6 @@ const MenuBar = (props) => {
 
 MenuBar.propTypes = {
   classes: PropTypes.object.isRequired,
-  cursor: PropTypes.object.isRequired,
   bounds: PropTypes.object.isRequired,
   tileSize: PropTypes.number.isRequired,
   ui: PropTypes.object.isRequired,

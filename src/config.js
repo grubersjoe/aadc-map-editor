@@ -1,7 +1,7 @@
 import { createMuiTheme } from 'material-ui/styles/index';
 import { blueGrey, cyan, red } from 'material-ui/colors';
 
-export const DEBUG = true;
+export const DEBUG = false;
 
 export const THEME = createMuiTheme({
   common: {
