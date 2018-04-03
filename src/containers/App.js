@@ -79,6 +79,12 @@ class App extends Component {
       case 'Delete':
         this.deleteTile();
         break;
+      case 'r':
+        this.rotateTile();
+        break;
+      case 'R':
+        this.rotateTile(-1);
+        break;
       case '1':
       case '2':
       case '3':
@@ -153,7 +159,7 @@ class App extends Component {
    * @param y Y coordinate
    * @returns {Array} List of map elem objects
    */
-  getMapElem = (x, y) => filter(this.state.mapElems, { x, y });
+  // getMapElemsAt = (x, y) => filter(this.state.mapElems, { x, y });
 
   /**
    * Add a specific tile element with default attributes
@@ -161,7 +167,7 @@ class App extends Component {
    */
   addTile = (type) => {
     const { x, y } = this.state.cursor;
-    const mapElem = {
+    const tile = {
       x,
       y,
       dir: 0,
@@ -173,7 +179,7 @@ class App extends Component {
     };
 
     this.setState({
-      mapElems: [...this.state.mapElems, mapElem],
+      mapElems: [...this.state.mapElems, tile],
     });
   };
 
@@ -182,7 +188,24 @@ class App extends Component {
    */
   deleteTile = () => {
     const { x, y } = this.state.cursor;
-    const mapElems = filter(this.state.mapElems, elem => !(elem.x === x && elem.y === y));
+    const mapElems = filter(this.state.mapElems, tile => !(tile.x === x && tile.y === y));
+    this.setState({ mapElems });
+  };
+
+  /**
+   * Rotate the tile at current cursor position
+   * @param rotDir Rotation direction
+   */
+  rotateTile = (rotDir = 1) => {
+    const { x, y } = this.state.cursor;
+    const mapElems = this.state.mapElems.map((tile) => {
+      if (tile.x === x && tile.y === y) {
+        // eslint-disable-next-line no-param-reassign
+        tile.dir = (tile.dir + 90 * rotDir) % 360;
+      }
+      return tile;
+    });
+
     this.setState({ mapElems });
   };
 

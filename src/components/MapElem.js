@@ -51,7 +51,6 @@ const MapElem = (props) => {
   const elemSize = tileSize * elemMeta.size;
   let posX = (x * tileSize) - (xMin * tileSize);
   let posY = (y * tileSize) - (yMin * tileSize);
-  const cssDeg = degXmlToCss(elemType, dir);
   const zIndex = elemType === XmlTags.TILE ? 100 : 200;
 
   // Center the object around set position (base position is bottom left)
@@ -67,7 +66,7 @@ const MapElem = (props) => {
       height: elemSize,
       left: posX,
       bottom: posY,
-      transform: `rotate(${cssDeg}deg)`,
+      transform: `rotate(${dir}deg)`,
       backgroundColor: elemType === XmlTags.TILE ? `hsla(${type * 360 / 8}, 70%, 50%, 0.8)` : 'none',
       zIndex,
     },
