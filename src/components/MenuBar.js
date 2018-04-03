@@ -1,18 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import { AppBar, Toolbar, Typography, FormControlLabel } from 'material-ui';
+import { AppBar, FormControlLabel, Toolbar, Typography } from 'material-ui';
 import ClearIcon from 'material-ui-icons/Clear';
+import { blueGrey } from 'material-ui/colors';
 
 import NumberInput from './NumberInput';
 import Switch from './Switch';
 
-const styles = {
+const styles = theme => ({
   root: {
     width: '100%',
   },
   flex: {
     flex: 1,
+  },
+  marginRight: {
+    marginRight: theme.spacing.unit * 3,
   },
   input: {
     fontSize: 20,
@@ -32,14 +36,19 @@ const styles = {
     fontSize: 20,
     color: 'rgba(255, 255, 255, 0.7)',
   },
-  marginRight: {
-    marginRight: '1.5rem',
+  pos: {
+    marginLeft: theme.spacing.unit * 4,
+    marginRight: theme.spacing.unit * -3,
+    padding: `0 ${theme.spacing.unit * 2}px`,
+    backgroundColor: blueGrey[700],
+    lineHeight: `${theme.spacing.unit * 8}px`,
+    fontWeight: 'normal',
   },
-};
+});
 
 const MenuBar = (props) => {
   const {
-    classes, bounds, tileSize, ui, setAppState,
+    classes, cursor, bounds, tileSize, ui, setAppState,
   } = props;
   const width = bounds.xMax - bounds.xMin;
   const height = bounds.yMax - bounds.yMin;
@@ -48,7 +57,7 @@ const MenuBar = (props) => {
     <div id="app-bar" className={classes.root}>
       <AppBar position="fixed">
         <Toolbar>
-          <Typography type="title" color="inherit" className={classes.flex}>
+          <Typography variant="title" color="inherit" className={classes.flex}>
             AADC Map Editor
           </Typography>
 
@@ -62,7 +71,7 @@ const MenuBar = (props) => {
               />
             }
             label="Grid"
-            style={styles.marginRight}
+            className={classes.marginRight}
           />
 
           <FormControlLabel
@@ -116,7 +125,7 @@ const MenuBar = (props) => {
             })}
           />
 
-          <span style={styles.cross}>
+          <span className={classes.cross}>
             <ClearIcon />
           </span>
 
@@ -132,6 +141,12 @@ const MenuBar = (props) => {
               },
             })}
           />
+
+          <Typography variant="title" color="inherit" className={classes.pos}>
+            <span title="X">{String(cursor.x).padStart(2, 0)}</span>
+            &nbsp;/&nbsp;
+            <span title="Y">{String(cursor.y).padStart(2, 0)}</span>
+          </Typography>
         </Toolbar>
       </AppBar>
     </div>
@@ -140,10 +155,11 @@ const MenuBar = (props) => {
 
 MenuBar.propTypes = {
   classes: PropTypes.object.isRequired,
+  cursor: PropTypes.object.isRequired,
   bounds: PropTypes.object.isRequired,
   tileSize: PropTypes.number.isRequired,
   ui: PropTypes.object.isRequired,
   setAppState: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(MenuBar);
+export default withStyles(styles, { withTheme: true })(MenuBar);

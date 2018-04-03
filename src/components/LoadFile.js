@@ -154,7 +154,7 @@ class LoadFile extends React.Component {
     return (
       <div>
         <Button
-          fab
+          variant="fab"
           color="primary"
           className={classes.fabLoad}
           onClick={this.openModal}
@@ -172,7 +172,7 @@ class LoadFile extends React.Component {
           }}
         >
           <div style={getModalStyle()} className={classes.paper}>
-            <Typography type="title" className={classes.headline}>
+            <Typography variant="title" className={classes.headline}>
               Load input XML files
             </Typography>
 
@@ -187,7 +187,7 @@ class LoadFile extends React.Component {
               acceptClassName={classes.dropAccept}
               rejectClassName={classes.dropReject}
             >
-              <Typography color="inherit" align="center" type="subheading">
+              <Typography color="inherit" align="center" variant="subheading">
                 Drop a <strong>tiles</strong> or <strong>road signs</strong> XML file here<br />
                 or click for a file dialogue
               </Typography>
@@ -195,7 +195,7 @@ class LoadFile extends React.Component {
 
             {
               this.state.accepted &&
-              <Typography type="subheading" className={classes.messages} style={{ color: green[600] }}>
+              <Typography variant="subheading" className={classes.messages} style={{ color: green[600] }}>
                 <CheckCircleIcon
                   style={{
                     position: 'relative',
@@ -212,7 +212,7 @@ class LoadFile extends React.Component {
 
             {
               this.state.rejected &&
-              <Typography type="subheading" className={classes.messages} style={{ color: red[600] }}>
+              <Typography variant="subheading" className={classes.messages} style={{ color: red[600] }}>
                 <NotInterestedIcon
                   style={{
                     position: 'relative',

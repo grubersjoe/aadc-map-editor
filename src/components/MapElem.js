@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { MapElemsMeta } from '../images';
-import { degXmlToCss } from '../util/style';
 import { XmlTags } from '../services/XmlLoader';
 
 export const MapElemType = {

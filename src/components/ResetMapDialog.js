@@ -52,7 +52,7 @@ class ResetMapDialog extends React.Component {
     return (
       <div>
         <Button
-          fab
+          variant="fab"
           color="primary"
           className={classes.fabReset}
           title="Reset map"

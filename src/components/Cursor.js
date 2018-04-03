@@ -4,7 +4,7 @@ import { withTheme } from 'material-ui';
 
 const Cursor = (props) => {
   const {
-    theme, x, y, xMin, yMin, tileSize, animate
+    theme, x, y, xMin, yMin, tileSize, animate,
   } = props;
   const styles = {
     position: 'absolute',
@@ -12,17 +12,16 @@ const Cursor = (props) => {
     height: tileSize,
     left: (x * tileSize) - (xMin * tileSize),
     bottom: (y * tileSize) - (yMin * tileSize),
-    backgroundColor: theme.palette.primary.light,
+    backgroundColor: theme.palette.primary.main,
     transition: animate ? 'left .1s, bottom .1s' : 'none',
     willChange: 'left, bottom',
-    color: '#fff',
-    opacity: 0.8,
+    opacity: 0.85,
     zIndex: 1000,
   };
 
 
   return (
-    <div id="Cursor" style={styles}>x: {x}<br />y: {y}</div>
+    <div id="Cursor" style={styles} />
   );
 };
 

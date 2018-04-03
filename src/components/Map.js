@@ -7,7 +7,7 @@ import MapElem from './MapElem';
 
 const Map = (props) => {
   const {
-    mapElems, bounds, tileSize, cursorX, cursorY, ui,
+    mapElems, bounds, tileSize, cursor, ui,
   } = props;
 
   const width = bounds.xMax - bounds.xMin;
@@ -26,8 +26,8 @@ const Map = (props) => {
     <div id="Map" style={styles}>
       <Grid tileSize={tileSize} visible={ui.grid} />
       <Cursor
-        x={cursorX}
-        y={cursorY}
+        x={cursor.x}
+        y={cursor.y}
         xMin={bounds.xMin}
         yMin={bounds.yMin}
         tileSize={tileSize}
@@ -60,8 +60,10 @@ const Map = (props) => {
 };
 
 Map.defaultProps = {
-  cursorX: 0,
-  cursorY: 0,
+  cursor: {
+    x: 0,
+    y: 0,
+  },
   ui: {
     grid: true,
   },
@@ -69,8 +71,7 @@ Map.defaultProps = {
 
 Map.propTypes = {
   mapElems: PropTypes.arrayOf(PropTypes.object).isRequired,
-  cursorX: PropTypes.number,
-  cursorY: PropTypes.number,
+  cursor: PropTypes.object,
   bounds: PropTypes.object.isRequired,
   tileSize: PropTypes.number.isRequired,
   ui: PropTypes.object,

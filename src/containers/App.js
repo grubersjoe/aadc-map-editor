@@ -236,14 +236,14 @@ class App extends Component {
 
   render = () => {
     const { classes } = this.props;
-    const { x, y } = this.state.cursor;
     const {
-      mapElems, bounds, ui, tileSize,
+      mapElems, cursor, bounds, ui, tileSize,
     } = this.state;
 
     return (
       <MuiThemeProvider theme={appTheme}>
         <MenuBar
+          cursor={cursor}
           bounds={bounds}
           tileSize={tileSize}
           ui={ui}
@@ -252,8 +252,7 @@ class App extends Component {
 
         <Map
           mapElems={mapElems}
-          cursorX={x}
-          cursorY={y}
+          cursor={cursor}
           bounds={bounds}
           tileSize={tileSize}
           setAppState={this.setAppState}
@@ -268,7 +267,7 @@ class App extends Component {
         />
 
         <Button
-          fab
+          variant="fab"
           color="primary"
           className={classes.fabDownload}
           title="Export map to XML file"
