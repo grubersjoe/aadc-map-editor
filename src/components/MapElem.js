@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { MapElemsMeta } from '../images';
 import { XmlTags } from '../services/XmlLoader';
+import { DEBUG } from '../config';
 
 export const MapElemType = {
   UNKNOWN: -1,
@@ -30,7 +31,9 @@ const MapElem = (props) => {
     MapElemsMeta[elemType];
 
   if (!elemMeta) {
-    console.warn(`Unable to render <${elemType}> with type id ${type}`);
+    if (DEBUG) {
+      console.warn(`Unable to render <${elemType}> with type id ${type}`);
+    }
     return '';
   }
 
@@ -44,7 +47,9 @@ const MapElem = (props) => {
   } catch (e) {
     imgSrc = require('../images/other/fallback.svg');
     elemMeta.title = `Unknown sign with type id ${type}`;
-    console.warn(`${e.message} Using fallback.`);
+    if (DEBUG) {
+      console.warn(`${e.message} Using fallback.`);
+    }
   }
 
   const elemSize = tileSize * elemMeta.size;

@@ -6,7 +6,7 @@ import merge from 'lodash/merge';
 import includes from 'lodash/includes';
 import filter from 'lodash/filter';
 
-import appTheme from '../theme';
+import { THEME } from '../config';
 import MenuBar from '../components/MenuBar';
 import Map from '../components/Map';
 import FileModal from '../components/LoadFile';
@@ -246,7 +246,7 @@ class App extends Component {
     } = this.state;
 
     return (
-      <MuiThemeProvider theme={appTheme}>
+      <MuiThemeProvider theme={THEME}>
         <MenuBar
           cursor={cursor}
           bounds={bounds}
@@ -282,7 +282,6 @@ class App extends Component {
           <FileDownloadIcon />
         </Button>
 
-        {/* FIXME: reset map is not really working well */}
         <ResetMapDialog
           setMapElems={this.setMapElems}
         />

@@ -1,3 +1,5 @@
+import { DEBUG } from '../config';
+
 const STORAGE_KEY = 'aadc-map-editor';
 
 export function saveState(elems) {
@@ -5,7 +7,9 @@ export function saveState(elems) {
   try {
     localStorage.setItem(STORAGE_KEY, serializedElems);
   } catch (err) {
-    console.warn(`Unable to save current state to local storage: ${err.message}`);
+    if (DEBUG) {
+      console.warn(`Unable to save current state to local storage: ${err.message}`);
+    }
   }
 }
 
@@ -14,7 +18,9 @@ export function loadSavedState() {
     const serializedElems = localStorage.getItem(STORAGE_KEY);
     return JSON.parse(serializedElems);
   } catch (err) {
-    console.warn(`Unable to load save state from local storage: ${err.message}`);
+    if (DEBUG) {
+      console.warn(`Unable to load save state from local storage: ${err.message}`);
+    }
     return {};
   }
 }

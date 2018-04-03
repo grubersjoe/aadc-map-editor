@@ -1,7 +1,9 @@
 import { createMuiTheme } from 'material-ui/styles/index';
 import { blueGrey, cyan, red } from 'material-ui/colors';
 
-export default createMuiTheme({
+export const DEBUG = true;
+
+export const THEME = createMuiTheme({
   common: {
     white: '#fff',
   },

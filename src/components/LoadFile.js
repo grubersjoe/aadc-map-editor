@@ -11,6 +11,7 @@ import maxBy from 'lodash/maxBy';
 import { getModalStyle } from '../util/style';
 import { parseXmlTags, XmlTags } from '../services/XmlLoader';
 import { hash } from '../util/hash';
+import { DEBUG } from '../config';
 
 const styles = theme => ({
   fabLoad: {
@@ -108,7 +109,9 @@ class LoadFile extends React.Component {
           rejected: null,
         });
       } catch (e) {
-        console.error(e.message);
+        if (DEBUG) {
+          console.error(e.message);
+        }
         this.setState({
           accepted: null,
           rejected: files,
@@ -117,7 +120,9 @@ class LoadFile extends React.Component {
     };
 
     reader.onerror = (e) => {
-      console.error(e.message);
+      if (DEBUG) {
+        console.error(e.message);
+      }
       this.setState({
         accepted: null,
         rejected: files,

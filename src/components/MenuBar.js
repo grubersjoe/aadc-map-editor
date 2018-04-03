@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import { AppBar, FormControlLabel, Toolbar, Typography } from 'material-ui';
 import ClearIcon from 'material-ui-icons/Clear';
-import { blueGrey } from 'material-ui/colors';
 
 import NumberInput from './NumberInput';
 import Switch from './Switch';
@@ -38,12 +37,7 @@ const styles = theme => ({
     color: 'rgba(255, 255, 255, 0.7)',
   },
   pos: {
-    marginLeft: theme.spacing.unit * 4,
-    marginRight: theme.spacing.unit * -3,
-    padding: `0 ${theme.spacing.unit * 2}px`,
-    backgroundColor: blueGrey[700],
-    lineHeight: `${theme.spacing.unit * 8}px`,
-    fontWeight: 'normal',
+    marginLeft: theme.spacing.unit * 5,
   },
 });
 
@@ -120,7 +114,7 @@ const MenuBar = (props) => {
             format={num => `${num}%`}
             className={classes.input}
             style={{
-              marginLeft: '2rem',
+              marginLeft: '2.5rem',
               marginRight: '2rem',
             }}
             onChange={val => setTileSize(val)}
@@ -148,11 +142,13 @@ const MenuBar = (props) => {
             onChange={val => setBounds({ yMax: parseInt(val, 10) + bounds.yMin }, true)}
           />
 
+          {/*
           <Typography variant="title" color="inherit" className={classes.pos}>
             <span title="X">{String(cursor.x).padStart(2, 0)}</span>
             &nbsp;/&nbsp;
             <span title="Y">{String(cursor.y).padStart(2, 0)}</span>
           </Typography>
+          */}
         </Toolbar>
       </AppBar>
     </div>

@@ -6,13 +6,19 @@ const Cursor = (props) => {
   const {
     theme, x, y, xMin, yMin, tileSize, animate,
   } = props;
-  const styles = {
+  const cursorStyle = {
     position: 'absolute',
     width: tileSize,
     height: tileSize,
     left: (x * tileSize) - (xMin * tileSize),
     bottom: (y * tileSize) - (yMin * tileSize),
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: theme.palette.primary.main,
+    color: '#fff',
+    fontSize: tileSize / 5,
+    fontWeight: 700,
     transition: animate ? 'left .1s, bottom .1s' : 'none',
     willChange: 'left, bottom',
     opacity: 0.85,
@@ -21,7 +27,7 @@ const Cursor = (props) => {
 
 
   return (
-    <div id="Cursor" style={styles} />
+    <div id="Cursor" style={cursorStyle}>{x}&nbsp;/&nbsp;{y}</div>
   );
 };
 
