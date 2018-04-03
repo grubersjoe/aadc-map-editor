@@ -77,7 +77,7 @@ class App extends Component {
         this.moveCursor(1, 0);
         break;
       case 'Delete':
-        this.deleteTile();
+        this.deleteAtCursor();
         break;
       case 'r':
         this.rotateTile();
@@ -178,6 +178,7 @@ class App extends Component {
       origin: MapElemOrigin.EDITOR,
     };
 
+    this.deleteAtCursor();
     this.setState({
       mapElems: [...this.state.mapElems, tile],
     });
@@ -186,9 +187,9 @@ class App extends Component {
   /**
    * Delete the tile at current cursor position
    */
-  deleteTile = () => {
+  deleteAtCursor = () => {
     const { x, y } = this.state.cursor;
-    const mapElems = filter(this.state.mapElems, tile => !(tile.x === x && tile.y === y));
+    const mapElems = filter(this.state.mapElems, elem => !(elem.x === x && elem.y === y));
     this.setState({ mapElems });
   };
 
@@ -199,7 +200,7 @@ class App extends Component {
   rotateTile = (rotDir = 1) => {
     const { x, y } = this.state.cursor;
     const mapElems = this.state.mapElems.map((tile) => {
-      if (tile.x === x && tile.y === y) {
+      if (tile.elemType === XmlTags.TILE && tile.x === x && tile.y === y) {
         // eslint-disable-next-line no-param-reassign
         tile.dir = (tile.dir + 90 * rotDir) % 360;
       }
