@@ -7,13 +7,13 @@ import includes from 'lodash/includes';
 import filter from 'lodash/filter';
 
 import { THEME } from '../config';
+import { XmlTags } from '../services/XmlLoader';
 import MenuBar from '../components/MenuBar';
 import Map from '../components/Map';
-import FileModal from '../components/LoadFile';
 import ResetMapDialog from '../components/ResetMapDialog';
-import { XmlTags } from '../services/XmlLoader';
-import { MapElemOrigin } from '../components/MapElem';
 import { loadSavedState, saveState } from '../services/LocalStorage';
+import { MapElemOrigin } from '../components/MapElem';
+import Dropzone from '../components/FileDropzone';
 
 const styles = theme => ({
   fabDownload: {
@@ -256,20 +256,20 @@ class App extends Component {
           setBounds={this.setBounds}
         />
 
-        <Map
-          mapElems={mapElems}
-          cursor={cursor}
-          bounds={bounds}
-          tileSize={tileSize}
-          ui={ui}
-        />
-
-        <FileModal
+        <Dropzone
           setBounds={this.setBounds}
           setMapElems={this.setMapElems}
           xMin={bounds.xMin}
           yMin={bounds.yMin}
-        />
+        >
+          <Map
+            mapElems={mapElems}
+            cursor={cursor}
+            bounds={bounds}
+            tileSize={tileSize}
+            ui={ui}
+          />
+        </Dropzone>
 
         <Button
           variant="fab"
