@@ -7,6 +7,7 @@ import { blueGrey } from 'material-ui/colors';
 
 import NumberInput from './NumberInput';
 import Switch from './Switch';
+import { XmlTags } from '../services/XmlLoader';
 
 const styles = theme => ({
   root: {
@@ -16,7 +17,7 @@ const styles = theme => ({
     flex: 1,
   },
   marginRight: {
-    marginRight: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 4,
   },
   input: {
     fontSize: 20,
@@ -48,7 +49,7 @@ const styles = theme => ({
 
 const MenuBar = (props) => {
   const {
-    classes, cursor, bounds, tileSize, ui, setAppState,
+    classes, cursor, bounds, tileSize, ui, toggleUiElems, setTileSize, setBounds,
   } = props;
   const width = bounds.xMax - bounds.xMin;
   const height = bounds.yMax - bounds.yMin;
@@ -66,7 +67,7 @@ const MenuBar = (props) => {
               <Switch
                 checked={ui.grid}
                 onChange={(event, checked) => {
-                  setAppState({ ui: { grid: checked } });
+                  toggleUiElems({ grid: checked });
                 }}
               />
             }
@@ -77,14 +78,31 @@ const MenuBar = (props) => {
           <FormControlLabel
             control={
               <Switch
+                checked={ui[XmlTags.TILE]}
+                onChange={(event, checked) => toggleUiElems({ [XmlTags.TILE]: checked })}
+              />
+            }
+            label="Tiles"
+            className={classes.marginRight}
+          />
+
+          <FormControlLabel
+            control={
+              <Switch
+                checked={ui[XmlTags.ROAD_SIGN]}
+                onChange={(event, checked) => toggleUiElems({ [XmlTags.ROAD_SIGN]: checked })}
+
+              />
+            }
+            label="Signs"
+            className={classes.marginRight}
+          />
+
+          <FormControlLabel
+            control={
+              <Switch
                 checked={ui.animate}
-                onChange={(event, checked) => {
-                  setAppState({
-                    ui: {
-                      animate: checked,
-                    },
-                  });
-                }}
+                onChange={(event, checked) => toggleUiElems({ animate: checked })}
               />
             }
             label="Animate"
@@ -105,11 +123,7 @@ const MenuBar = (props) => {
               marginLeft: '2rem',
               marginRight: '2rem',
             }}
-            onChange={(val) => {
-              setAppState({
-                tileSize: val,
-              });
-            }}
+            onChange={val => setTileSize(val)}
           />
 
           <NumberInput
@@ -118,11 +132,7 @@ const MenuBar = (props) => {
             min={2}
             max={50}
             className={classes.input}
-            onChange={val => setAppState({
-              bounds: {
-                xMax: val + bounds.xMin,
-              },
-            })}
+            onChange={val => setBounds({ xMax: parseInt(val, 10) + bounds.xMin }, true)}
           />
 
           <span className={classes.cross}>
@@ -135,11 +145,7 @@ const MenuBar = (props) => {
             min={2}
             max={50}
             className={classes.input}
-            onChange={val => setAppState({
-              bounds: {
-                yMax: val + bounds.yMin,
-              },
-            })}
+            onChange={val => setBounds({ yMax: parseInt(val, 10) + bounds.yMin }, true)}
           />
 
           <Typography variant="title" color="inherit" className={classes.pos}>
@@ -159,7 +165,9 @@ MenuBar.propTypes = {
   bounds: PropTypes.object.isRequired,
   tileSize: PropTypes.number.isRequired,
   ui: PropTypes.object.isRequired,
-  setAppState: PropTypes.func.isRequired,
+  toggleUiElems: PropTypes.func.isRequired,
+  setTileSize: PropTypes.func.isRequired,
+  setBounds: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(MenuBar);

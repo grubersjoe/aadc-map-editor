@@ -35,24 +35,32 @@ const Map = (props) => {
       />
 
       {
-        mapElems.map((tile) => {
-          const {
-            x, y, dir, type, elemType, key,
-          } = tile;
+        mapElems
+          .filter((elem) => {
+            let draw = false;
+            Object.keys(ui).forEach((type) => {
+              draw = draw || (ui[type] && elem.elemType === type);
+            });
+            return draw;
+          })
+          .map((tile) => {
+            const {
+              x, y, dir, type, elemType, key,
+            } = tile;
 
-          return (
-            <MapElem
-              tileSize={tileSize}
-              x={x}
-              y={y}
-              xMin={bounds.xMin}
-              yMin={bounds.yMin}
-              dir={dir}
-              type={type}
-              elemType={elemType}
-              key={key}
-            />
-          );
+            return (
+              <MapElem
+                tileSize={tileSize}
+                x={x}
+                y={y}
+                xMin={bounds.xMin}
+                yMin={bounds.yMin}
+                dir={dir}
+                type={type}
+                elemType={elemType}
+                key={key}
+              />
+            );
         })
       }
     </div>

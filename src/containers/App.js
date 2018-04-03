@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, MuiThemeProvider, withStyles } from 'material-ui';
 import FileDownloadIcon from 'material-ui-icons/FileDownload';
+import merge from 'lodash/merge';
 import includes from 'lodash/includes';
 import filter from 'lodash/filter';
 
@@ -25,7 +26,7 @@ const styles = theme => ({
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends Component {
-  state = Object.assign({
+  state = merge({
     cursor: {
       x: 0,
       y: 0,
@@ -41,8 +42,8 @@ class App extends Component {
     ui: {
       animate: false,
       grid: true,
-      tiles: true,
-      signs: true,
+      [XmlTags.TILE]: true,
+      [XmlTags.ROAD_SIGN]: true,
     },
   }, loadSavedState());
 
@@ -101,44 +102,32 @@ class App extends Component {
     }
   };
 
-  // FIXME: this is limited to two levels
-  setAppState = (data, callback) => {
-    const changes = {};
-    Object.keys(data).forEach((key) => {
-      if (typeof data[key] === 'object') {
-        Object.assign(changes, {
-          [key]: Object.assign(this.state[key], data[key]),
-        });
-      } else {
-        Object.assign(changes, {
-          [key]: data[key],
-        });
-      }
-    });
-
-    this.setState(changes, callback);
-  };
-
-  toggleUiElems = (elems) => {
-    this.setState({
-      ui: Object.assign({}, this.state.ui, elems),
-    });
-  };
-
   /**
    * Sets the map boundaries (only increases map boundaries per default)
    * @param bounds A boundaries object (.xMax, .yMax, .xMin, .yMin)
    * @param force Overwrite boundaries without any checks
    */
   setBounds = (bounds, force = false) => {
+    const {
+      xMax, yMax, xMin, yMin,
+    } = this.state.bounds;
+
     this.setState({
       bounds: {
-        xMax: force ? bounds.xMax : Math.max(this.state.bounds.xMax, bounds.xMax || 0),
-        yMax: force ? bounds.yMax : Math.max(this.state.bounds.yMax, bounds.yMax || 0),
-        xMin: force ? bounds.xMin : Math.min(this.state.bounds.xMin, bounds.xMin || 0),
-        yMin: force ? bounds.yMin : Math.min(this.state.bounds.yMin, bounds.yMin || 0),
+        xMax: force ? (bounds.xMax || xMax) : Math.max(xMax, bounds.xMax || 0),
+        yMax: force ? (bounds.yMax || yMax) : Math.max(yMax, bounds.yMax || 0),
+        xMin: force ? (bounds.xMin || xMin) : Math.min(xMin, bounds.xMin || 0),
+        yMin: force ? (bounds.yMin || yMin) : Math.min(yMin, bounds.yMin || 0),
       },
     });
+  };
+
+  /**
+   * Set the tile size
+   * @param tileSize The tile size in pixel
+   */
+  setTileSize = (tileSize) => {
+    this.setState({ tileSize });
   };
 
   /**
@@ -152,6 +141,8 @@ class App extends Component {
     } else {
       // Keep elements, which the user has added and non-duplicates (check hash)
       const keys = elems.map(elem => elem.key);
+
+      // TODO: check if ES6 is sufficient
       const rest = filter(this.state.mapElems, elem =>
         elem.origin === MapElemOrigin.EDITOR || !includes(keys, elem.key));
 
@@ -159,6 +150,12 @@ class App extends Component {
         mapElems: [...rest, ...elems],
       });
     }
+  };
+
+  toggleUiElems = (elems) => {
+    this.setState({
+      ui: Object.assign({}, this.state.ui, elems),
+    });
   };
 
   /**
@@ -256,7 +253,8 @@ class App extends Component {
           tileSize={tileSize}
           ui={ui}
           toggleUiElems={this.toggleUiElems}
-          setAppState={this.setAppState}
+          setTileSize={this.setTileSize}
+          setBounds={this.setBounds}
         />
 
         <Map
@@ -264,7 +262,6 @@ class App extends Component {
           cursor={cursor}
           bounds={bounds}
           tileSize={tileSize}
-          setAppState={this.setAppState}
           ui={ui}
         />
 
@@ -285,6 +282,7 @@ class App extends Component {
           <FileDownloadIcon />
         </Button>
 
+        {/* FIXME: reset map is not really working well */}
         <ResetMapDialog
           setMapElems={this.setMapElems}
         />
