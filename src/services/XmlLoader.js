@@ -37,10 +37,3 @@ export function parseXmlTags(xmlString, tagNames) {
     origin: MapElemOrigin.FILE,
   }));
 }
-
-export async function parseXmlFromUrl(url, tagNames) {
-  return fetch(url)
-    .then(res => res.text())
-    .then(xmlString => parseXmlTags(xmlString, tagNames));
-}
-
