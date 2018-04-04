@@ -16,7 +16,7 @@ import { hash } from '../util/hash';
 import { parseXmlTags, XmlTags } from '../services/XmlLoader';
 
 const styles = theme => ({
-  backdropWrapper: {
+  modal: {
     position: 'fixed',
     top: 0,
     left: 0,
@@ -179,7 +179,9 @@ class FileDropzone extends Component {
       >
         {
           dropActive &&
-          <div className={classes.backdropWrapper}>
+          <div className={classes.modal}>
+            <Backdrop open={dropActive} classes={{ root: classes.backdrop }} />
+
             <Typography
               color="inherit"
               align="center"
@@ -189,7 +191,6 @@ class FileDropzone extends Component {
               Drop an XML file here containing<br />
               <code>&lt;tile/&gt;</code> or <code>&lt;roadSign/&gt;</code> data
             </Typography>
-            <Backdrop open={dropActive} classes={{ root: classes.backdrop }} />
           </div>
         }
 
@@ -199,7 +200,7 @@ class FileDropzone extends Component {
             vertical: 'bottom',
             horizontal: 'left',
           }}
-          autoHideDuration={5000}
+          autoHideDuration={6000}
           onClose={this.handleSnackClose}
           message={snackMessage}
           action={[
