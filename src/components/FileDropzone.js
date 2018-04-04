@@ -11,11 +11,17 @@ import {
 import CloseIcon from 'material-ui-icons/Close';
 
 import { DEBUG } from '../config';
-import { hash } from '../util/hash';
 import { parseXmlTags, XmlTags } from '../services/Xml';
 
 const styles = theme => ({
-  modal: {
+  dropzone: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+  },
+  wrapper: {
     position: 'fixed',
     top: 0,
     left: 0,
@@ -133,17 +139,6 @@ class FileDropzone extends Component {
     };
   };
 
-  addKeys = elems => elems.map((elem) => {
-    const {
-      elemType, type, x, y, dir, init,
-    } = elem;
-
-    // eslint-disable-next-line no-param-reassign
-    elem.key = hash(elemType + type + x + y + dir + init);
-
-    return elem;
-  });
-
   render = () => {
     const {
       dropActive, accepted, rejected, snackOpen,
@@ -162,15 +157,15 @@ class FileDropzone extends Component {
         disableClick
         accept="text/xml"
         disablePreview
+        className={classes.dropzone}
         onDropAccepted={this.onFileAccepted}
         onDropRejected={this.onFileRejected}
         onDragEnter={this.onDragEnter}
         onDragLeave={this.onDragLeave}
-        style={{}}
       >
         {
           dropActive &&
-          <div className={classes.modal}>
+          <div className={classes.wrapper}>
             <Backdrop open={dropActive} classes={{ root: classes.backdrop }} />
 
             <Typography
