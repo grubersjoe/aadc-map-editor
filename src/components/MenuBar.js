@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import { AppBar, FormControlLabel, Toolbar, Typography } from 'material-ui';
+import { AppBar, FormControlLabel, Toolbar, Typography, } from 'material-ui';
 import ClearIcon from 'material-ui-icons/Clear';
 
 import NumberInput from './NumberInput';
+import LoadExample from './LoadExample';
 import Switch from './Switch';
 import { XmlTags } from '../services/Xml';
 
@@ -12,8 +13,9 @@ const styles = theme => ({
   root: {
     width: '100%',
   },
-  flex: {
+  title: {
     flex: 1,
+    whiteSpace: 'nowrap',
   },
   marginRight: {
     marginRight: theme.spacing.unit * 4,
@@ -37,7 +39,7 @@ const styles = theme => ({
     color: 'rgba(255, 255, 255, 0.7)',
   },
   pos: {
-    marginLeft: theme.spacing.unit * 5,
+    marginLeft: theme.spacing.unit * 4,
   },
 });
 
@@ -45,7 +47,7 @@ let prevAnimateState;
 
 const MenuBar = (props) => {
   const {
-    classes, bounds, tileSize, filter, applyFilter, setTileSize, setBounds,
+    classes, bounds, tileSize, filter, applyFilter, setMapElems, setTileSize, setBounds,
   } = props;
   const width = bounds.xMax - bounds.xMin;
   const height = bounds.yMax - bounds.yMin;
@@ -54,9 +56,11 @@ const MenuBar = (props) => {
     <div id="app-bar" className={classes.root}>
       <AppBar position="fixed">
         <Toolbar>
-          <Typography variant="title" color="inherit" className={classes.flex}>
+          <Typography variant="title" color="inherit" className={classes.title}>
             AADC Map Editor
           </Typography>
+
+          <LoadExample setMapElems={setMapElems} />
 
           <FormControlLabel
             control={
@@ -128,7 +132,7 @@ const MenuBar = (props) => {
             format={num => `${num}%`}
             className={classes.input}
             style={{
-              marginLeft: '2.5rem',
+              marginLeft: '2rem',
               marginRight: '2rem',
             }}
             onChange={val => setTileSize(val)}
@@ -174,6 +178,7 @@ MenuBar.propTypes = {
   tileSize: PropTypes.number.isRequired,
   filter: PropTypes.object.isRequired,
   applyFilter: PropTypes.func.isRequired,
+  setMapElems: PropTypes.func.isRequired,
   setTileSize: PropTypes.func.isRequired,
   setBounds: PropTypes.func.isRequired,
 };

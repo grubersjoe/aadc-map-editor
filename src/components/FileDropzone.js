@@ -98,11 +98,10 @@ class FileDropzone extends Component {
           XmlTags.PEDESTRIAN_CROSSING,
           // XmlTags.PARKING_SPACE,
         ];
-        const tags = parseXmlTags(ev.target.result, elemTypes);
-        const mapElems = this.addKeys(tags);
+        const mapElems = parseXmlTags(ev.target.result, elemTypes);
 
-        const xMax = Math.ceil(maxBy(tags, 'x').x) - this.props.xMin + 1;
-        const yMax = Math.ceil(maxBy(tags, 'y').y) - this.props.yMin + 1;
+        const xMax = Math.ceil(maxBy(mapElems, 'x').x) - this.props.xMin + 1;
+        const yMax = Math.ceil(maxBy(mapElems, 'y').y) - this.props.yMin + 1;
 
         this.props.setMapElems(mapElems);
         this.props.setBounds({

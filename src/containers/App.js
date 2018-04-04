@@ -241,6 +241,7 @@ class App extends Component {
           tileSize={tileSize}
           filter={filter}
           applyFilter={this.applyFilter}
+          setMapElems={this.setMapElems}
           setTileSize={this.setTileSize}
           setBounds={this.setBounds}
         />

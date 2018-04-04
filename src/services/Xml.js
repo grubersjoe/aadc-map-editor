@@ -1,5 +1,7 @@
 import { MapElemOrigin, MapElemType } from '../components/MapElem';
 import { degCssToXml, degXmlToCss } from '../util/style';
+import { DEBUG } from '../config';
+import { hash } from '../util/hash';
 
 export const XmlTags = Object.freeze({
   TILE: 'tile',
@@ -20,6 +22,10 @@ export function parseXml(xmlString) {
 }
 
 export function parseXmlTags(xmlString, tagNames) {
+  if (DEBUG && !Array.isArray(tagNames)) {
+    throw new Error('Invalid `tagNames` parameter');
+  }
+
   const xmlDoc = parseXml(xmlString);
   const nodes = [...xmlDoc.querySelectorAll(tagNames.join())];
 
@@ -27,7 +33,7 @@ export function parseXmlTags(xmlString, tagNames) {
     throw new Error(`No <${tagNames}> tags found!`);
   }
 
-  return nodes.map(node => ({
+  const elems = nodes.map(node => ({
     x: parseFloat(node.getAttribute('x')),
     y: parseFloat(node.getAttribute('y')),
     dir: degXmlToCss(XmlTags.TILE, parseInt(node.getAttribute('direction'), 10)) || 0,
@@ -37,6 +43,23 @@ export function parseXmlTags(xmlString, tagNames) {
     init: parseInt(node.getAttribute('init'), 10) || null,
     origin: MapElemOrigin.FILE,
   }));
+
+  // add keys
+  return elems.map((elem) => {
+    const key = hash(elem.elemType + elem.type + elem.x + elem.y + elem.dir + elem.init);
+    return { key, ...elem };
+  });
+}
+
+export async function parseXmlTagsFromUrl(url, tagNames = []) {
+  return fetch(url)
+    .then(res => res.text())
+    .then(xmlString => parseXmlTags(xmlString, tagNames))
+    .catch((err) => {
+      if (DEBUG) {
+        console.error('Unable to parse XML from URL: ', url, err);
+      }
+    });
 }
 
 export function mapElemsToXml(elems) {
