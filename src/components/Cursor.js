@@ -21,7 +21,6 @@ const Cursor = (props) => {
     fontSize: tileSize / 5,
     fontWeight: 500,
     transition: animate ? 'left .1s, bottom .1s' : 'none',
-    willChange: 'left, bottom',
     opacity: 0.85,
     zIndex: 1000,
   };

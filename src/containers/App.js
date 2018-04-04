@@ -28,8 +28,8 @@ class App extends Component {
     },
     tileSize: DEFAULTS.tileSize,
     mapElems: [],
+    animate: false,
     filter: {
-      animate: false,
       grid: true,
       [XmlTags.TILE]: true,
       [XmlTags.ROAD_SIGN]: true,
@@ -153,6 +153,12 @@ class App extends Component {
     }
   };
 
+  setAnimate = (checked) => {
+    this.setState({
+      animate: checked,
+    });
+  };
+
   applyFilter = (elems) => {
     this.setState({
       filter: Object.assign({}, this.state.filter, elems),
@@ -234,7 +240,7 @@ class App extends Component {
 
   render = () => {
     const {
-      mapElems, cursor, bounds, filter, tileSize,
+      mapElems, cursor, bounds, animate, filter, tileSize,
     } = this.state;
 
     const activeMapElems = mapElems.filter((elem) => {
@@ -252,7 +258,9 @@ class App extends Component {
         <MenuBar
           bounds={bounds}
           tileSize={tileSize}
+          animate={animate}
           filter={filter}
+          setAnimate={this.setAnimate}
           applyFilter={this.applyFilter}
           setMapElems={this.setMapElems}
           setTileSize={this.setTileSize}
@@ -265,6 +273,7 @@ class App extends Component {
             cursor={cursor}
             bounds={bounds}
             tileSize={tileSize}
+            animate={animate}
             filter={filter}
           />
         </Dropzone>

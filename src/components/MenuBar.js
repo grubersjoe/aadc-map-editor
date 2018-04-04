@@ -43,11 +43,10 @@ const styles = theme => ({
   },
 });
 
-let prevAnimateState;
-
 const MenuBar = (props) => {
   const {
-    classes, bounds, tileSize, filter, applyFilter, setMapElems, setTileSize, setBounds,
+    classes, bounds, tileSize, animate, filter,
+    setAnimate, applyFilter, setMapElems, setTileSize, setBounds,
   } = props;
   const width = bounds.xMax - bounds.xMin;
   const height = bounds.yMax - bounds.yMin;
@@ -113,8 +112,8 @@ const MenuBar = (props) => {
           <FormControlLabel
             control={
               <Switch
-                checked={filter.animate}
-                onChange={(event, checked) => applyFilter({ animate: checked })}
+                checked={animate}
+                onChange={(event, checked) => setAnimate(checked)}
               />
             }
             label="Animate"
@@ -136,13 +135,6 @@ const MenuBar = (props) => {
               marginRight: '2rem',
             }}
             onChange={val => setTileSize(val)}
-            onFocus={() => {
-              prevAnimateState = filter.animate;
-              applyFilter({ animate: false });
-            }}
-            onBlur={() => {
-              applyFilter({ animate: prevAnimateState });
-            }}
           />
 
           <NumberInput
@@ -176,7 +168,9 @@ MenuBar.propTypes = {
   classes: PropTypes.object.isRequired,
   bounds: PropTypes.object.isRequired,
   tileSize: PropTypes.number.isRequired,
+  animate: PropTypes.bool.isRequired,
   filter: PropTypes.object.isRequired,
+  setAnimate: PropTypes.func.isRequired,
   applyFilter: PropTypes.func.isRequired,
   setMapElems: PropTypes.func.isRequired,
   setTileSize: PropTypes.func.isRequired,
