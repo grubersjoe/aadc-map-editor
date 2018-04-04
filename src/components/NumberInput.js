@@ -93,7 +93,6 @@ class NumericInput extends Component {
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     defaultValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     strict: PropTypes.bool,
-    readOnly: PropTypes.bool,
   };
 
   /**
