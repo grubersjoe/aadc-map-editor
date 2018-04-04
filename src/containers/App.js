@@ -4,13 +4,12 @@ import merge from 'lodash/merge';
 
 import { THEME } from '../config';
 import { loadSavedState, saveState } from '../services/LocalStorage';
-import { XmlTags } from '../services/XmlImporter';
+import { XmlTags, mapElemsToXml } from '../services/Xml';
 import Dropzone from '../components/FileDropzone';
 import Map from '../components/Map';
 import { MapElemOrigin } from '../components/MapElem';
 import MenuBar from '../components/MenuBar';
 import ResetMapDialog from '../components/ResetMapDialog';
-import mapElemsToXml from '../services/XmlExporter';
 import ExportDialog from '../components/ExportDialog';
 
 class App extends Component {
