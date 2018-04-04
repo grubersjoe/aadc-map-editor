@@ -95,6 +95,17 @@ const MenuBar = (props) => {
           <FormControlLabel
             control={
               <Switch
+                checked={ui[XmlTags.PEDESTRIAN_CROSSING]}
+                onChange={(event, checked) => toggleUiElems({ [XmlTags.PEDESTRIAN_CROSSING]: checked })}
+              />
+            }
+            label="Zebras"
+            className={classes.marginRight}
+          />
+
+          <FormControlLabel
+            control={
+              <Switch
                 checked={ui.animate}
                 onChange={(event, checked) => toggleUiElems({ animate: checked })}
               />

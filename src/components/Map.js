@@ -36,13 +36,6 @@ const Map = (props) => {
 
       {
         mapElems
-          .filter((elem) => {
-            let draw = false;
-            Object.keys(ui).forEach((type) => {
-              draw = draw || (ui[type] && elem.elemType === type);
-            });
-            return draw;
-          })
           .map((tile) => {
             const {
               x, y, dir, type, elemType, key,

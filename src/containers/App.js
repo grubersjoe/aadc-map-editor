@@ -236,6 +236,14 @@ class App extends Component {
       mapElems, cursor, bounds, ui, tileSize,
     } = this.state;
 
+    const activeMapElems = mapElems.filter((elem) => {
+      let draw = false;
+      Object.keys(ui).forEach((type) => {
+        draw = draw || (ui[type] && elem.elemType === type);
+      });
+      return draw;
+    });
+
     return (
       <MuiThemeProvider theme={THEME}>
         <MenuBar
@@ -254,7 +262,7 @@ class App extends Component {
           yMin={bounds.yMin}
         >
           <Map
-            mapElems={mapElems}
+            mapElems={activeMapElems}
             cursor={cursor}
             bounds={bounds}
             tileSize={tileSize}
@@ -262,7 +270,7 @@ class App extends Component {
           />
         </Dropzone>
 
-        <ExportDialog xmlCode={mapElemsToXml(mapElems)} />
+        <ExportDialog xmlCode={mapElemsToXml(activeMapElems)} />
 
         <ResetMapDialog setMapElems={this.setMapElems} />
       </MuiThemeProvider>
