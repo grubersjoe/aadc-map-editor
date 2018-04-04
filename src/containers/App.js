@@ -144,7 +144,7 @@ class App extends Component {
     }
   };
 
-  toggleUiElems = (elems) => {
+  applyFilter = (elems) => {
     this.setState({
       ui: Object.assign({}, this.state.ui, elems),
     });
@@ -250,7 +250,7 @@ class App extends Component {
           bounds={bounds}
           tileSize={tileSize}
           ui={ui}
-          toggleUiElems={this.toggleUiElems}
+          applyFilter={this.applyFilter}
           setTileSize={this.setTileSize}
           setBounds={this.setBounds}
         />
