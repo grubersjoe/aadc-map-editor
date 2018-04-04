@@ -6,6 +6,7 @@ const Cursor = (props) => {
   const {
     theme, x, y, xMin, yMin, tileSize, animate,
   } = props;
+
   const cursorStyle = {
     position: 'absolute',
     width: tileSize,

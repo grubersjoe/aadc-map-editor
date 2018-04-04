@@ -96,7 +96,8 @@ const MenuBar = (props) => {
             control={
               <Switch
                 checked={ui[XmlTags.PEDESTRIAN_CROSSING]}
-                onChange={(event, checked) => toggleUiElems({ [XmlTags.PEDESTRIAN_CROSSING]: checked })}
+                onChange={(event, checked) =>
+                  toggleUiElems({ [XmlTags.PEDESTRIAN_CROSSING]: checked })}
               />
             }
             label="Zebras"
@@ -152,14 +153,6 @@ const MenuBar = (props) => {
             className={classes.input}
             onChange={val => setBounds({ yMax: parseInt(val, 10) + bounds.yMin }, true)}
           />
-
-          {/*
-          <Typography variant="title" color="inherit" className={classes.pos}>
-            <span title="X">{String(cursor.x).padStart(2, 0)}</span>
-            &nbsp;/&nbsp;
-            <span title="Y">{String(cursor.y).padStart(2, 0)}</span>
-          </Typography>
-          */}
         </Toolbar>
       </AppBar>
     </div>
