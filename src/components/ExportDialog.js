@@ -19,19 +19,19 @@ function Transition(props) {
 const styles = theme => ({
   fabDownload: {
     position: 'fixed',
-    bottom: theme.spacing.unit * 4 + theme.spacing.unit * 8.5,
+    bottom: theme.spacing.unit * 4 + theme.spacing.unit * 16,
     right: theme.spacing.unit * 3,
     zIndex: 1000,
   },
   primaryButton: {
-    background: theme.palette.secondary.main,
+    background: theme.palette.primary.main,
     color: theme.palette.common.white,
     '&:hover': {
-      background: theme.palette.secondary.dark,
+      background: theme.palette.primary.dark,
     },
   },
   title: {
-    padding: '1rem 1rem .5rem',
+    paddingBottom: '.5rem',
   },
   actions: {
     marginTop: '.75rem',

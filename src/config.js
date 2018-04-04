@@ -1,5 +1,5 @@
 import { createMuiTheme } from 'material-ui/styles/index';
-import { blueGrey, cyan, red } from 'material-ui/colors';
+import { blueGrey, cyan, pink } from 'material-ui/colors';
 
 export const DEBUG = false;
 
@@ -18,7 +18,7 @@ export const THEME = createMuiTheme({
       contrastText: '#fff',
     },
     error: {
-      main: red[800],
+      main: pink[800],
       contrastText: '#fff',
     },
   },

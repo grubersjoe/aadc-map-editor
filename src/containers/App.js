@@ -4,13 +4,14 @@ import merge from 'lodash/merge';
 
 import { THEME } from '../config';
 import { loadSavedState, saveState } from '../services/LocalStorage';
-import { XmlTags, mapElemsToXml } from '../services/Xml';
+import { mapElemsToXml, XmlTags } from '../services/Xml';
 import Dropzone from '../components/FileDropzone';
 import Map from '../components/Map';
 import { MapElemOrigin } from '../components/MapElem';
 import MenuBar from '../components/MenuBar';
 import ResetMapDialog from '../components/ResetMapDialog';
 import ExportDialog from '../components/ExportDialog';
+import Help from '../components/Help';
 
 class App extends Component {
   state = merge({
@@ -87,7 +88,7 @@ class App extends Component {
         this.addTile(parseInt(ev.key, 10));
         break;
       default:
-      // nop
+        // nop
     }
   };
 
@@ -260,6 +261,8 @@ class App extends Component {
             filter={filter}
           />
         </Dropzone>
+
+        <Help />
 
         <ExportDialog xmlCode={mapElemsToXml(activeMapElems)} />
 

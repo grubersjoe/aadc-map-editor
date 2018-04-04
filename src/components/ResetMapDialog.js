@@ -8,7 +8,7 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import Slide from 'material-ui/transitions/Slide';
 import { withStyles } from 'material-ui';
-import { red } from 'material-ui/colors';
+import { pink } from 'material-ui/colors';
 import DeleteIcon from 'material-ui-icons/Delete';
 import PropTypes from 'prop-types';
 import { removeSavedState } from '../services/LocalStorage';
@@ -20,12 +20,12 @@ function Transition(props) {
 const styles = theme => ({
   fabReset: {
     position: 'fixed',
-    bottom: theme.spacing.unit * 4,
+    bottom: theme.spacing.unit * 4 + theme.spacing.unit * 7.5,
     right: theme.spacing.unit * 3,
     zIndex: 1000,
-    background: red[800],
+    background: pink[800],
     '&:hover': {
-      background: red[900],
+      background: pink[900],
     },
   },
   errorButton: {
@@ -43,11 +43,15 @@ class ResetMapDialog extends React.Component {
   };
 
   openDialog = () => {
-    this.setState({ open: true });
+    this.setState({
+      open: true,
+    });
   };
 
   closeDialog = () => {
-    this.setState({ open: false });
+    this.setState({
+      open: false,
+    });
   };
 
   resetMap = () => {

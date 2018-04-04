@@ -7,9 +7,25 @@ input:focus {
     outline: none !important;
 }
 
-code {
+pre, code, kbd {
     font-family: 'Roboto Mono', monospace;
+    font-weight: normal;
+}
+
+pre {
+    font-size: 85%;
+}
+
+code, kbd {
     font-size: 90%;
+}
+
+ol,
+ul {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 1.5rem;
+    line-height: 1.5;
 }
 
 #app-bar input {
