@@ -1,28 +1,19 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Button, MuiThemeProvider, withStyles } from 'material-ui';
-import FileDownloadIcon from 'material-ui-icons/FileDownload';
+import { MuiThemeProvider } from 'material-ui';
 import merge from 'lodash/merge';
 import includes from 'lodash/includes';
 import filter from 'lodash/filter';
 
 import { THEME } from '../config';
-import { XmlTags } from '../services/XmlLoader';
-import MenuBar from '../components/MenuBar';
-import Map from '../components/Map';
-import ResetMapDialog from '../components/ResetMapDialog';
 import { loadSavedState, saveState } from '../services/LocalStorage';
-import { MapElemOrigin } from '../components/MapElem';
+import { XmlTags } from '../services/XmlLoader';
 import Dropzone from '../components/FileDropzone';
-
-const styles = theme => ({
-  fabDownload: {
-    position: 'fixed',
-    bottom: theme.spacing.unit * 4 + theme.spacing.unit * 8.5,
-    right: theme.spacing.unit * 3,
-    zIndex: 1000,
-  },
-});
+import Map from '../components/Map';
+import { MapElemOrigin } from '../components/MapElem';
+import MenuBar from '../components/MenuBar';
+import ResetMapDialog from '../components/ResetMapDialog';
+import mapElemsToXml from '../services/XmlExporter';
+import ExportDialog from '../components/ExportDialog';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class App extends Component {
@@ -44,6 +35,7 @@ class App extends Component {
       grid: true,
       [XmlTags.TILE]: true,
       [XmlTags.ROAD_SIGN]: true,
+      [XmlTags.PEDESTRIAN_CROSSING]: true,
     },
   }, loadSavedState());
 
@@ -240,7 +232,6 @@ class App extends Component {
   };
 
   render = () => {
-    const { classes } = this.props;
     const {
       mapElems, cursor, bounds, ui, tileSize,
     } = this.state;
@@ -271,26 +262,12 @@ class App extends Component {
           />
         </Dropzone>
 
-        <Button
-          variant="fab"
-          color="primary"
-          className={classes.fabDownload}
-          title="Export map to XML file"
-          style={{ zIndex: 1000 }}
-        >
-          <FileDownloadIcon />
-        </Button>
+        <ExportDialog xmlCode={mapElemsToXml(mapElems)} />
 
-        <ResetMapDialog
-          setMapElems={this.setMapElems}
-        />
+        <ResetMapDialog setMapElems={this.setMapElems} />
       </MuiThemeProvider>
     );
   };
 }
 
-App.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(App);
+export default App;
