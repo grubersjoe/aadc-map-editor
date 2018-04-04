@@ -4,7 +4,7 @@ import merge from 'lodash/merge';
 
 import { THEME } from '../config';
 import { loadSavedState, saveState } from '../services/LocalStorage';
-import { XmlTags } from '../services/XmlLoader';
+import { XmlTags } from '../services/XmlImporter';
 import Dropzone from '../components/FileDropzone';
 import Map from '../components/Map';
 import { MapElemOrigin } from '../components/MapElem';

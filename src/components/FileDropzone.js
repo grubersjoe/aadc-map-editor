@@ -13,7 +13,7 @@ import CloseIcon from 'material-ui-icons/Close';
 
 import { DEBUG } from '../config';
 import { hash } from '../util/hash';
-import { parseXmlTags, XmlTags } from '../services/XmlLoader';
+import { parseXmlTags, XmlTags } from '../services/XmlImporter';
 
 const styles = theme => ({
   modal: {

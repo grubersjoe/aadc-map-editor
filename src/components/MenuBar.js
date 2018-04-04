@@ -6,7 +6,7 @@ import ClearIcon from 'material-ui-icons/Clear';
 
 import NumberInput from './NumberInput';
 import Switch from './Switch';
-import { XmlTags } from '../services/XmlLoader';
+import { XmlTags } from '../services/XmlImporter';
 
 const styles = theme => ({
   root: {
