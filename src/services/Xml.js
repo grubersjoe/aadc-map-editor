@@ -48,11 +48,11 @@ export function mapElemsToXml(elems) {
             return `id="${elem[prop]}" `;
           case 'x':
           case 'y':
-            return `${prop}="${elem[prop]}" `;
+            return `${prop}="${elem[prop].toFixed(1)}" `;
           case 'dir':
             return `dir="${degCssToXml(elem.elemType, elem[prop])}" `;
           case 'radius':
-            return elem[prop] !== null ? `radius="${elem[prop]}" ` : '';
+            return elem[prop] !== null ? `radius="${elem[prop].toFixed(1)}" ` : '';
           case 'init':
             return elem[prop] !== null ? `init="${elem[prop]}" ` : '';
           default:
