@@ -78,7 +78,7 @@ class ResetMapDialog extends React.Component {
           onClose={this.closeDialog}
           PaperProps={{
             style: {
-              padding: '.5rem',
+              padding: '.25rem',
             },
           }}
         >
