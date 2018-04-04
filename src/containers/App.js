@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { MuiThemeProvider } from 'material-ui';
 import merge from 'lodash/merge';
-import includes from 'lodash/includes';
-import filter from 'lodash/filter';
 
 import { THEME } from '../config';
 import { loadSavedState, saveState } from '../services/LocalStorage';
@@ -15,7 +13,6 @@ import ResetMapDialog from '../components/ResetMapDialog';
 import mapElemsToXml from '../services/XmlExporter';
 import ExportDialog from '../components/ExportDialog';
 
-// eslint-disable-next-line react/prefer-stateless-function
 class App extends Component {
   state = merge({
     cursor: {
@@ -30,7 +27,7 @@ class App extends Component {
     },
     tileSize: 80,
     mapElems: [],
-    ui: {
+    filter: {
       animate: false,
       grid: true,
       [XmlTags.TILE]: true,
@@ -134,9 +131,8 @@ class App extends Component {
       // Keep elements, which the user has added and non-duplicates (check hash)
       const keys = elems.map(elem => elem.key);
 
-      // TODO: check if ES6 is sufficient
-      const rest = filter(this.state.mapElems, elem =>
-        elem.origin === MapElemOrigin.EDITOR || !includes(keys, elem.key));
+      const rest = this.state.mapElems
+        .filter(elem => elem.origin === MapElemOrigin.EDITOR || !keys.includes(elem.key));
 
       this.setState({
         mapElems: [...rest, ...elems],
@@ -146,17 +142,9 @@ class App extends Component {
 
   applyFilter = (elems) => {
     this.setState({
-      ui: Object.assign({}, this.state.ui, elems),
+      filter: Object.assign({}, this.state.filter, elems),
     });
   };
-
-  /**
-   * Get all map elems at specific position
-   * @param x X coordinate
-   * @param y Y coordinate
-   * @returns {Array} List of map elem objects
-   */
-  // getMapElemsAt = (x, y) => filter(this.state.mapElems, { x, y });
 
   /**
    * Add a specific tile element with default attributes
@@ -186,7 +174,7 @@ class App extends Component {
    */
   deleteAtCursor = () => {
     const { x, y } = this.state.cursor;
-    const mapElems = filter(this.state.mapElems, elem => !(elem.x === x && elem.y === y));
+    const mapElems = this.state.mapElems.filter(elem => !(elem.x === x && elem.y === y));
     this.setState({ mapElems });
   };
 
@@ -233,14 +221,16 @@ class App extends Component {
 
   render = () => {
     const {
-      mapElems, cursor, bounds, ui, tileSize,
+      mapElems, cursor, bounds, filter, tileSize,
     } = this.state;
 
     const activeMapElems = mapElems.filter((elem) => {
       let draw = false;
-      Object.keys(ui).forEach((type) => {
-        draw = draw || (ui[type] && elem.elemType === type);
-      });
+      Object.keys(filter)
+        .forEach((type) => {
+          draw = draw || (filter[type] && elem.elemType === type);
+        });
+
       return draw;
     });
 
@@ -249,7 +239,7 @@ class App extends Component {
         <MenuBar
           bounds={bounds}
           tileSize={tileSize}
-          ui={ui}
+          ui={filter}
           applyFilter={this.applyFilter}
           setTileSize={this.setTileSize}
           setBounds={this.setBounds}
@@ -266,7 +256,7 @@ class App extends Component {
             cursor={cursor}
             bounds={bounds}
             tileSize={tileSize}
-            ui={ui}
+            ui={filter}
           />
         </Dropzone>
 
