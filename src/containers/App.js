@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { MuiThemeProvider } from 'material-ui';
 import merge from 'lodash/merge';
+import maxBy from 'lodash/maxBy';
 
-import { THEME } from '../config';
+import { DEFAULTS, THEME } from '../config';
 import { loadSavedState, saveState } from '../services/LocalStorage';
 import { mapElemsToXml, XmlTags } from '../services/Xml';
 import Dropzone from '../components/FileDropzone';
@@ -22,10 +23,10 @@ class App extends Component {
     bounds: {
       xMin: -1,
       yMin: -1,
-      xMax: 15,
-      yMax: 9,
+      xMax: DEFAULTS.xMax,
+      yMax: DEFAULTS.yMax,
     },
-    tileSize: 80,
+    tileSize: DEFAULTS.tileSize,
     mapElems: [],
     filter: {
       animate: false,
@@ -126,12 +127,23 @@ class App extends Component {
    * @param force Overwrites current map element list
    */
   setMapElems = (elems, force = false) => {
+    const { bounds } = this.state;
+
+    const xMax = elems.length ? Math.floor(maxBy(elems, 'x').x) - bounds.xMin + 1 : DEFAULTS.xMax;
+    const yMax = elems.length ? Math.floor(maxBy(elems, 'y').y) - bounds.yMin + 1 : DEFAULTS.yMax;
+
+    this.setBounds({
+      xMax,
+      yMax,
+    }, force);
+
     if (force) {
-      this.setState({ mapElems: elems });
+      this.setState({
+        mapElems: elems,
+      });
     } else {
       // Keep elements, which the user has added and non-duplicates (check hash)
       const keys = elems.map(elem => elem.key);
-
       const rest = this.state.mapElems
         .filter(elem => elem.origin === MapElemOrigin.EDITOR || !keys.includes(elem.key));
 
@@ -211,8 +223,8 @@ class App extends Component {
       return;
     }
 
-    const xMax = x === bounds.xMax ? x + 1 : bounds.xMax;
-    const yMax = y === bounds.yMax ? y + 1 : bounds.yMax;
+    const xMax = x >= bounds.xMax - 1 ? x + 2 : bounds.xMax;
+    const yMax = y >= bounds.yMax - 1 ? y + 2 : bounds.yMax;
 
     this.setState(prevState => ({
       cursor: { ...prevState.cursor, x, y },
@@ -247,12 +259,7 @@ class App extends Component {
           setBounds={this.setBounds}
         />
 
-        <Dropzone
-          setBounds={this.setBounds}
-          setMapElems={this.setMapElems}
-          xMin={bounds.xMin}
-          yMin={bounds.yMin}
-        >
+        <Dropzone setMapElems={this.setMapElems}>
           <Map
             mapElems={activeMapElems}
             cursor={cursor}

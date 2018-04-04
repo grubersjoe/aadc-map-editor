@@ -33,19 +33,18 @@ class LoadExample extends Component {
     this.setState({ loading: true });
     // eslint-disable-next-line global-require
     const exampleFile = require('../tests/example.xml');
-    const tags = await parseXmlTagsFromUrl(exampleFile, [
+    const mapElems = await parseXmlTagsFromUrl(exampleFile, [
       XmlTags.TILE,
       XmlTags.ROAD_SIGN,
       XmlTags.PEDESTRIAN_CROSSING,
     ]);
     this.setState({ loading: false });
-    this.props.setMapElems(tags, true);
+    this.props.setMapElems(mapElems, true);
   };
 
   render = () => {
     const { loading } = this.state;
     const { classes } = this.props;
-
 
     return (
       <div className={classes.wrapper}>

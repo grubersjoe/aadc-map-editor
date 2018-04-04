@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDropzone from 'react-dropzone';
-import maxBy from 'lodash/maxBy';
 import {
   Backdrop,
   IconButton,
@@ -98,16 +97,9 @@ class FileDropzone extends Component {
           XmlTags.PEDESTRIAN_CROSSING,
           // XmlTags.PARKING_SPACE,
         ];
+
         const mapElems = parseXmlTags(ev.target.result, elemTypes);
-
-        const xMax = Math.ceil(maxBy(mapElems, 'x').x) - this.props.xMin + 1;
-        const yMax = Math.ceil(maxBy(mapElems, 'y').y) - this.props.yMin + 1;
-
         this.props.setMapElems(mapElems);
-        this.props.setBounds({
-          xMax,
-          yMax,
-        });
 
         this.setState({
           dropActive: false,
@@ -224,10 +216,7 @@ class FileDropzone extends Component {
 FileDropzone.propTypes = {
   classes: PropTypes.object.isRequired,
   children: PropTypes.element.isRequired,
-  setBounds: PropTypes.func.isRequired,
   setMapElems: PropTypes.func.isRequired,
-  xMin: PropTypes.number.isRequired,
-  yMin: PropTypes.number.isRequired,
 };
 
 export default withStyles(styles)(FileDropzone);

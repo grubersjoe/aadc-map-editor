@@ -3,6 +3,12 @@ import { blueGrey, cyan, pink } from 'material-ui/colors';
 
 export const DEBUG = false;
 
+export const DEFAULTS = {
+  xMax: 15,
+  yMax: 9,
+  tileSize: 80,
+};
+
 export const THEME = createMuiTheme({
   common: {
     white: '#fff',
