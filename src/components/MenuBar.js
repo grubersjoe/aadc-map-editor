@@ -45,7 +45,7 @@ let prevAnimateState;
 
 const MenuBar = (props) => {
   const {
-    classes, bounds, tileSize, ui, applyFilter, setTileSize, setBounds,
+    classes, bounds, tileSize, filter, applyFilter, setTileSize, setBounds,
   } = props;
   const width = bounds.xMax - bounds.xMin;
   const height = bounds.yMax - bounds.yMin;
@@ -61,7 +61,7 @@ const MenuBar = (props) => {
           <FormControlLabel
             control={
               <Switch
-                checked={ui.grid}
+                checked={filter.grid}
                 onChange={(event, checked) => {
                   applyFilter({ grid: checked });
                 }}
@@ -74,7 +74,7 @@ const MenuBar = (props) => {
           <FormControlLabel
             control={
               <Switch
-                checked={ui[XmlTags.TILE]}
+                checked={filter[XmlTags.TILE]}
                 onChange={(event, checked) => applyFilter({ [XmlTags.TILE]: checked })}
               />
             }
@@ -85,7 +85,7 @@ const MenuBar = (props) => {
           <FormControlLabel
             control={
               <Switch
-                checked={ui[XmlTags.ROAD_SIGN]}
+                checked={filter[XmlTags.ROAD_SIGN]}
                 onChange={(event, checked) => applyFilter({ [XmlTags.ROAD_SIGN]: checked })}
 
               />
@@ -97,7 +97,7 @@ const MenuBar = (props) => {
           <FormControlLabel
             control={
               <Switch
-                checked={ui[XmlTags.PEDESTRIAN_CROSSING]}
+                checked={filter[XmlTags.PEDESTRIAN_CROSSING]}
                 onChange={(event, checked) =>
                   applyFilter({ [XmlTags.PEDESTRIAN_CROSSING]: checked })}
               />
@@ -109,7 +109,7 @@ const MenuBar = (props) => {
           <FormControlLabel
             control={
               <Switch
-                checked={ui.animate}
+                checked={filter.animate}
                 onChange={(event, checked) => applyFilter({ animate: checked })}
               />
             }
@@ -133,7 +133,7 @@ const MenuBar = (props) => {
             }}
             onChange={val => setTileSize(val)}
             onFocus={() => {
-              prevAnimateState = ui.animate;
+              prevAnimateState = filter.animate;
               applyFilter({ animate: false });
             }}
             onBlur={() => {
@@ -172,7 +172,7 @@ MenuBar.propTypes = {
   classes: PropTypes.object.isRequired,
   bounds: PropTypes.object.isRequired,
   tileSize: PropTypes.number.isRequired,
-  ui: PropTypes.object.isRequired,
+  filter: PropTypes.object.isRequired,
   applyFilter: PropTypes.func.isRequired,
   setTileSize: PropTypes.func.isRequired,
   setBounds: PropTypes.func.isRequired,

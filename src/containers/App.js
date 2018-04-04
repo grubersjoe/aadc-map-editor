@@ -48,7 +48,7 @@ class App extends Component {
     }
 
     if ([
-      'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Delete',
+      'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Delete', 'd',
       '1', '2', '3', '4', '5', '7', '8',
     ].includes(ev.key)) {
       ev.preventDefault();
@@ -67,6 +67,7 @@ class App extends Component {
       case 'ArrowRight':
         this.moveCursor(1, 0);
         break;
+      case 'd':
       case 'Delete':
         this.deleteAtCursor();
         break;
@@ -238,7 +239,7 @@ class App extends Component {
         <MenuBar
           bounds={bounds}
           tileSize={tileSize}
-          ui={filter}
+          filter={filter}
           applyFilter={this.applyFilter}
           setTileSize={this.setTileSize}
           setBounds={this.setBounds}
@@ -255,7 +256,7 @@ class App extends Component {
             cursor={cursor}
             bounds={bounds}
             tileSize={tileSize}
-            ui={filter}
+            filter={filter}
           />
         </Dropzone>
 

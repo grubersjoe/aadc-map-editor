@@ -7,7 +7,7 @@ import MapElem from './MapElem';
 
 const Map = (props) => {
   const {
-    mapElems, bounds, tileSize, cursor, ui,
+    mapElems, bounds, tileSize, cursor, filter,
   } = props;
 
   const width = bounds.xMax - bounds.xMin;
@@ -19,19 +19,19 @@ const Map = (props) => {
     left: 0,
     width: (width * tileSize) + 1,
     height: (height * tileSize) + 1,
-    transition: ui.animate ? 'all .15s' : 'none',
+    transition: filter.animate ? 'all .15s' : 'none',
   };
 
   return (
     <div id="Map" style={styles}>
-      <Grid tileSize={tileSize} visible={ui.grid} />
+      <Grid tileSize={tileSize} visible={filter.grid} />
       <Cursor
         x={cursor.x}
         y={cursor.y}
         xMin={bounds.xMin}
         yMin={bounds.yMin}
         tileSize={tileSize}
-        animate={ui.animate}
+        animate={filter.animate}
       />
 
       {
@@ -75,7 +75,7 @@ Map.propTypes = {
   cursor: PropTypes.object,
   bounds: PropTypes.object.isRequired,
   tileSize: PropTypes.number.isRequired,
-  ui: PropTypes.object,
+  filter: PropTypes.object,
 };
 
 export default Map;
