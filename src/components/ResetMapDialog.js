@@ -1,11 +1,21 @@
 import React from 'react';
 import Button from 'material-ui/Button';
-import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle } from 'material-ui/Dialog';
+import Dialog, {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from 'material-ui/Dialog';
+import Slide from 'material-ui/transitions/Slide';
 import { withStyles } from 'material-ui';
 import { red } from 'material-ui/colors';
 import DeleteIcon from 'material-ui-icons/Delete';
 import PropTypes from 'prop-types';
 import { removeSavedState } from '../services/LocalStorage';
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+}
 
 const styles = theme => ({
   fabReset: {
@@ -63,6 +73,8 @@ class ResetMapDialog extends React.Component {
 
         <Dialog
           open={this.state.open}
+          transition={Transition}
+          keepMounted
           onClose={this.closeDialog}
           PaperProps={{
             style: {
