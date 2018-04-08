@@ -6,7 +6,7 @@ export const DEBUG = false;
 export const DEFAULTS = {
   xMax: 15,
   yMax: 9,
-  tileSize: 80,
+  tileSize: 70,
 };
 
 export const THEME = createMuiTheme({
