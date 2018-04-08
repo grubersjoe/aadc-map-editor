@@ -9,9 +9,7 @@ import {
   withStyles,
 } from 'material-ui';
 import CloseIcon from 'material-ui-icons/Close';
-
-import { DEBUG } from '../config';
-import { parseXmlTags, XmlTags } from '../services/Xml';
+import { loadXmlFile } from '../services/Xml';
 
 const styles = theme => ({
   dropzone: {
@@ -52,6 +50,7 @@ class FileDropzone extends Component {
     dropActive: false,
     accepted: null,
     rejected: null,
+    errorMsg: null,
     snackOpen: false,
   };
 
@@ -73,7 +72,26 @@ class FileDropzone extends Component {
   };
 
   onFileAccepted = (files) => {
-    this.loadXmlFile(files);
+    loadXmlFile(files)
+      .then((nodes) => {
+        this.props.setMapElems(nodes);
+        this.setState({
+          dropActive: false,
+          accepted: files,
+          rejected: null,
+          errorMsg: null,
+          snackOpen: true,
+        });
+      })
+      .catch((err) => {
+        this.setState({
+          dropActive: false,
+          accepted: null,
+          rejected: files,
+          errorMsg: err.message,
+          snackOpen: true,
+        });
+      });
   };
 
   onFileRejected = (files) => {
@@ -91,57 +109,9 @@ class FileDropzone extends Component {
     });
   };
 
-  loadXmlFile = (files) => {
-    const reader = new FileReader();
-    reader.readAsText(files[0]);
-
-    reader.onload = (ev) => {
-      try {
-        const elemTypes = [
-          XmlTags.TILE,
-          XmlTags.ROAD_SIGN,
-          XmlTags.PEDESTRIAN_CROSSING,
-          // XmlTags.PARKING_SPACE,
-        ];
-
-        const mapElems = parseXmlTags(ev.target.result, elemTypes);
-        this.props.setMapElems(mapElems);
-
-        this.setState({
-          dropActive: false,
-          accepted: files,
-          rejected: null,
-          snackOpen: true,
-        });
-      } catch (e) {
-        if (DEBUG) {
-          console.error(e.message);
-        }
-        this.setState({
-          dropActive: false,
-          accepted: null,
-          rejected: files,
-          snackOpen: true,
-        });
-      }
-    };
-
-    reader.onerror = (e) => {
-      if (DEBUG) {
-        console.error(e.message);
-      }
-      this.setState({
-        dropActive: false,
-        accepted: null,
-        rejected: files,
-        snackOpen: true,
-      });
-    };
-  };
-
-  render = () => {
+  render() {
     const {
-      dropActive, accepted, rejected, snackOpen,
+      dropActive, accepted, rejected, errorMsg, snackOpen,
     } = this.state;
     const { classes } = this.props;
 
@@ -149,7 +119,7 @@ class FileDropzone extends Component {
     if (accepted && accepted.length) {
       snackMessage = `${accepted[0].name} loaded`;
     } else if (rejected && rejected.length) {
-      snackMessage = `${rejected[0].name} could not be loaded`;
+      snackMessage = `Unable to load ${rejected[0].name}: ${errorMsg}`;
     }
 
     return (
@@ -205,7 +175,7 @@ class FileDropzone extends Component {
         {this.props.children}
       </ReactDropzone>
     );
-  };
+  }
 }
 
 FileDropzone.propTypes = {

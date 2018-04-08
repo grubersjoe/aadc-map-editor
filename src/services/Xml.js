@@ -46,6 +46,34 @@ export function parseXmlTags(xmlString, tagNames) {
   }));
 }
 
+export function loadXmlFile(files) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsText(files[0]);
+
+    reader.onload = (ev) => {
+      const elemTypes = [
+        XmlTags.TILE,
+        XmlTags.ROAD_SIGN,
+        XmlTags.PEDESTRIAN_CROSSING,
+        // XmlTags.PARKING_SPACE,
+      ];
+
+      try {
+        const nodes = parseXmlTags(ev.target.result, elemTypes);
+        resolve(nodes);
+      } catch (err) {
+        if (DEBUG) {
+          console.error(DEBUG);
+        }
+        reject(err);
+      }
+    };
+
+    reader.onerror = reject;
+  });
+}
+
 export async function parseXmlTagsFromUrl(url, tagNames = []) {
   return fetch(url)
     .then(res => res.text())
