@@ -19,6 +19,7 @@
     "react-dom": "^16.3.1",
     "react-dropzone": "^4.2.7",
     "react-scripts": "1.1.4",
+    "shortid": "^2.2.8",
     "typeface-roboto": "^0.0.54"
   },
   "scripts": {

@@ -1,7 +1,7 @@
+import shortid from 'shortid';
+import { DEBUG } from '../config';
 import { MapElemOrigin, MapElemType } from '../components/MapElem';
 import { degCssToXml, degXmlToCss } from '../util/style';
-import { DEBUG } from '../config';
-import { hash } from '../util/hash';
 
 export const XmlTags = Object.freeze({
   TILE: 'tile',
@@ -22,7 +22,7 @@ export function parseXml(xmlString) {
 }
 
 export function parseXmlTags(xmlString, tagNames) {
-  if (DEBUG && !Array.isArray(tagNames)) {
+  if (!Array.isArray(tagNames) || !tagNames.length) {
     throw new Error('Invalid `tagNames` parameter');
   }
 
@@ -30,10 +30,11 @@ export function parseXmlTags(xmlString, tagNames) {
   const nodes = [...xmlDoc.querySelectorAll(tagNames.join())];
 
   if (!nodes.length) {
-    throw new Error(`No <${tagNames}> tags found!`);
+    throw new Error('No valid XML nodes found.');
   }
 
-  const elems = nodes.map(node => ({
+  return nodes.map(node => ({
+    key: shortid.generate(),
     x: parseFloat(node.getAttribute('x')),
     y: parseFloat(node.getAttribute('y')),
     dir: degXmlToCss(XmlTags.TILE, parseInt(node.getAttribute('direction'), 10)) || 0,
@@ -43,12 +44,6 @@ export function parseXmlTags(xmlString, tagNames) {
     init: parseInt(node.getAttribute('init'), 10) || null,
     origin: MapElemOrigin.FILE,
   }));
-
-  // add keys
-  return elems.map((elem) => {
-    const key = hash(elem.elemType + elem.type + elem.x + elem.y + elem.dir + elem.init);
-    return { key, ...elem };
-  });
 }
 
 export async function parseXmlTagsFromUrl(url, tagNames = []) {
