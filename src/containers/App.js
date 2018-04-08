@@ -6,10 +6,10 @@ import maxBy from 'lodash/maxBy';
 import { DEFAULTS, THEME } from '../config';
 import { loadSavedState, saveState } from '../services/LocalStorage';
 import { mapElemsToXml, XmlTags } from '../services/Xml';
-import Dropzone from '../components/FileDropzone';
+import FileDropzone from '../components/FileDropzone';
 import Map from '../components/Map';
 import { MapElemOrigin } from '../components/MapElem';
-import MenuBar from '../components/MenuBar';
+import AppBar from '../components/AppBar';
 import ResetMapDialog from '../components/ResetMapDialog';
 import ExportDialog from '../components/ExportDialog';
 import Help from '../components/Help';
@@ -255,7 +255,7 @@ class App extends Component {
 
     return (
       <MuiThemeProvider theme={THEME}>
-        <MenuBar
+        <AppBar
           bounds={bounds}
           tileSize={tileSize}
           animate={animate}
@@ -267,7 +267,7 @@ class App extends Component {
           setBounds={this.setBounds}
         />
 
-        <Dropzone setMapElems={this.setMapElems}>
+        <FileDropzone setMapElems={this.setMapElems}>
           <Map
             mapElems={activeMapElems}
             cursor={cursor}
@@ -276,7 +276,7 @@ class App extends Component {
             animate={animate}
             filter={filter}
           />
-        </Dropzone>
+        </FileDropzone>
 
         <Help />
 

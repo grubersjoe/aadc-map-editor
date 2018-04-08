@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import { AppBar, FormControlLabel, Toolbar, Typography, } from 'material-ui';
+import { FormControlLabel, Toolbar, Typography, } from 'material-ui';
+import MuiAppBar from 'material-ui/AppBar';
 import ClearIcon from 'material-ui-icons/Clear';
 
 import NumberInput from './NumberInput';
@@ -43,7 +44,7 @@ const styles = theme => ({
   },
 });
 
-const MenuBar = (props) => {
+const AppBar = (props) => {
   const {
     classes, bounds, tileSize, animate, filter,
     setAnimate, applyFilter, setMapElems, setTileSize, setBounds,
@@ -53,7 +54,7 @@ const MenuBar = (props) => {
 
   return (
     <div id="app-bar" className={classes.root}>
-      <AppBar position="fixed">
+      <MuiAppBar position="fixed">
         <Toolbar>
           <Typography variant="title" color="inherit" className={classes.title}>
             AADC Map Editor
@@ -159,12 +160,12 @@ const MenuBar = (props) => {
             onChange={val => setBounds({ yMax: parseInt(val, 10) + bounds.yMin }, true)}
           />
         </Toolbar>
-      </AppBar>
+      </MuiAppBar>
     </div>
   );
 };
 
-MenuBar.propTypes = {
+AppBar.propTypes = {
   classes: PropTypes.object.isRequired,
   bounds: PropTypes.object.isRequired,
   tileSize: PropTypes.number.isRequired,
@@ -177,4 +178,4 @@ MenuBar.propTypes = {
   setBounds: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(MenuBar);
+export default withStyles(styles, { withTheme: true })(AppBar);
