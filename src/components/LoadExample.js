@@ -42,7 +42,7 @@ class LoadExample extends Component {
     this.props.setMapElems(mapElems, true);
   };
 
-  render = () => {
+  render() {
     const { loading } = this.state;
     const { classes } = this.props;
 

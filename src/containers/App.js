@@ -238,7 +238,7 @@ class App extends Component {
     }));
   };
 
-  render = () => {
+  render() {
     const {
       mapElems, cursor, bounds, animate, filter, tileSize,
     } = this.state;
@@ -285,7 +285,7 @@ class App extends Component {
         <ResetMapDialog setMapElems={this.setMapElems} />
       </MuiThemeProvider>
     );
-  };
+  }
 }
 
 export default App;
