@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import { FormControlLabel, Toolbar, Typography, } from 'material-ui';
+import { FormControlLabel, Toolbar, Typography } from 'material-ui';
 import MuiAppBar from 'material-ui/AppBar';
 import ClearIcon from 'material-ui-icons/Clear';
 
