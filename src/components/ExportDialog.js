@@ -1,14 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, IconButton, Snackbar, withStyles } from 'material-ui';
-import Dialog, {
+import {
+  Button,
+  Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-} from 'material-ui/Dialog';
-import CloseIcon from 'material-ui-icons/Close';
-import Slide from 'material-ui/transitions/Slide';
-import FileDownloadIcon from 'material-ui-icons/FileDownload';
+  IconButton,
+  Slide,
+  Snackbar,
+  withStyles,
+} from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+import FileDownloadIcon from '@material-ui/icons/FileDownload';
 import formatXml from 'prettify-xml';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, CircularProgress, withStyles } from 'material-ui';
+import { Button, CircularProgress, withStyles } from '@material-ui/core';
 import { parseXmlTagsFromUrl, XmlTags } from '../services/Xml';
 
 const styles = theme => ({

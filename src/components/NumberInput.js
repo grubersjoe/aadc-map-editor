@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Input from 'material-ui/Input';
+import Input from '@material-ui/core/Input';
 
 const KEYCODE_UP = 38;
 const KEYCODE_DOWN = 40;

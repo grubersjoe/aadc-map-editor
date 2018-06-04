@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { MuiThemeProvider } from 'material-ui';
+import { MuiThemeProvider } from '@material-ui/core';
 import merge from 'lodash/merge';
 import maxBy from 'lodash/maxBy';
 
@@ -129,7 +129,9 @@ class App extends Component {
   setMapElems = (elems, force = false) => {
     const { bounds } = this.state;
 
+    // noinspection JSUnresolvedVariable
     const xMax = elems.length ? Math.floor(maxBy(elems, 'x').x) - bounds.xMin + 1 : DEFAULTS.xMax;
+    // noinspection JSUnresolvedVariable, JSSuspiciousNameCombination
     const yMax = elems.length ? Math.floor(maxBy(elems, 'y').y) - bounds.yMin + 1 : DEFAULTS.yMax;
 
     this.setBounds({

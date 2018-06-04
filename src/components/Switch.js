@@ -1,6 +1,6 @@
 import React from 'react';
-import { withStyles } from 'material-ui';
-import MuiSwitch from 'material-ui/Switch';
+import { withStyles } from '@material-ui/core';
+import MuiSwitch from '@material-ui/core/Switch';
 import PropTypes from 'prop-types';
 
 export const styles = theme => ({

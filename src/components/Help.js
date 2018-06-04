@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, withStyles } from 'material-ui';
-import { cyan } from 'material-ui/colors';
-import Dialog, {
+import { cyan } from '@material-ui/core/colors';
+import {
+  Button,
+  Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-} from 'material-ui/Dialog';
-import Slide from 'material-ui/transitions/Slide';
-import HelpIcon from 'material-ui-icons/Help';
+  Slide,
+  withStyles,
+} from '@material-ui/core';
+import HelpIcon from '@material-ui/icons/Help';
 
 function Transition(props) {
   return <Slide direction="up" {...props} />;
@@ -37,6 +39,7 @@ const styles = theme => ({
 });
 
 class Help extends React.Component {
+  // noinspection JSUnusedGlobalSymbols
   state = {
     open: false,
   };
@@ -94,7 +97,8 @@ class Help extends React.Component {
                 // <li>In insert mode: <kbd>Arrow up</kbd> rotates current tile</li>
                 // <li>In insert mode, if no tile is set: <kbd>Arrow up</kbd> inserts default tile (straight), repeat to rotate this tile</li>
               }
-              <li>The number keys <kbd>1</kbd> - <kbd>5</kbd> and <kbd>7 - 8</kbd> insert a tile of the corresponding type immediately:
+              <li>The number keys <kbd>1</kbd> - <kbd>5</kbd> and <kbd>7 - 8</kbd> insert a tile of
+                the corresponding type immediately:
                 <ul>
                   <li>1 = Straight</li>
                   <li>2 = T-Crossing</li>
@@ -106,7 +110,8 @@ class Help extends React.Component {
                 </ul>
               </li>
               <li><kbd>Del</kbd> or <kbd>d</kbd> delete the tile under the cursor</li>
-              <li><kbd>r</kbd> rotates the current tile clockwise, <kbd>R</kbd> counter-clockwise</li>
+              <li><kbd>r</kbd> rotates the current tile clockwise, <kbd>R</kbd> counter-clockwise
+              </li>
             </ul>
           </DialogContent>
           <DialogActions>

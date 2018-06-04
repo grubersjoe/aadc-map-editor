@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDropzone from 'react-dropzone';
-import {
-  Backdrop,
-  IconButton,
-  Snackbar,
-  Typography,
-  withStyles,
-} from 'material-ui';
-import CloseIcon from 'material-ui-icons/Close';
+import { Backdrop, IconButton, Snackbar, Typography, withStyles, } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import { loadXmlFile } from '../services/Xml';
 
 const styles = theme => ({

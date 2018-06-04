@@ -1,5 +1,5 @@
-import { createMuiTheme } from 'material-ui/styles/index';
-import { blueGrey, cyan, pink } from 'material-ui/colors';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { blueGrey, cyan, pink } from '@material-ui/core/colors';
 
 export const DEBUG = false;
 

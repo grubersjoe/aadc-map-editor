@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import { FormControlLabel, Toolbar, Typography } from 'material-ui';
-import MuiAppBar from 'material-ui/AppBar';
-import ClearIcon from 'material-ui-icons/Clear';
+import { withStyles } from '@material-ui/core/styles';
+import { FormControlLabel, Toolbar, Typography } from '@material-ui/core';
+import MuiAppBar from '@material-ui/core/AppBar';
+import ClearIcon from '@material-ui/icons/Clear';
 
 import NumberInput from './NumberInput';
 import LoadExample from './LoadExample';
@@ -23,14 +23,14 @@ const styles = theme => ({
   },
   input: {
     fontSize: 20,
-    '&:hover:before': {
-      backgroundColor: 'rgba(255, 255, 255, 0.9) !important',
-    },
     '&:before': {
-      backgroundColor: 'rgba(255, 255, 255, 0.5)',
+      borderBottom: '1px solid rgba(255, 255, 255, 0.5)',
+    },
+    '&:hover:before': {
+      borderBottom: '1px solid rgba(255, 255, 255, 0.75) !important',
     },
     '&:after': {
-      backgroundColor: '#ddd',
+      borderBottom: '1px solid rgba(255, 255, 255, 1)',
     },
   },
   cross: {

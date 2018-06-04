@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withTheme } from 'material-ui';
+import { withTheme } from '@material-ui/core';
 
 const Cursor = (props) => {
   const {

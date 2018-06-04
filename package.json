@@ -7,11 +7,11 @@
   "url": "https://grubersjoe.de",
   "homepage": "https://grubersjoe.github.io/aadc-map-editor",
   "dependencies": {
+    "@material-ui/core": "^1.2.0",
+    "@material-ui/icons": "^1.1.0",
     "gh-pages": "^1.1.0",
     "glamor": "^2.20.40",
     "lodash": "^4.17.5",
-    "material-ui": "^1.0.0-beta.40",
-    "material-ui-icons": "^1.0.0-beta.36",
     "prettify-xml": "^1.2.0",
     "prop-types": "^15.6.0",
     "react": "^16.3.1",
