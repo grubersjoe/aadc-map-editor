@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { MuiThemeProvider } from '@material-ui/core';
+import { IconButton, MuiThemeProvider, Snackbar } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import merge from 'lodash/merge';
 import maxBy from 'lodash/maxBy';
 
@@ -16,6 +17,7 @@ import Help from '../components/Help';
 
 class App extends Component {
   state = merge({
+    firstRun: true,
     cursor: {
       x: 0,
       y: 0,
@@ -89,7 +91,7 @@ class App extends Component {
         this.addTile(parseInt(ev.key, 10));
         break;
       default:
-        // nop
+      // nop
     }
   };
 
@@ -242,7 +244,7 @@ class App extends Component {
 
   render() {
     const {
-      mapElems, cursor, bounds, animate, filter, tileSize,
+      firstRun, mapElems, cursor, bounds, animate, filter, tileSize,
     } = this.state;
 
     const activeMapElems = mapElems.filter((elem) => {
@@ -285,6 +287,28 @@ class App extends Component {
         <ExportDialog xmlCode={mapElemsToXml(activeMapElems)} />
 
         <ResetMapDialog setMapElems={this.setMapElems} />
+
+        <Snackbar
+          open={firstRun}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          autoHideDuration={6000}
+          onClose={() => this.setState({ firstRun: false })}
+          message="Load XML files by dragging them into this window"
+          action={[
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              onClick={() => this.setState({ firstRun: false })}
+            >
+              <CloseIcon />
+            </IconButton>
+          ]}
+        />
+
       </MuiThemeProvider>
     );
   }
