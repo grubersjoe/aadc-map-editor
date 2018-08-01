@@ -1,7 +1,6 @@
 import shortid from 'shortid';
 import { DEBUG } from '../config';
 import { MapElemOrigin, MapElemType } from '../components/MapElem';
-import { degCssToXml, degXmlToCss } from '../util/style';
 
 export const XmlTags = Object.freeze({
   TILE: 'tile',
@@ -37,7 +36,7 @@ export function parseXmlTags(xmlString, tagNames) {
     key: shortid.generate(),
     x: parseFloat(node.getAttribute('x')),
     y: parseFloat(node.getAttribute('y')),
-    dir: degXmlToCss(XmlTags.TILE, parseInt(node.getAttribute('direction'), 10)) || 0,
+    dir: parseInt(node.getAttribute('dir'), 10) || 0,
     type: parseInt(node.getAttribute('id'), 10) || MapElemType.UNKNOWN,
     elemType: node.tagName,
     radius: parseFloat(node.getAttribute('radius'), 10) || null,
@@ -96,7 +95,7 @@ export function mapElemsToXml(elems) {
           case 'y':
             return `${prop}="${elem[prop].toFixed(1)}" `;
           case 'dir':
-            return `dir="${degCssToXml(elem.elemType, elem[prop])}" `;
+            return `dir="${elem[prop]}" `;
           case 'radius':
             return elem[prop] !== null ? `radius="${elem[prop].toFixed(1)}" ` : '';
           case 'init':
